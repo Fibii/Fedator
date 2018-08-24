@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane onKeyPressed="#saveUsingKeyboard" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.Controller">
+   <children>
+      <Button fx:id="saveBtn" layoutX="538.0" layoutY="2.0" mnemonicParsing="false" onAction="#saveBtnClick" text="save" />
+      <ChoiceBox fx:id="choiceBox" layoutX="467.0" layoutY="2.0" prefHeight="25.0" prefWidth="59.0" />
+      <HBox fx:id="hboxTxt" layoutY="29.0" prefHeight="372.0" prefWidth="600.0">
+         <children>
+            <VBox prefHeight="372.0" prefWidth="51.0">
+               <children>
+                  <ListView fx:id="LineCounter" prefHeight="373.0" prefWidth="26.0">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </ListView>
+               </children>
+               <HBox.margin>
+                  <Insets top="1.0" />
+               </HBox.margin>
+            </VBox>
+            <TextArea fx:id="textArea" prefHeight="372.0" prefWidth="600.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextArea>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
