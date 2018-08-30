@@ -102,7 +102,6 @@ public class Controller {
            lineCounter.setText(a.toString());
         }
 
-
     }
 
     /** returns the number of lines */
