@@ -15,16 +15,12 @@
       <HBox fx:id="hboxTxt" layoutY="29.0" prefHeight="372.0" prefWidth="600.0">
          <children>
             <VBox prefHeight="372.0" prefWidth="51.0">
-               <children>
-                  <ListView fx:id="LineCounter" prefHeight="373.0" prefWidth="26.0">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </ListView>
-               </children>
                <HBox.margin>
-                  <Insets top="1.0" />
+                  <Insets />
                </HBox.margin>
+               <children>
+                  <TextArea fx:id="lineCounter" prefHeight="455.0" prefWidth="26.0" />
+               </children>
             </VBox>
             <TextArea fx:id="textArea" prefHeight="372.0" prefWidth="600.0">
                <font>
