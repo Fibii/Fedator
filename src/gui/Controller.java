@@ -23,7 +23,7 @@ public class Controller {
     private TextArea textArea;
 
     @FXML
-    private ListView<String> LineCounter;
+    private TextArea lineCounter;
 
 
     @FXML
@@ -61,53 +61,60 @@ public class Controller {
 
         //select 18 as the default font size
         choiceBox.getSelectionModel().select(3); //3 is the index
-       // setFontSize(18);
+        setFontSize(18);
 
         choiceBoxListener();
 
 
-        //set the line counter
-        LineCounter.getItems().addAll("1\n","2\n","3\n","4\n","5\n","6\n");
 
-        r1 = () -> setLineCounterFont();
+        //update the line count for every 200ms
+        r1 = () -> setLineCount(numberOfLines());
 
         //update the size of the line counter using a  SES, so each 200 ms, the font is set to a new value
         ScheduledExecutorService scheduledExecutorService =
                 Executors.newScheduledThreadPool(1);
 
         scheduledExecutorService.scheduleAtFixedRate(r1,0,200, TimeUnit.MILLISECONDS);
+
     }
 
+    /** changes the font size whenever the user chooses a new size from the choicebox */
     public void choiceBoxListener(){
         choiceBox.getSelectionModel().selectedItemProperty().addListener(
                 (v,oldValue,newValue) ->
                         setFontSize(choiceBox.getValue()) );
     }
 
+    /** sets the font size */
     public void setFontSize(int size){
         textArea.setFont(new Font(size));
-    }
-
-    public void setLineCounterFont(){
-        LineCounter.setCellFactory(cell -> {
-            return new ListCell<String>() {
-                @Override
-                protected void updateItem(String item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (item != null) {
-                        setText(item);
-
-                        // decide to add a new styleClass
-                        // getStyleClass().add("costume style");
-                        // decide the new font size
-                        setFont(Font.font(choiceBox.getValue()));
-                        setPadding(new Insets(0.2)); //to match the text area
-                    }
-                }
-            };
-        });
-
+        lineCounter.setFont(new Font(size));
     }
 
 
-}
+
+    /** shows the number of lines on the side.. */
+    public void setLineCount(int length){
+        //lineCounter.setText("1\n2\n3\n");
+        StringBuilder a = new StringBuilder("");
+        for(int i = 0; i <= length; i++){
+           a.append(i+1 + "\n");
+           lineCounter.setText(a.toString());
+        }
+
+
+    }
+
+    /** returns the number of lines */
+    public int numberOfLines(){
+        return textArea.getText().split("\n").length;
+    }
+
+    }
+
+
+
+
+
+
+
