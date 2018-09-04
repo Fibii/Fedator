@@ -1,23 +1,18 @@
 package gui;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 
-import javax.sound.sampled.Line;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class Controller {
+public class MainController {
 
     @FXML
     private TextArea textArea;
@@ -38,20 +33,32 @@ public class Controller {
     @FXML
     private HBox hboxTxt;
 
+    @FXML
+    private MenuBar menuBar;
+
     private Runnable r1;
 
     @FXML
     void saveBtnClick(ActionEvent event) {
-        //iterate over list
+
+        //togle the view of the line number
+        if(lineCounter.getOpacity() == 100) {
+            lineCounter.setOpacity(0);
+        } else {
+            lineCounter.setOpacity(100);
+        }
 
     }
 
     @FXML
     void saveUsingKeyboard(KeyEvent event) {
         if (event.getCode() == KeyCode.S && event.isControlDown()){
+            System.out.println(lineCounter.getScrollTop());
+            /*
             for(int i = 0; i < textArea.getParagraphs().size(); i++){
                 System.out.println(textArea.getParagraphs().get(i));
-            }
+
+            }*/
         }
     }
 
@@ -66,7 +73,6 @@ public class Controller {
         choiceBoxListener();
 
 
-
         //update the line count for every 200ms
         r1 = () -> setLineCount(numberOfLines());
 
@@ -74,7 +80,15 @@ public class Controller {
         ScheduledExecutorService scheduledExecutorService =
                 Executors.newScheduledThreadPool(1);
 
-        scheduledExecutorService.scheduleAtFixedRate(r1,0,200, TimeUnit.MILLISECONDS);
+        //change this later
+        lineCounter.setOpacity(0);
+
+        MenuBarController.showMenuBar(menuBar,textArea,lineCounter);
+
+
+
+            scheduledExecutorService.scheduleAtFixedRate(r1,0,200, TimeUnit.MILLISECONDS);
+
 
     }
 
@@ -94,20 +108,35 @@ public class Controller {
 
 
     /** shows the number of lines on the side.. */
+    private int i  = 0 ;
     public void setLineCount(int length){
         //lineCounter.setText("1\n2\n3\n");
-        StringBuilder a = new StringBuilder("");
-        for(int i = 0; i <= length; i++){
-           a.append(i+1 + "\n");
-           lineCounter.setText(a.toString());
+        if(lineCounter.getOpacity() != 0){
+            StringBuilder a = new StringBuilder("");
+            for(int i = 0; i <= length; i++){
+                a.append(i+1 + "\n");
+                lineCounter.setText(a.toString());
+
+                //scroll down whenever the number of lines increases
+                lineCounter.setScrollTop(textArea.getHeight());
         }
 
+        }
+
+
+
+    }
+
+    public TextArea getTextArea(){
+        return textArea;
     }
 
     /** returns the number of lines */
     public int numberOfLines(){
         return textArea.getText().split("\n").length;
     }
+
+
 
     }
 

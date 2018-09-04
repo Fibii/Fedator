@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.FileSaver.FileSaverController">
+   <children>
+      <VBox fx:id="vbox" layoutX="24.0" layoutY="24.0" prefHeight="294.0" prefWidth="572.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+      <Button fx:id="saveButton" layoutX="516.0" layoutY="355.0" mnemonicParsing="false" onAction="#saveButtonClick" prefHeight="31.0" prefWidth="70.0" text="Save" />
+      <Button fx:id="closeButton" layoutX="436.0" layoutY="355.0" mnemonicParsing="false" onAction="#closeButtonClick" prefHeight="31.0" prefWidth="70.0" text="Close" />
+      <TextField fx:id="fileName" layoutX="14.0" layoutY="318.0" prefHeight="25.0" prefWidth="387.0" promptText="file name" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+   </children>
+</AnchorPane>
