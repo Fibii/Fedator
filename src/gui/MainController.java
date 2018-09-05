@@ -1,5 +1,7 @@
 package gui;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -13,7 +15,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class MainController {
-
     @FXML
     private TextArea textArea;
 
@@ -53,7 +54,7 @@ public class MainController {
     @FXML
     void saveUsingKeyboard(KeyEvent event) {
         if (event.getCode() == KeyCode.S && event.isControlDown()){
-            System.out.println(lineCounter.getScrollTop());
+            System.out.println(textArea.getText());
             /*
             for(int i = 0; i < textArea.getParagraphs().size(); i++){
                 System.out.println(textArea.getParagraphs().get(i));
@@ -71,10 +72,13 @@ public class MainController {
         setFontSize(18);
 
         choiceBoxListener();
+        textAreaListener();
 
-
-        //update the line count for every 200ms
+        //update the line count  every 200ms
         r1 = () -> setLineCount(numberOfLines());
+
+        //update the text every 200ms
+
 
         //update the size of the line counter using a  SES, so each 200 ms, the font is set to a new value
         ScheduledExecutorService scheduledExecutorService =
@@ -90,6 +94,8 @@ public class MainController {
             scheduledExecutorService.scheduleAtFixedRate(r1,0,200, TimeUnit.MILLISECONDS);
 
 
+
+
     }
 
     /** changes the font size whenever the user chooses a new size from the choicebox */
@@ -97,6 +103,17 @@ public class MainController {
         choiceBox.getSelectionModel().selectedItemProperty().addListener(
                 (v,oldValue,newValue) ->
                         setFontSize(choiceBox.getValue()) );
+    }
+
+    public void textAreaListener(){
+        //update the getTextArea method whenever the text is changed
+        textArea.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                MenuBarController.setText(textArea.getText());
+
+            }
+        });
     }
 
     /** sets the font size */
@@ -127,15 +144,11 @@ public class MainController {
 
     }
 
-    public TextArea getTextArea(){
-        return textArea;
-    }
 
     /** returns the number of lines */
     public int numberOfLines(){
         return textArea.getText().split("\n").length;
     }
-
 
 
     }
