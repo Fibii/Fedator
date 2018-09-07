@@ -8,29 +8,29 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane onKeyPressed="#saveUsingKeyboard" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainController">
+<AnchorPane onKeyPressed="#saveUsingKeyboard" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #222f3e;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainController">
    <children>
-      <Button fx:id="saveBtn" layoutX="538.0" layoutY="2.0" mnemonicParsing="false" onAction="#saveBtnClick" text="save" />
-      <ChoiceBox fx:id="choiceBox" layoutX="467.0" layoutY="2.0" prefHeight="25.0" prefWidth="59.0" />
+      <MenuBar fx:id="menuBar">
+
+      </MenuBar>
+      <ChoiceBox fx:id="choiceBox" layoutX="534.0" layoutY="2.0" prefHeight="31.0" prefWidth="59.0" style="-fx-background-color: #576574;" AnchorPane.bottomAnchor="370.0" AnchorPane.topAnchor="0.0" />
       <HBox fx:id="hboxTxt" layoutY="29.0" prefHeight="372.0" prefWidth="600.0">
          <children>
-            <VBox prefHeight="372.0" prefWidth="51.0">
+            <VBox fx:id="lineCountVbox" prefHeight="372.0" prefWidth="0.0">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
+            <!--
                <children>
-                  <TextArea fx:id="lineCounter" prefHeight="372.0" prefWidth="0.0" />
-               </children>
+                  <TextArea fx:id="lineCounter" prefHeight="372.0" prefWidth="4.0" wrapText="false" />
+               </children> -->
             </VBox>
-            <TextArea fx:id="textArea" prefHeight="372.0" prefWidth="600.0" wrapText="true">
+            <TextArea fx:id="textArea" prefHeight="372.0" prefWidth="658.0" style="-fx-background-color: #222f3e;" wrapText="true">
                <font>
                   <Font size="18.0" />
                </font>
             </TextArea>
          </children>
       </HBox>
-      <MenuBar fx:id="menuBar">
-
-      </MenuBar>
    </children>
 </AnchorPane>

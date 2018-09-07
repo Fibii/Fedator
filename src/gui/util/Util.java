@@ -22,7 +22,7 @@ public class Util {
 
     public static void saveFile(String text, String fileName){
         try {
-            PrintWriter writer = new PrintWriter(fileName + ".txt", "UTF-8");
+            PrintWriter writer = new PrintWriter(fileName, "UTF-8");
             writer.println(text);
 
             writer.close();
