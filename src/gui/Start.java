@@ -17,7 +17,7 @@ public class Start extends Application {
         Parent root = FXMLLoader.load(gui.toURL());
 
         Scene scene = new Scene(root);
-
+        scene.getStylesheets().add(this.getClass() .getResource("/gui/css.css").toExternalForm());
 
         primaryStage.setScene(scene);
         primaryStage.show();
