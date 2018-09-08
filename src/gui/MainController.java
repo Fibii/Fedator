@@ -3,57 +3,38 @@ package gui;
 import gui.util.Util;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
-
+import javafx.stage.Stage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class MainController {
-    @FXML
-    private TextArea textArea;
-
-    @FXML
-    private TextArea lineCounter;
-
-    @FXML
-    private Button saveBtn;
-
-    @FXML
-    private ChoiceBox<Integer> choiceBox;
-
-    @FXML
-    private ScrollBar scrollBar;
-
-    @FXML
-    private HBox hboxTxt;
-
-    @FXML
-    private MenuBar menuBar;
-
     private Runnable r1;
     private String currentFileName;
     private boolean fileOpened;
 
     @FXML
-    void saveUsingKeyboard(KeyEvent event) {
-        if (event.getCode() == KeyCode.S && event.isControlDown()) {
-            System.out.println(textArea.getText());
-            /*
-            for(int i = 0; i < textArea.getParagraphs().size(); i++){
-                System.out.println(textArea.getParagraphs().get(i));
+    private TextArea textArea;
+    @FXML
+    private TextArea lineCounter; //for later use
+    @FXML
+    private ChoiceBox<Integer> choiceBox;
 
-            }*/
+    @FXML
+    private MenuBar menuBar;
+    @FXML
+
+    private void saveUsingKeyboard(KeyEvent event) {
+        if(fileOpened) {
+            System.out.println(textArea.getText());
+            Util.saveFile(textArea.getText(),currentFileName);
         }
     }
 
@@ -88,13 +69,13 @@ public class MainController {
     /**
      * changes the font size whenever the user chooses a new size from the choicebox
      */
-    public void choiceBoxListener() {
+    private void choiceBoxListener() {
         choiceBox.getSelectionModel().selectedItemProperty().addListener(
                 (v, oldValue, newValue) ->
                         setFontSize(choiceBox.getValue()));
     }
 
-    public void textAreaListener() {
+    private void textAreaListener() {
 
         //update the getTextArea method whenever the text is changed
         textArea.textProperty().addListener(new ChangeListener<String>() {
@@ -109,7 +90,7 @@ public class MainController {
     /**
      * sets the font size
      */
-    public void setFontSize(int size) {
+    private void setFontSize(int size) {
         textArea.setFont(new Font(size));
         //lineCounter.setFont(new Font(size));
     }
@@ -117,16 +98,13 @@ public class MainController {
     /**
      * shows the number of lines on the side..
      */
-    private int i = 0;
-
     public void setLineCount(int length) {
         //lineCounter.setText("1\n2\n3\n");
         if (lineCounter.getOpacity() != 0) {
-            StringBuilder a = new StringBuilder("");
+            StringBuilder a = new StringBuilder();
             for (int i = 0; i <= length; i++) {
                 a.append(i + 1 + "\n");
                 lineCounter.setText(a.toString());
-
                 //scroll down whenever the number of lines increases
                 lineCounter.setScrollTop(textArea.getHeight());
             }
@@ -140,15 +118,16 @@ public class MainController {
         return textArea.getText().split("\n").length;
     }
 
-    public void menuBarInit() {
+    private void menuBarInit() {
         //setup the File Menu
         Menu fileMenu = new Menu("File");
 
+        //setup the menu items
         MenuItem save = new MenuItem("save (ctrl + s)");
         MenuItem open = new MenuItem("open");
         MenuItem exit = new MenuItem("exit");
 
-
+        //set on action
         exit.setOnAction(event -> System.exit(0));
         save.setOnAction(event -> saveMenuClick());
         open.setOnAction(event -> openMenuClick());
@@ -156,8 +135,11 @@ public class MainController {
         //add the menu items to the file menu
         fileMenu.getItems().addAll(open, save, exit);
 
-
         /*
+        This was supposed to be a view menu with a toggleLineNumber menu item
+        in it, it caused thread errors due to bad planning, will keep it for
+        future work maybe.
+
         Menu view = new Menu("View");
 
         MenuItem toggleLineCounter = new Menu("show line numbers");
@@ -186,31 +168,28 @@ public class MainController {
         fileChooser.getExtensionFilters().add
                 (new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt"));
 
-        //automaticall save the file if it was opened from the editor
+        //automatically save the file if it was opened from the editor
         if(fileOpened) {
             Util.saveFile(textArea.getText(),currentFileName);
             return;
         }
 
+        //show the file chooser
         File file = fileChooser.showSaveDialog(null);
 
         if (file != null) {
-                Util.saveFile(textArea.getText(), file.getName() + ".txt");
-            }
-
+            Util.saveFile(textArea.getText(), file.getPath() + ".txt");
+        }
         }
 
     private  void openMenuClick() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add
                 (new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt"));
-
         File file = fileChooser.showOpenDialog(null);
-
         if (file != null) {
-            //read the text file ?
             try {
-                try (BufferedReader br = new BufferedReader(new FileReader(file.getName()))) {
+                try (BufferedReader br = new BufferedReader(new FileReader(file.getPath()))) {
                     StringBuilder sb = new StringBuilder();
                     String line = br.readLine();
 
@@ -220,22 +199,17 @@ public class MainController {
                         line = br.readLine();
                     }
                     String everything = sb.toString();
-                    System.out.println(everything);
                     textArea.setText(everything);
-                    currentFileName = file.getName();
+                    currentFileName = file.getPath();
                     fileOpened = true;
+
+                    //set the title of the stage to the current file name
+                    Stage stage = (Stage) textArea.getScene().getWindow();
+                    stage.setTitle(file.getName());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
-
 }
-
-
-
-
-
-
-
