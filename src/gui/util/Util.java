@@ -14,26 +14,21 @@ import java.util.Observable;
 
 public class Util {
 
-
-    public static void closeStage(Node node){
+    public static void closeStage(Node node) {
         Stage stage = (Stage) node.getScene().getWindow();
         stage.close();
     }
 
-    public static void saveFile(String text, String fileName){
+    public static void saveFile(String text, String path) {
         try {
-            PrintWriter writer = new PrintWriter(fileName, "UTF-8");
+            PrintWriter writer = new PrintWriter(path, "UTF-8");
             writer.println(text);
 
             writer.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+}
 
-    public static void readFile(){}
-
-
-
-    }
 

@@ -10,11 +10,7 @@
 
 <AnchorPane onKeyPressed="#saveUsingKeyboard" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #222f3e;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainController">
    <children>
-      <MenuBar fx:id="menuBar">
-
-      </MenuBar>
-      <ChoiceBox fx:id="choiceBox" layoutX="534.0" layoutY="2.0" prefHeight="31.0" prefWidth="59.0" style="-fx-background-color: #576574;" AnchorPane.bottomAnchor="370.0" AnchorPane.topAnchor="0.0" />
-      <HBox fx:id="hboxTxt" layoutY="29.0" prefHeight="372.0" prefWidth="600.0">
+      <HBox fx:id="hboxTxt" layoutY="29.0" prefHeight="372.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
          <children>
             <VBox fx:id="lineCountVbox" prefHeight="372.0" prefWidth="0.0">
                <HBox.margin>
@@ -25,11 +21,20 @@
                   <TextArea fx:id="lineCounter" prefHeight="372.0" prefWidth="4.0" wrapText="false" />
                </children> -->
             </VBox>
-            <TextArea fx:id="textArea" prefHeight="372.0" prefWidth="658.0" style="-fx-background-color: #222f3e;" wrapText="true">
+            <TextArea fx:id="textArea" prefWidth="99999.0" style="-fx-background-color: #222f3e;" wrapText="true">
                <font>
                   <Font size="18.0" />
                </font>
             </TextArea>
+         </children>
+      </HBox>
+      <HBox prefHeight="29.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <MenuBar fx:id="menuBar" prefHeight="28.0" prefWidth="849.0">
+
+      </MenuBar>
+            <Region fx:id="menuBarRegion" prefHeight="29.0" prefWidth="947.0" />
+            <ChoiceBox fx:id="choiceBox" prefHeight="28.0" prefWidth="59.0" />
          </children>
       </HBox>
    </children>

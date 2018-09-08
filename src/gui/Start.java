@@ -6,22 +6,25 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
 
 public class Start extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        File gui = new File("src/gui/gui.fxml");
-        Parent root = FXMLLoader.load(gui.toURL());
 
+        //load the fxml
+        Parent root = FXMLLoader.load(this.getClass().getResource("/gui/res/gui.fxml"));
+
+        //setup the scene
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(this.getClass() .getResource("/gui/css.css").toExternalForm());
+        scene.getStylesheets().add(this.getClass() .getResource("/gui/res/css.css").toExternalForm());
 
+        //finalize
         primaryStage.setScene(scene);
         primaryStage.show();
-
-
+        primaryStage.setMinHeight(400);
+        primaryStage.setMinWidth(600);
+        primaryStage.setTitle("untitled");
     }
 }
