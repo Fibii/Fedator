@@ -1,5 +1,6 @@
 package gui;
 
+import gui.util.EditObserver;
 import gui.util.Util;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -19,6 +20,7 @@ public class MainController {
     private Runnable r1;
     private String currentFileName;
     private boolean fileOpened;
+    private EditObserver editObserver;
 
     @FXML
     private TextArea textArea;
@@ -64,6 +66,8 @@ public class MainController {
 
       //  scheduledExecutorService.scheduleAtFixedRate(r1, 0, 200, TimeUnit.MILLISECONDS);
 
+        //initialize the editobserver
+        editObserver = new EditObserver();
     }
 
     /**
@@ -81,8 +85,7 @@ public class MainController {
         textArea.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-
-
+                editObserver.textChanged(textArea.getText());
             }
         });
     }
@@ -121,19 +124,25 @@ public class MainController {
     private void menuBarInit() {
         //setup the File Menu
         Menu fileMenu = new Menu("File");
+        Menu editMenu = new Menu("Edit");
 
         //setup the menu items
         MenuItem save = new MenuItem("save (ctrl + s)");
         MenuItem open = new MenuItem("open");
         MenuItem exit = new MenuItem("exit");
 
+        MenuItem undo = new MenuItem("undo");
+        MenuItem redo = new MenuItem("redo");
+
         //set on action
         exit.setOnAction(event -> System.exit(0));
         save.setOnAction(event -> saveMenuClick());
         open.setOnAction(event -> openMenuClick());
 
+        undo.setOnAction(event -> undoMenuClick());
         //add the menu items to the file menu
         fileMenu.getItems().addAll(open, save, exit);
+        editMenu.getItems().addAll(undo,redo);
 
         /*
         This was supposed to be a view menu with a toggleLineNumber menu item
@@ -159,7 +168,7 @@ public class MainController {
 
     */
         //add everything to the menu bar
-        menuBar.getMenus().addAll(fileMenu);
+        menuBar.getMenus().addAll(fileMenu,editMenu);
 
     }
 
@@ -211,5 +220,9 @@ public class MainController {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void undoMenuClick(){
+        textArea.setText(editObserver.undo());
     }
 }
