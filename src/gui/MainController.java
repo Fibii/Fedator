@@ -1,6 +1,7 @@
 package gui;
 
-import gui.util.EditObserver;
+import EditLogic.Connector;
+import EditLogic.IEdit;
 import gui.util.Util;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -20,7 +21,7 @@ public class MainController {
     private Runnable r1;
     private String currentFileName;
     private boolean fileOpened;
-    private EditObserver editObserver;
+    private Connector connector = new Connector(); //for the undo-redo
 
     @FXML
     private TextArea textArea;
@@ -66,8 +67,6 @@ public class MainController {
 
       //  scheduledExecutorService.scheduleAtFixedRate(r1, 0, 200, TimeUnit.MILLISECONDS);
 
-        //initialize the editobserver
-        editObserver = new EditObserver();
     }
 
     /**
@@ -85,7 +84,7 @@ public class MainController {
         textArea.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                editObserver.textChanged(textArea.getText());
+                connector.update(textArea.getText());
             }
         });
     }
@@ -128,11 +127,11 @@ public class MainController {
 
         //setup the menu items
         MenuItem save = new MenuItem("save (ctrl + s)");
-        MenuItem open = new MenuItem("open");
+        MenuItem open = new MenuItem("open (ctrl + o)");
         MenuItem exit = new MenuItem("exit");
 
-        MenuItem undo = new MenuItem("undo");
-        MenuItem redo = new MenuItem("redo");
+        MenuItem undo = new MenuItem("undo (ctr + z)");
+        MenuItem redo = new MenuItem("redo (ctr + shift + z)");
 
         //set on action
         exit.setOnAction(event -> System.exit(0));
@@ -140,6 +139,7 @@ public class MainController {
         open.setOnAction(event -> openMenuClick());
 
         undo.setOnAction(event -> undoMenuClick());
+        redo.setOnAction(event -> redoMenuClick());
         //add the menu items to the file menu
         fileMenu.getItems().addAll(open, save, exit);
         editMenu.getItems().addAll(undo,redo);
@@ -223,6 +223,13 @@ public class MainController {
     }
 
     private void undoMenuClick(){
-        textArea.setText(editObserver.undo());
+        connector.undo();
+        textArea.setText(connector.getText());
+    }
+
+    private void redoMenuClick(){
+        connector.redo();
+        connector.redo(); //find out why this needs to be executed 2 times to work
+        textArea.setText(connector.getText());
     }
 }
