@@ -3,14 +3,20 @@
     -fx-display-caret:true;
 }
 
+
+#lineCounter .scroll-pane {
+    -fx-hbar-policy: never;
+    -fx-vbar-policy: never;
+}
+
+
 .text-area .content {
     -fx-background-color: #222f3e;
 }
 
-.text-area .scroll-bar {
+.text-area .scroll-pane .viewport {
     -fx-background-color: #0a3d62;
     -fx-pref-width: 22;
-    -fx-opacity: 50%;
 }
 
 .menu-bar {

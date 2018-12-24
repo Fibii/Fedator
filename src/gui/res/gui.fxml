@@ -16,10 +16,11 @@
                <HBox.margin>
                   <Insets />
                </HBox.margin>
-            <!--
+
                <children>
-                  <TextArea fx:id="lineCounter" prefHeight="372.0" prefWidth="4.0" wrapText="false" />
-               </children> -->
+                  <TextArea fx:id="lineCounter" prefHeight="2000000.0" prefWidth="80.0" minWidth="80.0" wrapText="false" editable="false" />
+                  <Region prefHeight="1" prefWidth="1" />
+               </children>
             </VBox>
             <TextArea fx:id="textArea" prefWidth="99999.0" style="-fx-background-color: #222f3e;" wrapText="true">
                <font>

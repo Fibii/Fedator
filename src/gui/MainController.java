@@ -1,12 +1,15 @@
 package gui;
 
 import EditLogic.Connector;
-import EditLogic.IEdit;
 import gui.util.Util;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
@@ -14,14 +17,16 @@ import javafx.stage.Stage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 public class MainController {
-    private Runnable r1;
     private String currentFileName;
     private boolean fileOpened;
     private Connector connector = new Connector(); //for the undo-redo
+    private StringBuilder lineCount = new StringBuilder();
+
+    //line counter variables, make clear comments about this later
+    private int currentLine = 1;
+    private int showThisLineCount = 5;
 
     @FXML
     private TextArea textArea;
@@ -52,20 +57,11 @@ public class MainController {
         choiceBoxListener();
         textAreaListener();
 
-        //update the line count  every 200ms
-     //   r1 = () -> setLineCount(numberOfLines());
-
-
-        //update the size of the line counter using a  SES, so each 200 ms, the font is set to a new value
-        ScheduledExecutorService scheduledExecutorService =
-                Executors.newScheduledThreadPool(1);
-
-        //change this later
-       // lineCounter.setOpacity(0);
+        //initialize the line counter
+        lineCount.append("1\n2\n3\n4\n5\n");
+        lineCounter.setText(lineCount.toString());
 
         menuBarInit();
-
-      //  scheduledExecutorService.scheduleAtFixedRate(r1, 0, 200, TimeUnit.MILLISECONDS);
 
     }
 
@@ -80,11 +76,30 @@ public class MainController {
 
     private void textAreaListener() {
 
+        KeyCodeCombination ctrlV = new KeyCodeCombination(KeyCode.V, KeyCombination.CONTROL_DOWN);
+
         //update the getTextArea method whenever the text is changed
         textArea.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 connector.update(textArea.getText());
+                setLineCount(false,false);
+            }
+        });
+
+        textArea.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.ENTER) {
+                    setLineCount(true,false);
+                }
+
+                if(ctrlV.match(event)){
+                    textArea.paste();
+                    setLineCount(false,true);
+                    System.out.println("hi from ctrl c");
+                    event.consume();
+                }
             }
         });
     }
@@ -94,24 +109,34 @@ public class MainController {
      */
     private void setFontSize(int size) {
         textArea.setFont(new Font(size));
-        //lineCounter.setFont(new Font(size));
+        lineCounter.setFont(new Font(size));
     }
 
     /**
      * shows the number of lines on the side..
      */
-    public void setLineCount(int length) {
-        //lineCounter.setText("1\n2\n3\n");
-        if (lineCounter.getOpacity() != 0) {
-            StringBuilder a = new StringBuilder();
-            for (int i = 0; i <= length; i++) {
-                a.append(i + 1 + "\n");
-                lineCounter.setText(a.toString());
-                //scroll down whenever the number of lines increases
-                lineCounter.setScrollTop(textArea.getHeight());
-            }
+    public void setLineCount(boolean isEnterKey,boolean isPaste) {
+
+        if(isEnterKey){
+            showThisLineCount++;
+            lineCount.append(Integer.toString(showThisLineCount) + '\n');
+            lineCounter.setText(lineCount.toString());
+            currentLine++;
         }
+
+        if(isPaste){
+            System.out.println(numberOfLines());
+            for(int i = 1; i <= numberOfLines();i++) {
+                showThisLineCount++;
+                lineCount.append(Integer.toString(showThisLineCount) + '\n');
+            }
+            lineCounter.setText(lineCount.toString());
+        }
+
+        //scroll down whenever the number of lines increases
+        textArea.scrollTopProperty().bindBidirectional(lineCounter.scrollTopProperty());
     }
+
 
     /**
      * returns the number of lines
@@ -144,11 +169,6 @@ public class MainController {
         fileMenu.getItems().addAll(open, save, exit);
         editMenu.getItems().addAll(undo,redo);
 
-        /*
-        This was supposed to be a view menu with a toggleLineNumber menu item
-        in it, it caused thread errors due to bad planning, will keep it for
-        future work maybe.
-
         Menu view = new Menu("View");
 
         MenuItem toggleLineCounter = new Menu("show line numbers");
@@ -166,9 +186,9 @@ public class MainController {
 
         view.getItems().addAll(toggleLineCounter);
 
-    */
+
         //add everything to the menu bar
-        menuBar.getMenus().addAll(fileMenu,editMenu);
+        menuBar.getMenus().addAll(fileMenu,editMenu,view);
 
     }
 
@@ -188,7 +208,7 @@ public class MainController {
 
         if (file != null) {
             Util.saveFile(textArea.getText(), file.getPath() + ".txt");
-        }
+            }
         }
 
     private  void openMenuClick() {
