@@ -27,6 +27,7 @@ public class MainController {
     //line counter variables, make clear comments about this later
     private int currentLine = 1;
     private int showThisLineCount = 5;
+    private boolean undoRedoClick = false;
 
     @FXML
     private TextArea textArea;
@@ -62,7 +63,6 @@ public class MainController {
         lineCounter.setText(lineCount.toString());
 
         menuBarInit();
-
     }
 
     /**
@@ -82,8 +82,16 @@ public class MainController {
         textArea.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                connector.update(textArea.getText());
+
                 setLineCount(false,false);
+                if(!undoRedoClick){
+                    System.out.println("changed");
+                    connector.update(textArea.getText());
+                } else {
+                    undoRedoClick = false;
+                    System.out.println("didn't change when redo/undo");
+                }
+
             }
         });
 
@@ -92,12 +100,14 @@ public class MainController {
             public void handle(KeyEvent event) {
                 if (event.getCode() == KeyCode.ENTER) {
                     setLineCount(true,false);
+                    textArea.setText(textArea.getText() + "\n"); //caret position changes to the first line
+                    setTheCaretToTheLastChar();
+                    event.consume();
                 }
 
                 if(ctrlV.match(event)){
                     textArea.paste();
                     setLineCount(false,true);
-                    System.out.println("hi from ctrl c");
                     event.consume();
                 }
             }
@@ -208,8 +218,8 @@ public class MainController {
 
         if (file != null) {
             Util.saveFile(textArea.getText(), file.getPath() + ".txt");
-            }
         }
+    }
 
     private  void openMenuClick() {
         FileChooser fileChooser = new FileChooser();
@@ -243,13 +253,20 @@ public class MainController {
     }
 
     private void undoMenuClick(){
+        undoRedoClick = true;
         connector.undo();
         textArea.setText(connector.getText());
+        setTheCaretToTheLastChar();
     }
 
     private void redoMenuClick(){
+        undoRedoClick = true;
         connector.redo();
-        connector.redo(); //find out why this needs to be executed 2 times to work
         textArea.setText(connector.getText());
+        setTheCaretToTheLastChar();
+    }
+
+    private void setTheCaretToTheLastChar(){
+        textArea.positionCaret(textArea.getText().length());
     }
 }
