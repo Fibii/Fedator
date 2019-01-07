@@ -9,35 +9,43 @@ public class Edit implements IEdit {
 
      Edit(){
 
-    }
+     }
 
     @Override
     public void undo() {
-        processText();
-       text = undoStack.pop();
+         if (!undoStack.empty()){
+             if(text.trim().length() > 0){
+                 redoStack.add(text.trim());
+             }
+             processText();
+             if(!undoStack.empty()){
+                 text = undoStack.pop();
+             }
+         } else {
+             System.out.println("undo stack is empty");
+         }
     }
 
     @Override
     public void redo() {
-        text = redoStack.pop();
-    }
-
-    /** returns the last word written */
-    private String getLastWord(){
-        if(text == null)
-            throw new IllegalArgumentException("The text is null!!");
-        //String str = "   hi     there      boi";
-        String[] x = text.split("\\s+");
-        String word = x[x.length-1];
-        return word;
+        if(!redoStack.empty()){
+            text = redoStack.pop();
+        } else {
+            System.out.println("redo stack is empty");
+        }
     }
 
     /** processes the new added text, ex: "hi there boy" -> "hi there"*/
     private void processText(){
-        redoStack.add(text);
         //remove the last word then add the text to the stack
-        String txt = text.replace(getLastWord(),"");
-        undoStack.add(txt);
+        if(text.contains(" ")){
+            String txt = text.substring(0,text.lastIndexOf(" ")).trim();
+            if(!undoStack.contains(txt)){
+                undoStack.add(txt);
+            }
+        } else {
+            undoStack.add("");
+        }
     }
 
     //sets the current text to the given parameter
@@ -50,8 +58,4 @@ public class Edit implements IEdit {
         return text;
     }
 
-    public static void main(String[] args) {
-
-
-    }
 }
