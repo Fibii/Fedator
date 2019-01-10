@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<MenuBar fx:id="menubar" prefHeight="30.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MenuBar.MenuBarController">
+   <menus>
+      <Menu mnemonicParsing="false" text="File">
+         <items>
+            <MenuItem fx:id="open" mnemonicParsing="false" onAction="#openMenuItemClick" text="Open" />
+            <MenuItem fx:id="save" mnemonicParsing="false" onAction="#saveMenuItemClick" text="Save (ctrl + s)" />
+            <MenuItem fx:id="close" mnemonicParsing="false" onAction="#closeMenuItemClick" text="Close" />
+         </items>
+      </Menu>
+      <Menu mnemonicParsing="false" text="Edit">
+         <items>
+            <MenuItem fx:id="undo" mnemonicParsing="false" onAction="#undoMenuItemClick" text="Undo (ctrl + z)" />
+            <MenuItem fx:id="redo" mnemonicParsing="false" onAction="#redoMenuItemClick" text="Redo (ctrl +shift + z)" />
+         </items>
+      </Menu>
+      <Menu mnemonicParsing="false" text="Misc">
+         <items>
+            <MenuItem fx:id="about" mnemonicParsing="false" onAction="#aboutMenuItemClick" text="About" />
+         </items>
+      </Menu>
+   </menus>
+</MenuBar>

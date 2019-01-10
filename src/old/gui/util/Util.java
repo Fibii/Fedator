@@ -1,16 +1,9 @@
-package gui.util;
+package old.gui.util;
 
-import javafx.collections.ObservableList;
 import javafx.scene.Node;
-import javafx.scene.control.MenuBar;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Observable;
 
 public class Util {
 

@@ -1,0 +1,75 @@
+.text-area {
+    -fx-text-fill: #9da9ad;
+    -fx-display-caret:true;
+}
+
+
+#lineCounter .scroll-pane {
+    -fx-hbar-policy: never;
+    -fx-vbar-policy: never;
+}
+
+
+.text-area .content {
+    -fx-background-color: #222f3e;
+}
+
+.text-area .scroll-pane .viewport {
+    -fx-background-color: #0a3d62;
+    -fx-pref-width: 22;
+}
+
+.menu-bar {
+    -fx-background-color: #3a5065;
+}
+.menu-bar:hover{
+    -fx-background-color: #3a5065;
+}
+
+.choice-box {
+    -fx-border-color: #576574;
+    -fx-border-radius: 0;
+    -fx-background-color: #576574;
+}
+
+.choice-box:hover {
+    -fx-background-color: #728599;
+}
+
+.choice-box:pressed {
+    -fx-background-color: #4b5967;
+}
+
+.choice-box:showing {
+    -fx-background-color: #0a3d62;
+}
+
+#menuBarRegion {
+    -fx-background-color: #3a5065;
+}
+
+.context-menu {
+    -fx-background-color: #576574;
+}
+
+.menu-item {
+    -fx-background-color: #576574;
+}
+
+.menu:hover {
+    -fx-background-color: #728599;
+}
+
+.menu:pressed {
+    -fx-background-color: #4b5967;
+}
+
+.menu:showing {
+    -fx-background-color: #0a3d62;
+}
+
+.menu-item:hover{
+    -fx-background-color: #728599;
+}
+
+

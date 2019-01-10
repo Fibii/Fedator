@@ -1,4 +1,4 @@
-package gui;
+package old.gui;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,11 +14,11 @@ public class Start extends Application {
     public void start(Stage primaryStage) throws IOException {
 
         //load the fxml
-        Parent root = FXMLLoader.load(this.getClass().getResource("/gui/res/gui.fxml"));
+        Parent root = FXMLLoader.load(this.getClass().getResource("/old/gui/res/gui.fxml"));
 
         //setup the scene
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(this.getClass() .getResource("/gui/res/css.css").toExternalForm());
+        scene.getStylesheets().add(this.getClass() .getResource("/old/gui/res/css.css").toExternalForm());
 
         //finalize
         primaryStage.setScene(scene);

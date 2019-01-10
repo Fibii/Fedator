@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane onKeyPressed="#saveUsingKeyboard" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #222f3e;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #222f3e;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="old.gui.MainController">
    <children>
       <HBox fx:id="hboxTxt" layoutY="29.0" prefHeight="372.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
          <children>
@@ -18,7 +18,7 @@
                </HBox.margin>
 
                <children>
-                  <TextArea fx:id="lineCounter" prefHeight="2000000.0" prefWidth="80.0" minWidth="80.0" wrapText="false" editable="false" />
+                  <TextArea fx:id="lineCounter" editable="false" minWidth="80.0" prefHeight="2000000.0" prefWidth="80.0" wrapText="false" />
                   <Region prefHeight="1" prefWidth="1" />
                </children>
             </VBox>
@@ -31,12 +31,10 @@
       </HBox>
       <HBox prefHeight="29.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <MenuBar fx:id="menuBar" prefHeight="28.0" prefWidth="849.0">
-
-      </MenuBar>
             <Region fx:id="menuBarRegion" prefHeight="29.0" prefWidth="947.0" />
             <ChoiceBox fx:id="choiceBox" prefHeight="28.0" prefWidth="59.0" />
          </children>
       </HBox>
+      <fx:include fx:id="menuBar" source="menuBar.fxml" />
    </children>
 </AnchorPane>
