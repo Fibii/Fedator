@@ -1,4 +1,7 @@
+import gui.MainController;
+import gui.Mediator.Mediator;
 import javafx.application.Application;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,7 +16,10 @@ public class Main extends Application  {
     @Override
     public void start(Stage primaryStage) throws Exception {
         //load the fxml
-        Parent root = FXMLLoader.load(this.getClass().getResource("/gui/res/main.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/gui/res/main.fxml"));
+        MainController controller = new MainController();
+        fxmlLoader.setController(controller);
+        Parent root = fxmlLoader.load();
 
         //setup the scene
         Scene scene = new Scene(root);

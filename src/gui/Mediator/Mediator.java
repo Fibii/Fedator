@@ -11,26 +11,25 @@ public class Mediator implements IMediator {
     Controller lineCounterController;
     Controller menuBarController;
     Connector connector;
+    boolean connectorIsSetup;
 
     private Mediator() {
+
     }
 
     @Override
-    public void setController1(Controller controller) {
+    public void setTextAreaController(Controller controller) {
         textAreaController = controller;
-        setControllerVariablesValues(controller);
     }
 
     @Override
-    public void setController2(Controller controller) {
+    public void setLineCounterController(Controller controller) {
         lineCounterController = controller;
-        setControllerVariablesValues(controller);
     }
 
     @Override
-    public void setController3(Controller controller) {
+    public void setMenuBarController(Controller controller) {
         menuBarController = controller;
-        setControllerVariablesValues(controller);
     }
 
     @Override
@@ -46,24 +45,46 @@ public class Mediator implements IMediator {
         private static Mediator INSTANCE = new Mediator();
     }
 
-    /**
-     * helper method to set the values to a Controllre object
-     */
-    private void setControllerVariablesValues(Controller controller) {
-        if (textAreaController != null && controller != null) {
-            controller.setText(textAreaController.getTextArea().getText());
-        }
-        if (connector != null && controller != null) {
-            controller.setConnector(this.connector);
-        }
-
-        if (menuBarController != null && controller != null) {
-            controller.setUndoRedo(menuBarController.getUndoRedo() || textAreaController.getUndoRedo()); //maybe even the pane
+    /** passes the new text from textArea to lineCounter, might not be needed */
+    public void changed(boolean changed){
+        if(changed){
+            lineCounterController.setText(textAreaController.getTextArea().getText());
         }
     }
 
-    public boolean changed(){
-        return textAreaController.changed();
+    public void eventListener(Event event){
+        if(!connectorIsSetup){
+            setConnectors();
+        }
+
+        switch (event){
+            case ENTER:
+                lineCounterController.eventListener(event);
+                break;
+            case PASTE:
+                lineCounterController.eventListener(event);
+                break;
+            case TEXTCHANGED:
+                //TODO: update the connector
+                System.out.println("text changed event, connector should be updated");
+                break;
+        }
+    }
+
+    public void setUndoRedo(boolean bool){
+        textAreaController.setUndoRedo(bool);
+        lineCounterController.setUndoRedo(bool);
+        //menuBarController.setUndoRedo(bool); //TODO: find a workaround this npe
+    }
+
+    public void setConnectors(){
+        lineCounterController.setConnector(connector);
+        //menuBarController.setConnector(connector); //TODO: find a workaround this npe
+        textAreaController.setConnector(connector);
+    }
+
+    public void setTheCaretToTheLastChar(){
+        textAreaController.getTextArea().positionCaret(textAreaController.getTextArea().getText().length()-1);
     }
 
 }

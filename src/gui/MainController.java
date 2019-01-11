@@ -38,9 +38,9 @@ public class MainController {
     @FXML
     public void initialize(){
         //textAreaListener();
-        mediator.setController1(textAreaController);
-        mediator.setController2(lineCounterController);
-        mediator.setController3(menuBarController);
+        mediator.setTextAreaController(textAreaController);
+        mediator.setLineCounterController(lineCounterController);
+        mediator.setMenuBarController(menuBarController);
         mediator.setConnector(connector);
     }
 
