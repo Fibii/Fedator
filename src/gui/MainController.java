@@ -1,62 +1,37 @@
 package gui;
 
-import EditLogic.Connector;
-import gui.LineCounter.LineCounterController;
-import gui.Mediator.Mediator;
-import gui.MenuBar.MenuBarController;
-import gui.TextArea.TextAreaController;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import gui.components.MainMenuBar;
+import gui.components.TextSpace;
+import gui.mediator.Mediator;
 import javafx.fxml.FXML;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.event.ActionEvent;
 
 
 public class MainController {
-    private Connector connector = new Connector();
+    //TODO: make an array of tabs and a private number counter for tabs
+
+    @FXML private TabPane tabPane;
+    @FXML private Tab tab1;
+    @FXML private TextSpace textSpace;
+    @FXML private MainMenuBar mainMenuBar;
     private Mediator mediator = Mediator.getInstance();
 
-    @FXML
-    LineCounterController lineCounterController;
-
-    @FXML
-    TextAreaController textAreaController;
-
-    @FXML
-    MenuBarController menuBarController;
-
-    @FXML
-    private VBox vbox;
-
-    @FXML
-    private AnchorPane anchorPane;
-
-    @FXML
-    private HBox hbox;
-
-    @FXML
-    public void initialize(){
-        //textAreaListener();
-        mediator.setTextAreaController(textAreaController);
-        mediator.setLineCounterController(lineCounterController);
-        mediator.setMenuBarController(menuBarController);
-        mediator.setConnector(connector);
+    @FXML public void initialize(){
+        mediator.setMainController(this);
     }
 
-    private void textAreaListener() {
-
-        //KeyCodeCombination ctrlV = new KeyCodeCombination(KeyCode.V, KeyCombination.CONTROL_DOWN);
-
-        //update the getTextArea method whenever the text is changed
-        textAreaController.getTextArea().textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                lineCounterController.setText(textAreaController.getTextArea().getText());
-            }
-        });
+    @FXML private void tabOnClose(ActionEvent event){
 
     }
 
-
+    public void createNewTab(){
+        Tab tab2 = new Tab("untitled tab2");
+        TextSpace textSpace2 = new TextSpace();
+        textSpace2.setNumber(2);
+        tab2.setContent(textSpace2);
+        tabPane.getTabs().add(tab2);
+    }
 }

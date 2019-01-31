@@ -1,16 +1,10 @@
-package gui.LineCounter;
+package oldv2.gui.LineCounter;
 
-import EditLogic.Connector;
-import gui.Controller;
-import gui.Mediator.Event;
-import gui.Mediator.Mediator;
-import gui.TextArea.TextAreaController;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import oldv2.EditLogic.Connector;
+import oldv2.gui.Controller;
+import oldv2.gui.Mediator.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
-
-import javax.print.attribute.standard.Media;
 
 public class LineCounterController implements Controller {
 
@@ -69,12 +63,9 @@ public class LineCounterController implements Controller {
         }
     }
 
-    @FXML
-    public void initialize() {
-
+    @Override
+    public TextArea getLineCounter(){
+        return getTextArea();
     }
-
-
-
 
 }

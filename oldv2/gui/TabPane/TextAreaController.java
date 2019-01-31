@@ -1,9 +1,9 @@
-package gui.TextArea;
+package oldv2.gui.TabPane;
 
-import EditLogic.Connector;
-import gui.Controller;
-import gui.Mediator.Event;
-import gui.Mediator.Mediator;
+import oldv2.EditLogic.Connector;
+import oldv2.gui.Controller;
+import oldv2.gui.Mediator.Event;
+import oldv2.gui.Mediator.Mediator;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -15,15 +15,13 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 
-public class TextAreaController implements Controller {
+public class TextAreaController extends TabPaneController implements Controller{
 
     private String text;
     private boolean undoRedo;
     private Connector connector;
     private boolean changed = true;
-
-    @FXML
-    private TextArea textArea;
+    private TextArea textArea = super.getTextArea();
 
     @FXML
     void onChange(ActionEvent event) {
@@ -65,8 +63,16 @@ public class TextAreaController implements Controller {
 
     }
 
-    @FXML
-    public void initialize() {
+    @Override
+    public TextArea getLineCounter(){
+        return getTextArea();
+    }
+
+    public TextAreaController() {
+
+    }
+
+    public void init(){
         textAreaKeyListener();
         textAreaListener();
     }

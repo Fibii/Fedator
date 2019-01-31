@@ -1,13 +1,15 @@
-package gui.Mediator;
+package oldv2.gui.Mediator;
 
-import EditLogic.Connector;
-import gui.Controller;
-import javafx.scene.control.TextArea;
+import oldv2.EditLogic.Connector;
+import oldv2.gui.Controller;
+import oldv2.gui.MainController;
 
 public interface IMediator {
     void setTextAreaController(Controller controller);
     void setLineCounterController(Controller controller);
     void setMenuBarController(Controller controller);
+    void setTabPaneController(Controller controller);
+    void setMainController(MainController controller);
     void setConnector(Connector connector);
 
     /*

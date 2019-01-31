@@ -1,7 +1,7 @@
-package gui;
+package oldv2.gui;
 
-import EditLogic.Connector;
-import gui.Mediator.Event;
+import oldv2.EditLogic.Connector;
+import oldv2.gui.Mediator.Event;
 import javafx.scene.control.TextArea;
 
 public interface Controller {
@@ -10,6 +10,7 @@ public interface Controller {
     void setUndoRedo(boolean undoRedo);
     void setConnector(Connector connector);
     TextArea getTextArea();
+    TextArea getLineCounter();
     boolean changed();
     boolean getUndoRedo();
     void eventListener(Event event);

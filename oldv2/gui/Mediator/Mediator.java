@@ -1,16 +1,16 @@
-package gui.Mediator;
+package oldv2.gui.Mediator;
 
-import EditLogic.Connector;
-import gui.Controller;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.scene.control.TextArea;
+import oldv2.EditLogic.Connector;
+import oldv2.gui.Controller;
+import oldv2.gui.MainController;
 
 public class Mediator implements IMediator {
     Controller textAreaController;
     Controller lineCounterController;
     Controller menuBarController;
+    Controller tabPaneController;
     Connector connector;
+    MainController mainController;
     boolean connectorIsSetup;
 
     private Mediator() {
@@ -30,6 +30,16 @@ public class Mediator implements IMediator {
     @Override
     public void setMenuBarController(Controller controller) {
         menuBarController = controller;
+    }
+
+    @Override
+    public void setTabPaneController(Controller controller){
+        tabPaneController = controller;
+    }
+
+    @Override
+    public void setMainController(MainController controller){
+        this.mainController = controller;
     }
 
     @Override
@@ -55,6 +65,7 @@ public class Mediator implements IMediator {
     public void eventListener(Event event){
         if(!connectorIsSetup){
             setConnectors();
+            connectorIsSetup = true;
         }
 
         switch (event){
@@ -68,6 +79,14 @@ public class Mediator implements IMediator {
                 //TODO: update the connector
                 System.out.println("text changed event, connector should be updated");
                 break;
+            case TABCREATED:
+                System.out.println("new tab is created event");
+                try {
+                    mainController.createNewTab();
+                } catch (Exception e){}
+
+                break;
+
         }
     }
 
@@ -78,8 +97,8 @@ public class Mediator implements IMediator {
     }
 
     public void setConnectors(){
-        lineCounterController.setConnector(connector);
-        //menuBarController.setConnector(connector); //TODO: find a workaround this npe
+//        lineCounterController.setConnector(connector);
+        menuBarController.setConnector(connector); //TODO: find a workaround this npe
         textAreaController.setConnector(connector);
     }
 

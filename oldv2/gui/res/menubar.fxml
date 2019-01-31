@@ -6,10 +6,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<MenuBar fx:id="menubar" prefHeight="30.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MenuBar.MenuBarController">
+<MenuBar fx:id="menuBar" prefHeight="30.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="oldv2.gui.MenuBar.MenuBarController">
    <menus>
       <Menu mnemonicParsing="false" text="File">
          <items>
+            <MenuItem fx:id="newTab" mnemonicParsing="false" onAction="#onNewTabClick" text="New Tab" />
             <MenuItem fx:id="open" mnemonicParsing="false" onAction="#openMenuItemClick" text="Open" />
             <MenuItem fx:id="save" mnemonicParsing="false" onAction="#saveMenuItemClick" text="Save (ctrl + s)" />
             <MenuItem fx:id="close" mnemonicParsing="false" onAction="#closeMenuItemClick" text="Close" />

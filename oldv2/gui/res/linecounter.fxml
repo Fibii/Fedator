@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<TextArea fx:id="lineCounter" editable="false" minWidth="80.0" prefHeight="10000" prefWidth="80.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LineCounter.LineCounterController">
+<TextArea fx:id="lineCounter" editable="false" minWidth="80.0" prefHeight="10000" prefWidth="80.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="oldv2.gui.LineCounter.LineCounterController">
    <font>
       <Font size="18.0" />
    </font>

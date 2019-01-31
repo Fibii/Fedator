@@ -1,9 +1,9 @@
-package gui.MenuBar;
+package oldv2.gui.MenuBar;
 
-import EditLogic.Connector;
-import gui.Controller;
-import gui.Mediator.Event;
-import gui.TextArea.TextAreaController;
+import oldv2.EditLogic.Connector;
+import oldv2.gui.Controller;
+import oldv2.gui.Mediator.Event;
+import oldv2.gui.Mediator.Mediator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuBar;
@@ -40,6 +40,14 @@ public class MenuBarController implements Controller {
 
     @FXML
     private MenuItem open;
+
+    @FXML
+    private MenuItem newTab;
+
+    @FXML
+    void onNewTabClick(ActionEvent event) {
+        Mediator.getInstance().eventListener(Event.TABCREATED);
+    }
 
     @FXML
     void openMenuItemClick(ActionEvent event) {
@@ -106,8 +114,9 @@ public class MenuBarController implements Controller {
 
     }
 
-    @FXML
-    public void initialize() {
-
+    @Override
+    public TextArea getLineCounter(){
+        return getTextArea();
     }
+
 }
