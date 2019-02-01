@@ -1,5 +1,6 @@
 package gui.components;
 
+import gui.mediator.Mediator;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -11,8 +12,9 @@ import javafx.scene.layout.HBox;
 import java.io.IOException;
 
 public class TextSpace extends HBox {
-
-    private int textspaceNumber = 1;
+    //TODO: Finish undo/redo
+    private int textSpaceNumber = 0;
+    private Mediator mediator = Mediator.getInstance();
 
     public TextSpace() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
@@ -40,6 +42,7 @@ public class TextSpace extends HBox {
 
     @FXML public void initialize(){
         textAreaListener();
+        mediator.setTextSpace(this);
     }
 
     private void textAreaListener() {
@@ -47,13 +50,20 @@ public class TextSpace extends HBox {
         textArea.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                System.out.println("textSpace " + textspaceNumber +  " : changed");
+                //System.out.println("textSpace " + textSpaceNumber +  " : changed");
+                mediator.getCurrentConnector().update(textArea.getText());
             }
         });
     }
 
     /** sets the number of the textspace (used when dealing with multiple tabs) */
     public void setNumber(int n){
-        textspaceNumber = n;
+        textSpaceNumber = n;
+    }
+
+    public void undo(){
+        //System.out.println("undo called on textSpace " + textSpaceNumber);
+        mediator.getCurrentConnector().undo();
+        textArea.setText(mediator.getCurrentConnector().getText());
     }
 }

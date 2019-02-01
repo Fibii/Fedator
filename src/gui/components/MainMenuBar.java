@@ -50,38 +50,37 @@ public class MainMenuBar extends MenuBar {
 
     @FXML
     void onNewTabClick(ActionEvent event) {
-        System.out.println("new tab click");
-        mediator.sendEvent(Events.NEW_TAB_CLICK);
+        mediator.sendEvent(Events.NEW_TAB);
     }
 
     @FXML
     void openMenuItemClick(ActionEvent event) {
-
+        mediator.sendEvent(Events.OPEN_MENU);
     }
 
     @FXML
     void saveMenuItemClick(ActionEvent event) {
-
+        mediator.sendEvent(Events.SAVE_MENU);
     }
 
     @FXML
     void closeMenuItemClick(ActionEvent event) {
-
+        mediator.sendEvent(Events.CLOSE_MENU);
     }
 
     @FXML
     void undoMenuItemClick(ActionEvent event) {
-
+        mediator.sendEvent(Events.UNDO_MENU);
     }
 
     @FXML
     void redoMenuItemClick(ActionEvent event) {
-
+        mediator.sendEvent(Events.REDO_MENU);
     }
 
     @FXML
     void aboutMenuItemClick(ActionEvent event) {
-
+        mediator.sendEvent(Events.ABOUT_MENU);
     }
 
     @FXML public void initialize(){
