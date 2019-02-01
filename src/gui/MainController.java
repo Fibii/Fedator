@@ -52,6 +52,7 @@ public class MainController {
     }
 
     public void createNewTab(){
+        //TODO:check if the array is not full
         Tab tab = new Tab("untitled tab");
         TextSpace textSpace = new TextSpace();
         Connector connector = new Connector();

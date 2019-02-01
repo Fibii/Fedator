@@ -33,6 +33,10 @@ public class Mediator implements IMediator{
         return connector;
     }
 
+    public String getCurrentText(){
+        return textSpace.getText();
+    }
+
     //TODO: Finish the switch cases and implement their methods
     public void sendEvent(Events event){
         switch (event){
@@ -43,11 +47,11 @@ public class Mediator implements IMediator{
                 textSpace.undo();
                 break;
             case OPEN_MENU:
-
+                textSpace.setText(mainMenuBar.getText());
                 break;
 
             case REDO_MENU:
-
+                textSpace.redo();
                 break;
 
             case SAVE_MENU:
@@ -59,7 +63,7 @@ public class Mediator implements IMediator{
                 break;
 
             case CLOSE_MENU:
-
+                System.exit(0);
                 break;
         }
     }

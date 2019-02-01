@@ -52,6 +52,7 @@ public class TextSpace extends HBox {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 //System.out.println("textSpace " + textSpaceNumber +  " : changed");
                 mediator.getCurrentConnector().update(textArea.getText());
+                //TODO: fix redo/undo so it catches text change (select all text then backspace = no change)
             }
         });
     }
@@ -65,5 +66,18 @@ public class TextSpace extends HBox {
         //System.out.println("undo called on textSpace " + textSpaceNumber);
         mediator.getCurrentConnector().undo();
         textArea.setText(mediator.getCurrentConnector().getText());
+    }
+
+    public void redo(){
+        mediator.getCurrentConnector().redo();
+        textArea.setText(mediator.getCurrentConnector().getText());
+    }
+
+    public void setText(String text){
+        textArea.setText(text);
+    }
+
+    public String getText(){
+        return textArea.getText();
     }
 }
