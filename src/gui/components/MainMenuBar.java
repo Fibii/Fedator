@@ -79,19 +79,7 @@ public class MainMenuBar extends MenuBar {
 
     @FXML
     void saveMenuItemClick(ActionEvent event) {
-        fileChooser.setTitle("title"); //TODO: get a title variable..
-        fileChooser.getExtensionFilters().add
-                (new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt"));
-        File file = fileChooser.showSaveDialog(save.getParentPopup().getScene().getWindow());
-        file = new File(file.getPath() + ".txt"); //might be only in linux that the file is not saved as title.txt
-        if(file != null){
-            try {
-                Files.write(Paths.get(file.toURI()), mediator.getCurrentText().getBytes("utf-8"), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        mediator.sendEvent(Events.SAVE_MENU);
+        showSaveWindow();
     }
 
     @FXML
@@ -102,12 +90,12 @@ public class MainMenuBar extends MenuBar {
 
     @FXML
     void undoMenuItemClick(ActionEvent event) {
-        mediator.sendEvent(Events.UNDO_MENU);
+        mediator.sendEvent(Events.UNDO_TEXT);
     }
 
     @FXML
     void redoMenuItemClick(ActionEvent event) {
-        mediator.sendEvent(Events.REDO_MENU);
+        mediator.sendEvent(Events.REDO_TEXT);
     }
 
     @FXML
@@ -122,5 +110,21 @@ public class MainMenuBar extends MenuBar {
     //returns the text of the opened file
     public String getText(){
         return text;
+    }
+
+    public void showSaveWindow(){
+        fileChooser.setTitle("title"); //TODO: get a title variable..
+        fileChooser.getExtensionFilters().add
+                (new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt"));
+        File file = fileChooser.showSaveDialog(save.getParentPopup().getScene().getWindow());
+        file = new File(file.getPath() + ".txt"); //might be only in linux that the file is not saved as title.txt
+        if(file != null){
+            try {
+                Files.write(Paths.get(file.toURI()), mediator.getCurrentText().getBytes("utf-8"), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        mediator.sendEvent(Events.SAVE_MENU);
     }
 }

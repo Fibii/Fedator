@@ -10,6 +10,7 @@ public class Mediator implements IMediator{
     private MainMenuBar mainMenuBar;
     private TextSpace textSpace;
     private Connector connector;
+    private boolean isSaved;
 
     @Override
     public void setMenuBar(MainMenuBar mainMenuBar) {
@@ -37,25 +38,29 @@ public class Mediator implements IMediator{
         return textSpace.getText();
     }
 
+    public boolean getIsSaved(){
+        return isSaved;
+    }
+
     //TODO: Finish the switch cases and implement their methods
     public void sendEvent(Events event){
         switch (event){
             case NEW_TAB:
                 mainController.createNewTab();
                 break;
-            case UNDO_MENU:
+            case UNDO_TEXT:
                 textSpace.undo();
                 break;
             case OPEN_MENU:
                 textSpace.setText(mainMenuBar.getText());
                 break;
 
-            case REDO_MENU:
+            case REDO_TEXT:
                 textSpace.redo();
                 break;
 
             case SAVE_MENU:
-
+                isSaved = true;
                 break;
 
             case ABOUT_MENU:
@@ -64,6 +69,12 @@ public class Mediator implements IMediator{
 
             case CLOSE_MENU:
                 System.exit(0);
+                break;
+            case AUTO_SAVE:
+                //TODO: find a good way to share the path of the file
+                break;
+            case SAVE_FILE:
+                mainMenuBar.showSaveWindow();
                 break;
         }
     }

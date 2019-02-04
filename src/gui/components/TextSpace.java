@@ -1,12 +1,16 @@
 package gui.components;
 
+import gui.mediator.Events;
 import gui.mediator.Mediator;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 
 import java.io.IOException;
@@ -35,28 +39,54 @@ public class TextSpace extends HBox {
     @FXML
     private TextArea textArea;
 
-    @FXML
-    void inputChanged(ActionEvent event) {
-        System.out.println("hi, input is changed");
-    }
 
     @FXML public void initialize(){
-        textAreaListener();
+        textAreaChangeListener();
+        textAreaKeyboardListener();
         mediator.setTextSpace(this);
     }
 
-    private void textAreaListener() {
+    private void textAreaChangeListener() {
         //update the getTextArea method whenever the text is changed
         textArea.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 //System.out.println("textSpace " + textSpaceNumber +  " : changed");
+                mediator.sendEvent(Events.TEXT_CHANGED);
                 mediator.getCurrentConnector().update(textArea.getText());
                 //TODO: fix redo/undo so it catches text change (select all text then backspace = no change)
             }
         });
     }
 
+    private void textAreaKeyboardListener(){
+        KeyCodeCombination ctrlV = new KeyCodeCombination(KeyCode.V,KeyCodeCombination.CONTROL_DOWN);
+        KeyCodeCombination ctrlZ = new KeyCodeCombination(KeyCode.Z,KeyCodeCombination.CONTROL_DOWN);
+        KeyCodeCombination ctrlShiftZ = new KeyCodeCombination(KeyCode.Z,KeyCodeCombination.CONTROL_DOWN,KeyCodeCombination.SHIFT_DOWN);
+
+
+        textArea.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                //handle pasting using keyboard
+                if(ctrlV.match(event)){
+                    mediator.sendEvent(Events.TEXT_CHANGED);
+                    //TODO: increment the number of lines here.
+                    setTheCaretToTheLastChar();
+                }
+
+                if(ctrlZ.match(event)){
+                    mediator.sendEvent(Events.UNDO_TEXT);
+                    event.consume();
+                }
+
+                if(ctrlShiftZ.match(event)){
+                    mediator.sendEvent(Events.REDO_TEXT);
+                    event.consume();
+                }
+            }
+        });
+    }
     /** sets the number of the textspace (used when dealing with multiple tabs) */
     public void setNumber(int n){
         textSpaceNumber = n;
@@ -66,11 +96,13 @@ public class TextSpace extends HBox {
         //System.out.println("undo called on textSpace " + textSpaceNumber);
         mediator.getCurrentConnector().undo();
         textArea.setText(mediator.getCurrentConnector().getText());
+        setTheCaretToTheLastChar();
     }
 
     public void redo(){
         mediator.getCurrentConnector().redo();
         textArea.setText(mediator.getCurrentConnector().getText());
+        setTheCaretToTheLastChar();
     }
 
     public void setText(String text){
@@ -79,5 +111,9 @@ public class TextSpace extends HBox {
 
     public String getText(){
         return textArea.getText();
+    }
+
+    private void setTheCaretToTheLastChar(){
+        textArea.positionCaret(textArea.getText().length()-1);
     }
 }

@@ -17,7 +17,7 @@
             <Cursor fx:constant="NONE" />
          </cursor>
       </TextArea>
-      <TextArea fx:id="textArea" onInputMethodTextChanged="#inputChanged" prefHeight="10000" prefWidth="10000">
+      <TextArea fx:id="textArea" prefHeight="10000" prefWidth="10000">
          <font>
             <Font size="18.0" />
          </font>

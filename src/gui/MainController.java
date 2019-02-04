@@ -5,11 +5,17 @@ import gui.components.TextSpace;
 import gui.mediator.Mediator;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.event.ActionEvent;
+import javafx.stage.WindowEvent;
 import smallUndoEngine.Connector;
+
+import java.util.Optional;
 
 
 public class MainController {
@@ -52,7 +58,10 @@ public class MainController {
     }
 
     public void createNewTab(){
-        //TODO:check if the array is not full
+        if(textSpacesCount >= textspaces.length){
+            System.out.println("the array of tabs is full");
+            return;
+        }
         Tab tab = new Tab("untitled tab");
         TextSpace textSpace = new TextSpace();
         Connector connector = new Connector();
@@ -64,4 +73,5 @@ public class MainController {
         textSpacesCount++;
         tabPane.getTabs().add(tab);
     }
+
 }
