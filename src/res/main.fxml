@@ -8,12 +8,12 @@
 <?import gui.components.MainMenuBar?>
 
 <?import gui.components.TextSpace?>
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainController">
    <children>
       <MainMenuBar fx:id="mainMenuBar" minHeight="30" minWidth="600" ></MainMenuBar>
       <TabPane fx:id="tabPane" prefHeight="10000" prefWidth="10000" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab fx:id="tab1" onCloseRequest="#tabOnClose" text="Untitled Tab 1">
+          <Tab fx:id="tab1" onCloseRequest="#tabOnClose" text="Untitled Tab 1" >
             <content>
               <TextSpace fx:id="textSpace" />
             </content>

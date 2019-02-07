@@ -97,12 +97,14 @@ public class TextSpace extends HBox {
         mediator.getCurrentConnector().undo();
         textArea.setText(mediator.getCurrentConnector().getText());
         setTheCaretToTheLastChar();
+        mediator.sendEvent(Events.TEXT_CHANGED);
     }
 
     public void redo(){
         mediator.getCurrentConnector().redo();
         textArea.setText(mediator.getCurrentConnector().getText());
         setTheCaretToTheLastChar();
+        mediator.sendEvent(Events.TEXT_CHANGED);
     }
 
     public void setText(String text){

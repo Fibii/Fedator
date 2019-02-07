@@ -1,5 +1,6 @@
 package gui.components;
 
+import lib.EditorUtils;
 import gui.mediator.Events;
 import gui.mediator.Mediator;
 import javafx.event.ActionEvent;
@@ -13,8 +14,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 
 public class MainMenuBar extends MenuBar {
 
@@ -42,7 +43,8 @@ public class MainMenuBar extends MenuBar {
     private Mediator mediator = Mediator.getInstance();
     private FileChooser fileChooser = new FileChooser();
     private String text;
-    //TODO:add a var to check if the file is new or, opened, saved or whatever
+    private Path filePath;
+
     public MainMenuBar(){
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
                 "/res/menubar.fxml"));
@@ -70,6 +72,7 @@ public class MainMenuBar extends MenuBar {
         if (file != null){
             try {
                 text = new String(Files.readAllBytes(Paths.get(file.getPath())), StandardCharsets.UTF_8);
+                filePath = file.toPath();
                 mediator.sendEvent(Events.OPEN_MENU);
             } catch (IOException e){
                 System.out.println("file was not found");
@@ -79,13 +82,18 @@ public class MainMenuBar extends MenuBar {
 
     @FXML
     void saveMenuItemClick(ActionEvent event) {
-        showSaveWindow();
+        if(mediator.getFileIsSaved()){
+            mediator.sendEvent(Events.AUTO_SAVE);
+        } else {
+            showSaveWindow();
+            mediator.sendEvent(Events.SAVE_MENU);
+        }
     }
 
     @FXML
     void closeMenuItemClick(ActionEvent event) {
-        //TODO:check if the file is saved or not, show an alert, then send the event
         mediator.sendEvent(Events.CLOSE_MENU);
+        EditorUtils.onCloseExitConfirmation();
     }
 
     @FXML
@@ -118,13 +126,19 @@ public class MainMenuBar extends MenuBar {
                 (new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt"));
         File file = fileChooser.showSaveDialog(save.getParentPopup().getScene().getWindow());
         file = new File(file.getPath() + ".txt"); //might be only in linux that the file is not saved as title.txt
+        /*
         if(file != null){
             try {
                 Files.write(Paths.get(file.toURI()), mediator.getCurrentText().getBytes("utf-8"), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
+        EditorUtils.writeToFile(mediator.getCurrentText(),file.toPath());
         mediator.sendEvent(Events.SAVE_MENU);
+    }
+
+    public Path getSavedFilePath(){
+        return filePath;
     }
 }
