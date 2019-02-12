@@ -121,19 +121,14 @@ public class MainMenuBar extends MenuBar {
     }
 
     public void showSaveWindow(){
-        fileChooser.setTitle("title"); //TODO: get a title variable..
+        fileChooser.setTitle("Save");
         fileChooser.getExtensionFilters().add
                 (new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt"));
         File file = fileChooser.showSaveDialog(save.getParentPopup().getScene().getWindow());
+        if (file == null){ //check if the user clicked the cancel button
+            return;
+        }
         file = new File(file.getPath() + ".txt"); //might be only in linux that the file is not saved as title.txt
-        /*
-        if(file != null){
-            try {
-                Files.write(Paths.get(file.toURI()), mediator.getCurrentText().getBytes("utf-8"), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }*/
         EditorUtils.writeToFile(mediator.getCurrentText(),file.toPath());
         mediator.sendEvent(Events.SAVE_MENU);
     }

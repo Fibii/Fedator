@@ -51,7 +51,6 @@ public class Mediator implements IMediator{
         return textIsChaned;
     }
 
-    //TODO: Finish the switch cases and implement their methods
     public void sendEvent(Events event){
         switch (event){
             case TEXT_CHANGED:
@@ -68,6 +67,8 @@ public class Mediator implements IMediator{
                 fileIsSaved = true;
                 textIsChaned = false;
                 filePath = mainMenuBar.getSavedFilePath();
+                textSpace.setCurrentPath(filePath);
+                EditorUtils.setCurrentEditorTitle(mainMenuBar,mainController.getCurrentTab(),mainController.getCurrentTextSpace());
                 break;
 
             case REDO_TEXT:
@@ -76,6 +77,7 @@ public class Mediator implements IMediator{
 
             case SAVE_MENU:
                 fileIsSaved = true;
+                textSpace.setCurrentPath(filePath);
                 break;
 
             case ABOUT_MENU:
@@ -90,6 +92,7 @@ public class Mediator implements IMediator{
             case SAVE_FILE:
                 mainMenuBar.showSaveWindow();
                 fileIsSaved = true;
+                EditorUtils.setCurrentEditorTitle(mainMenuBar,mainController.getCurrentTab(),mainController.getCurrentTextSpace());
                 break;
             case EXIT_EVENT:
                 EditorUtils.writeToFile(getCurrentText(),filePath);

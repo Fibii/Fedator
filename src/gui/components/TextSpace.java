@@ -14,11 +14,13 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 
 import java.io.IOException;
+import java.nio.file.Path;
 
 public class TextSpace extends HBox {
     //TODO: Finish undo/redo
     private int textSpaceNumber = 0;
     private Mediator mediator = Mediator.getInstance();
+    private Path currentPath;
 
     public TextSpace() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
@@ -84,6 +86,11 @@ public class TextSpace extends HBox {
                     mediator.sendEvent(Events.REDO_TEXT);
                     event.consume();
                 }
+
+                if(event.getCode() == KeyCode.ENTER){
+                    //update the line count
+
+                }
             }
         });
     }
@@ -118,4 +125,12 @@ public class TextSpace extends HBox {
     private void setTheCaretToTheLastChar(){
         textArea.positionCaret(textArea.getText().length()-1);
     }
+
+    public void setCurrentPath(Path path){
+        currentPath = path;
+    }
+    public Path getCurrentPath(){
+        return currentPath;
+    }
+
 }

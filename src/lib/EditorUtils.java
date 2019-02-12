@@ -1,10 +1,14 @@
 package lib;
 
+import gui.components.TextSpace;
 import gui.mediator.Events;
 import gui.mediator.Mediator;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Tab;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -52,4 +56,9 @@ public class EditorUtils {
         }
     }
 
+    public static void setCurrentEditorTitle(Node node, Tab tab, TextSpace textSpace){
+        Stage stage = (Stage) node.getParent().getScene().getWindow();
+        stage.setTitle(textSpace.getCurrentPath().toString());
+        tab.setText(textSpace.getCurrentPath().getFileName().toString());
+    }
 }
