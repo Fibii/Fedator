@@ -70,13 +70,10 @@ public class MainMenuBar extends MenuBar {
                 (new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt"));
         File file = fileChooser.showOpenDialog(open.getParentPopup().getScene().getWindow());
         if (file != null){
-            try {
-                text = new String(Files.readAllBytes(Paths.get(file.getPath())), StandardCharsets.UTF_8);
+                //text = new String(Files.readAllBytes(Paths.get(file.getPath())), StandardCharsets.UTF_8);
+                text = EditorUtils.readFromFile(file);
                 filePath = file.toPath();
                 mediator.sendEvent(Events.OPEN_MENU);
-            } catch (IOException e){
-                System.out.println("file was not found");
-            }
         }
     }
 

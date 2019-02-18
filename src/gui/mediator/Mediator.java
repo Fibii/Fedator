@@ -69,6 +69,7 @@ public class Mediator implements IMediator{
                 filePath = mainMenuBar.getSavedFilePath();
                 textSpace.setCurrentPath(filePath);
                 EditorUtils.setCurrentEditorTitle(mainMenuBar,mainController.getCurrentTab(),mainController.getCurrentTextSpace());
+                textSpace.updateLineCount(false,true);
                 break;
 
             case REDO_TEXT:

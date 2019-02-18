@@ -21,6 +21,8 @@ public class TextSpace extends HBox {
     private int textSpaceNumber = 0;
     private Mediator mediator = Mediator.getInstance();
     private Path currentPath;
+    private int lineNumber = 3;
+    private StringBuilder lineCountBuilder = new StringBuilder("1\n2\n3\n");
 
     public TextSpace() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
@@ -45,6 +47,7 @@ public class TextSpace extends HBox {
     @FXML public void initialize(){
         textAreaChangeListener();
         textAreaKeyboardListener();
+        lineCounter.setText(lineCountBuilder.toString());
         mediator.setTextSpace(this);
     }
 
@@ -53,10 +56,10 @@ public class TextSpace extends HBox {
         textArea.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                //System.out.println("textSpace " + textSpaceNumber +  " : changed");
                 mediator.sendEvent(Events.TEXT_CHANGED);
                 mediator.getCurrentConnector().update(textArea.getText());
                 //TODO: fix redo/undo so it catches text change (select all text then backspace = no change)
+
             }
         });
     }
@@ -66,7 +69,6 @@ public class TextSpace extends HBox {
         KeyCodeCombination ctrlZ = new KeyCodeCombination(KeyCode.Z,KeyCodeCombination.CONTROL_DOWN);
         KeyCodeCombination ctrlShiftZ = new KeyCodeCombination(KeyCode.Z,KeyCodeCombination.CONTROL_DOWN,KeyCodeCombination.SHIFT_DOWN);
 
-
         textArea.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -74,6 +76,9 @@ public class TextSpace extends HBox {
                 if(ctrlV.match(event)){
                     mediator.sendEvent(Events.TEXT_CHANGED);
                     //TODO: increment the number of lines here.
+                    event.consume();
+                    textArea.paste();
+                    updateLineCount(false,true);
                     setTheCaretToTheLastChar();
                 }
 
@@ -88,8 +93,7 @@ public class TextSpace extends HBox {
                 }
 
                 if(event.getCode() == KeyCode.ENTER){
-                    //update the line count
-
+                    updateLineCount(true,false);
                 }
             }
         });
@@ -123,7 +127,7 @@ public class TextSpace extends HBox {
     }
 
     private void setTheCaretToTheLastChar(){
-        textArea.positionCaret(textArea.getText().length()-1);
+        textArea.positionCaret(textArea.getText().length());
     }
 
     public void setCurrentPath(Path path){
@@ -133,4 +137,28 @@ public class TextSpace extends HBox {
         return currentPath;
     }
 
+    public long numberOfLines() {
+       //return textArea.getText().split("\n").length;
+       return textArea.getText().chars().parallel().filter(c -> c == '\n').count();
+    }
+
+    public void updateLineCount(boolean isEnterKey,boolean isPaste) {
+
+        if(isEnterKey){
+            lineNumber++;
+            lineCountBuilder.append(lineNumber + "\n");
+            lineCounter.setText(lineCountBuilder.toString());
+        }
+
+        if(isPaste) {
+            System.out.println(numberOfLines());
+            while(lineNumber <= numberOfLines()){
+                lineNumber++;
+                lineCountBuilder.append(lineNumber + "\n");
+            }
+            lineCounter.setText(lineCountBuilder.toString());
+        }
+        //scroll down whenever the number of lines increases
+        textArea.scrollTopProperty().bindBidirectional(lineCounter.scrollTopProperty());
+    }
 }

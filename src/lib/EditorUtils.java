@@ -10,6 +10,9 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Tab;
 import javafx.stage.Stage;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -60,5 +63,17 @@ public class EditorUtils {
         Stage stage = (Stage) node.getParent().getScene().getWindow();
         stage.setTitle(textSpace.getCurrentPath().toString());
         tab.setText(textSpace.getCurrentPath().getFileName().toString());
+    }
+
+    public static String readFromFile(File file){
+        StringBuilder sb = new StringBuilder();
+        try(BufferedReader br = new BufferedReader(new FileReader(file))) {
+            for(String line; (line = br.readLine()) != null; ) {
+                sb.append(line + '\n');
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sb.toString();
     }
 }

@@ -65,12 +65,6 @@ public class MainController {
 
     private void updateCurrentStageTitle(){
         Stage stage = (Stage) tabPane.getParent().getScene().getWindow();
-        /*
-        if(getCurrentTab().getText().equals("untitled tab") || getCurrentTab().getText().equals("Untitled Tab 1")){
-            stage.setTitle("untitled");
-        } else {
-            stage.setTitle(getCurrentTextSpace().getCurrentPath().toString());
-        }*/
         if(getCurrentTextSpace().getText().isEmpty()){
             stage.setTitle("Untitled");
         } else {
