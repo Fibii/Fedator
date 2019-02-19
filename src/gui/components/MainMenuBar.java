@@ -16,6 +16,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class MainMenuBar extends MenuBar {
 
@@ -44,6 +46,7 @@ public class MainMenuBar extends MenuBar {
     private FileChooser fileChooser = new FileChooser();
     private String text;
     private Path filePath;
+    private List<String> lines;
 
     public MainMenuBar(){
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
@@ -70,8 +73,8 @@ public class MainMenuBar extends MenuBar {
                 (new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt"));
         File file = fileChooser.showOpenDialog(open.getParentPopup().getScene().getWindow());
         if (file != null){
-                //text = new String(Files.readAllBytes(Paths.get(file.getPath())), StandardCharsets.UTF_8);
-                text = EditorUtils.readFromFile(file);
+                lines = EditorUtils.readFromFile(file);
+                text = lines.stream().collect(Collectors.joining("\n"));
                 filePath = file.toPath();
                 mediator.sendEvent(Events.OPEN_MENU);
         }
@@ -132,5 +135,9 @@ public class MainMenuBar extends MenuBar {
 
     public Path getSavedFilePath(){
         return filePath;
+    }
+
+    public int getNumberOfLines(){
+        return lines.size();
     }
 }

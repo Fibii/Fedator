@@ -49,6 +49,9 @@ public class TextSpace extends HBox {
         textAreaKeyboardListener();
         lineCounter.setText(lineCountBuilder.toString());
         mediator.setTextSpace(this);
+        //scroll down whenever the number of lines increases
+        textArea.scrollTopProperty().bindBidirectional(lineCounter.scrollTopProperty());
+
     }
 
     private void textAreaChangeListener() {
@@ -78,7 +81,7 @@ public class TextSpace extends HBox {
                     //TODO: increment the number of lines here.
                     event.consume();
                     textArea.paste();
-                    updateLineCount(false,true);
+                    updateLineCount(false,true, false);
                     setTheCaretToTheLastChar();
                 }
 
@@ -93,7 +96,7 @@ public class TextSpace extends HBox {
                 }
 
                 if(event.getCode() == KeyCode.ENTER){
-                    updateLineCount(true,false);
+                    updateLineCount(true,false, false);
                 }
             }
         });
@@ -142,23 +145,27 @@ public class TextSpace extends HBox {
        return textArea.getText().chars().parallel().filter(c -> c == '\n').count();
     }
 
-    public void updateLineCount(boolean isEnterKey,boolean isPaste) {
-
-        if(isEnterKey){
+    /** helper method for updateLineCount */
+    private void updateLines(long number){
+        while (lineNumber < number){
             lineNumber++;
             lineCountBuilder.append(lineNumber + "\n");
-            lineCounter.setText(lineCountBuilder.toString());
+        }
+        lineCounter.setText(lineCountBuilder.toString());
+    }
+
+    public void updateLineCount(boolean isEnterKey, boolean isPaste, boolean isRead) {
+
+        if(isEnterKey){
+            updateLines(lineNumber + 1);
         }
 
         if(isPaste) {
-            System.out.println(numberOfLines());
-            while(lineNumber <= numberOfLines()){
-                lineNumber++;
-                lineCountBuilder.append(lineNumber + "\n");
-            }
-            lineCounter.setText(lineCountBuilder.toString());
+            updateLines(numberOfLines());
         }
-        //scroll down whenever the number of lines increases
-        textArea.scrollTopProperty().bindBidirectional(lineCounter.scrollTopProperty());
+
+        if(isRead){
+            updateLines(mediator.getNumberOfLines());
+        }
     }
 }
