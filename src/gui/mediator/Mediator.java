@@ -51,6 +51,10 @@ public class Mediator implements IMediator{
         return textIsChaned;
     }
 
+    public int getNumberOfLines(){
+        return mainMenuBar.getNumberOfLines();
+    }
+
     public void sendEvent(Events event){
         switch (event){
             case TEXT_CHANGED:
@@ -69,7 +73,7 @@ public class Mediator implements IMediator{
                 filePath = mainMenuBar.getSavedFilePath();
                 textSpace.setCurrentPath(filePath);
                 EditorUtils.setCurrentEditorTitle(mainMenuBar,mainController.getCurrentTab(),mainController.getCurrentTextSpace());
-                textSpace.updateLineCount(false,true);
+                textSpace.updateLineCount(false,false, true);
                 break;
 
             case REDO_TEXT:

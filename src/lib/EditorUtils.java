@@ -10,13 +10,15 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Tab;
 import javafx.stage.Stage;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class EditorUtils {
@@ -65,15 +67,13 @@ public class EditorUtils {
         tab.setText(textSpace.getCurrentPath().getFileName().toString());
     }
 
-    public static String readFromFile(File file){
-        StringBuilder sb = new StringBuilder();
-        try(BufferedReader br = new BufferedReader(new FileReader(file))) {
-            for(String line; (line = br.readLine()) != null; ) {
-                sb.append(line + '\n');
-            }
+    public static List<String> readFromFile(File file){
+        List<String> lines = new ArrayList<>();
+        try {
+            lines = Files.readAllLines(Paths.get(file.getPath()), StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return sb.toString();
+        return lines;
     }
 }
