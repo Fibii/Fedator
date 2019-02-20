@@ -71,8 +71,6 @@ public class MainMenuBar extends MenuBar {
                 (new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt"));
         File file = fileChooser.showOpenDialog(open.getParentPopup().getScene().getWindow());
         if (file != null){
-//                lines = EditorUtils.readFromFile(file);
-//                text = lines.stream().collect(Collectors.joining("\n"));
             readFile(file);
             filePath = file.toPath();
         }
