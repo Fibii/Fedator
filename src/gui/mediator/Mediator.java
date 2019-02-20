@@ -14,7 +14,7 @@ public class Mediator implements IMediator{
     private TextSpace textSpace;
     private Connector connector;
     private boolean fileIsSaved;
-    private boolean textIsChaned;
+    private boolean textIsChanged;
     Path filePath;
 
     @Override
@@ -48,7 +48,7 @@ public class Mediator implements IMediator{
     }
 
     public boolean getTextIsChanged(){
-        return textIsChaned;
+        return textIsChanged;
     }
 
     public int getNumberOfLines(){
@@ -58,7 +58,7 @@ public class Mediator implements IMediator{
     public void sendEvent(Events event){
         switch (event){
             case TEXT_CHANGED:
-                textIsChaned = true;
+                textIsChanged = true;
                 break;
             case NEW_TAB:
                 mainController.createNewTab();
@@ -67,12 +67,12 @@ public class Mediator implements IMediator{
                 textSpace.undo();
                 break;
             case OPEN_MENU:
-                textSpace.setText(mainMenuBar.getText());
                 fileIsSaved = true;
-                textIsChaned = false;
+                textIsChanged = false;
                 filePath = mainMenuBar.getSavedFilePath();
                 textSpace.setCurrentPath(filePath);
                 EditorUtils.setCurrentEditorTitle(mainMenuBar,mainController.getCurrentTab(),mainController.getCurrentTextSpace());
+                textSpace.setText(mainMenuBar.getText());
                 textSpace.updateLineCount(false,false, true);
                 break;
 
@@ -101,7 +101,7 @@ public class Mediator implements IMediator{
                 break;
             case EXIT_EVENT:
                 EditorUtils.writeToFile(getCurrentText(),filePath);
-                textIsChaned = false;
+                textIsChanged = false;
                 System.exit(0);
                 break;
         }

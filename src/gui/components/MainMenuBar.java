@@ -1,5 +1,6 @@
 package gui.components;
 
+import javafx.concurrent.Task;
 import lib.EditorUtils;
 import gui.mediator.Events;
 import gui.mediator.Mediator;
@@ -12,10 +13,7 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,7 +44,7 @@ public class MainMenuBar extends MenuBar {
     private FileChooser fileChooser = new FileChooser();
     private String text;
     private Path filePath;
-    private List<String> lines;
+    private int numberOfLines;
 
     public MainMenuBar(){
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
@@ -73,10 +71,10 @@ public class MainMenuBar extends MenuBar {
                 (new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt"));
         File file = fileChooser.showOpenDialog(open.getParentPopup().getScene().getWindow());
         if (file != null){
-                lines = EditorUtils.readFromFile(file);
-                text = lines.stream().collect(Collectors.joining("\n"));
-                filePath = file.toPath();
-                mediator.sendEvent(Events.OPEN_MENU);
+//                lines = EditorUtils.readFromFile(file);
+//                text = lines.stream().collect(Collectors.joining("\n"));
+            readFile(file);
+            filePath = file.toPath();
         }
     }
 
@@ -138,6 +136,29 @@ public class MainMenuBar extends MenuBar {
     }
 
     public int getNumberOfLines(){
-        return lines.size();
+        return numberOfLines;
+    }
+
+    private void readFile(File file){
+        Task<String> task = new Task<String>() {
+            @Override
+            protected String call()  {
+                List<String> list = EditorUtils.readFromFile(file);
+                String str = list.stream().collect(Collectors.joining("\n"));
+                setCurrentText(str);
+                numberOfLines = list.size();
+                return str;
+            }
+        };
+
+        task.setOnSucceeded(t -> mediator.sendEvent(Events.OPEN_MENU));
+        task.setOnFailed(e -> setCurrentText("FAILED"));
+        Thread t = new Thread(task);
+        t.setDaemon(true);
+        t.start();
+    }
+
+    private void setCurrentText(String text){
+        this.text = text;
     }
 }
