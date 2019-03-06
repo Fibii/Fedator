@@ -12,6 +12,8 @@
   * Options window (includes font size, themes..) 
   * Text manipulation tools (Find, Find and Replace..)
 
+#### Known issues
+  * TextArea lag with huge text 
 
 ##### Why ?
-For learning puposes
+For learning purposes
