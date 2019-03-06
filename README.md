@@ -4,7 +4,7 @@
   * Line count 
   * Undo/Redo 
   * File reading/saving (text files only)
-  * Intelligent file saving (automatically save data to the current file without prompting the user for a path.. 
+  * Intelligent file saving (automatically save data to the current file without prompting the user for a path..)
   * Multiple tabs
 
 #### Upcoming features (probably never) 
