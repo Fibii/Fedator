@@ -1,4 +1,4 @@
-package EditLogic;
+package smallUndoEngine;
 
 public interface IEdit {
     void undo();

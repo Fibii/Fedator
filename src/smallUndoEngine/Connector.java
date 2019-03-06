@@ -1,8 +1,8 @@
-package EditLogic;
+package smallUndoEngine;
 
 /** acts as a connector between the MainController class and the Edit class*/
-public class Connector implements IEdit{
-    private Edit  edit = new Edit();
+public class Connector implements IEdit {
+    private Edit edit = new Edit();
 
     public Connector(String text){
         edit.setText(text);

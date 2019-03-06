@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root type="javafx.scene.layout.HBox" prefHeight="10000" prefWidth="10000" xmlns="http://javafx.com/javafx/8"
+         xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <TextArea fx:id="lineCounter" editable="false" minWidth="120.0" prefHeight="10000" prefWidth="80.0">
+            <font>
+                <Font size="18.0"/>
+            </font>
+            <cursor>
+                <Cursor fx:constant="NONE"/>
+            </cursor>
+        </TextArea>
+        <TextArea fx:id="textArea" prefHeight="10000" prefWidth="10000">
+            <font>
+                <Font size="18.0"/>
+            </font>
+        </TextArea>
+    </children>
+</fx:root>
