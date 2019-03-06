@@ -23,11 +23,10 @@ import java.util.Optional;
 
 public class EditorUtils {
 
-    public static boolean writeToFile(String text, Path path){
-        if (path == null || text == null){
+    public static boolean writeToFile(String text, Path path) {
+        if (path == null || text == null) {
             return false;
         }
-        //Files.write(path,text);
         try {
             Files.write(path.toAbsolutePath(), text.getBytes("utf-8"), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
@@ -37,7 +36,7 @@ public class EditorUtils {
     }
 
     public static void onCloseExitConfirmation() {
-        if(Mediator.getInstance().getTextIsChanged()){
+        if (Mediator.getInstance().getTextIsChanged()) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Are you sure you want to exit?");
             alert.setHeaderText("Are you sure you want to exit?");
@@ -48,12 +47,12 @@ public class EditorUtils {
             alert.getButtonTypes().setAll(yesBtn, noBtn, cnlBtn);
             Optional<ButtonType> btnClicked = alert.showAndWait();
             if (btnClicked.get() == yesBtn) {
-                if(Mediator.getInstance().getFileIsSaved()){ //we already have the path, so auto save the changes with opening the save window
+                if (Mediator.getInstance().getFileIsSaved()) { //we already have the path, so auto save the changes with opening the save window
                     Mediator.getInstance().sendEvent(Events.EXIT_EVENT);
                 } else {
                     Mediator.getInstance().sendEvent(Events.SAVE_FILE);
                 }
-            } else if(btnClicked.get() == noBtn){
+            } else if (btnClicked.get() == noBtn) {
                 System.exit(0);
             }
         } else {
@@ -61,13 +60,13 @@ public class EditorUtils {
         }
     }
 
-    public static void setCurrentEditorTitle(Node node, Tab tab, TextSpace textSpace){
+    public static void setCurrentEditorTitle(Node node, Tab tab, TextSpace textSpace) {
         Stage stage = (Stage) node.getParent().getScene().getWindow();
         stage.setTitle(textSpace.getCurrentPath().toString());
         tab.setText(textSpace.getCurrentPath().getFileName().toString());
     }
 
-    public static List<String> readFromFile(File file){
+    public static List<String> readFromFile(File file) {
         List<String> lines = new ArrayList<>();
         try {
             lines = Files.readAllLines(Paths.get(file.getPath()), StandardCharsets.UTF_8);

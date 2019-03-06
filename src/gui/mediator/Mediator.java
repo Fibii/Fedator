@@ -8,14 +8,18 @@ import smallUndoEngine.Connector;
 
 import java.nio.file.Path;
 
-public class Mediator implements IMediator{
+public class Mediator implements IMediator {
+    Path filePath;
     private MainController mainController;
     private MainMenuBar mainMenuBar;
     private TextSpace textSpace;
     private Connector connector;
     private boolean fileIsSaved;
     private boolean textIsChanged;
-    Path filePath;
+
+    public static Mediator getInstance() {
+        return MediatorInstace.INSTANCE;
+    }
 
     @Override
     public void setMenuBar(MainMenuBar mainMenuBar) {
@@ -27,36 +31,36 @@ public class Mediator implements IMediator{
         this.textSpace = textSpace;
     }
 
-    public void setMainController(MainController mainController){
+    public void setMainController(MainController mainController) {
         this.mainController = mainController;
     }
 
-    public void setConnector(Connector connector){
+    public void setConnector(Connector connector) {
         this.connector = connector;
     }
 
-    public Connector getCurrentConnector(){
+    public Connector getCurrentConnector() {
         return connector;
     }
 
-    public String getCurrentText(){
+    public String getCurrentText() {
         return textSpace.getText();
     }
 
-    public boolean getFileIsSaved(){
+    public boolean getFileIsSaved() {
         return fileIsSaved;
     }
 
-    public boolean getTextIsChanged(){
+    public boolean getTextIsChanged() {
         return textIsChanged;
     }
 
-    public int getNumberOfLines(){
+    public int getNumberOfLines() {
         return mainMenuBar.getNumberOfLines();
     }
 
-    public void sendEvent(Events event){
-        switch (event){
+    public void sendEvent(Events event) {
+        switch (event) {
             case TEXT_CHANGED:
                 textIsChanged = true;
                 break;
@@ -71,9 +75,9 @@ public class Mediator implements IMediator{
                 textIsChanged = false;
                 filePath = mainMenuBar.getSavedFilePath();
                 textSpace.setCurrentPath(filePath);
-                EditorUtils.setCurrentEditorTitle(mainMenuBar,mainController.getCurrentTab(),mainController.getCurrentTextSpace());
+                EditorUtils.setCurrentEditorTitle(mainMenuBar, mainController.getCurrentTab(), mainController.getCurrentTextSpace());
                 textSpace.setText(mainMenuBar.getText());
-                textSpace.updateLineCount(false,false, true);
+                textSpace.updateLineCount(false, false, true);
                 break;
 
             case REDO_TEXT:
@@ -89,7 +93,7 @@ public class Mediator implements IMediator{
 
                 break;
             case AUTO_SAVE:
-                EditorUtils.writeToFile(getCurrentText(),filePath);
+                EditorUtils.writeToFile(getCurrentText(), filePath);
                 break;
 
             case CLOSE_MENU:
@@ -97,19 +101,14 @@ public class Mediator implements IMediator{
             case SAVE_FILE:
                 mainMenuBar.showSaveWindow();
                 fileIsSaved = true;
-                EditorUtils.setCurrentEditorTitle(mainMenuBar,mainController.getCurrentTab(),mainController.getCurrentTextSpace());
+                EditorUtils.setCurrentEditorTitle(mainMenuBar, mainController.getCurrentTab(), mainController.getCurrentTextSpace());
                 break;
             case EXIT_EVENT:
-                EditorUtils.writeToFile(getCurrentText(),filePath);
+                EditorUtils.writeToFile(getCurrentText(), filePath);
                 textIsChanged = false;
                 System.exit(0);
                 break;
         }
-    }
-
-
-    public static Mediator getInstance() {
-        return MediatorInstace.INSTANCE;
     }
 
     private static final class MediatorInstace {

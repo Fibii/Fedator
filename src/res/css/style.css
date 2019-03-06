@@ -1,6 +1,6 @@
 .text-area {
     -fx-text-fill: #9da9ad;
-    -fx-display-caret:true;
+    -fx-display-caret: true;
 }
 
 
@@ -22,8 +22,13 @@
 .menu-bar {
     -fx-background-color: #3a5065;
 }
-.menu-bar:hover{
+
+.menu-bar:hover {
     -fx-background-color: #3a5065;
+}
+
+.tab-pane .tab {
+    -fx-background-color: #4ea7a8;
 }
 
 .choice-box {
@@ -68,8 +73,6 @@
     -fx-background-color: #0a3d62;
 }
 
-.menu-item:hover{
+.menu-item:hover {
     -fx-background-color: #728599;
 }
-
-
