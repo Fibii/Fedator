@@ -20,11 +20,11 @@ public class Connector implements IEdit {
         edit.setText(newText);
     }
 
-    public void undo(){
-        edit.undo();
+    public boolean undo(){
+        return edit.undo();
     }
-    public void redo(){
-        edit.redo();
+    public boolean redo(){
+        return edit.redo();
     }
 
 }

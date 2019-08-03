@@ -1,0 +1,75 @@
+.styled-text-area {
+    -fx-background-color: #e9e4e6;
+    -fx-display-caret: true;
+    -fx-font-size: 22;
+}
+
+.styled-text-area .text{
+    -fx-fill: #232323;
+}
+
+.lineno {
+    -fx-font-size: 22;
+    -fx-background-color: #dbd6d8;
+    -fx-fill: #232323;
+}
+
+.styled-text-area {
+    -fx-padding: 6px;
+    -fx-border-insets: 6px;
+    -fx-background-insets: 6px;
+}
+
+.menu-bar {
+    -fx-background-color: #3bb4c1;
+}
+
+.tab-pane .tab {
+    -fx-background-color: #3bb4c1;
+}
+
+.choice-box {
+    -fx-border-color: #3bb4c1;
+    -fx-border-radius: 0;
+    -fx-background-color: #3bb4c1;
+}
+
+.choice-box:hover {
+    -fx-background-color: #048998;
+}
+
+.choice-box:pressed {
+    -fx-background-color: #048998;
+}
+
+.choice-box:showing {
+    -fx-background-color: #048998;
+}
+
+#menuBarRegion {
+    -fx-background-color: #3bb4c1;
+}
+
+.context-menu {
+    -fx-background-color: #3bb4c1;
+}
+
+.menu-item {
+    -fx-background-color: #3bb4c1;
+}
+
+.menu:hover {
+    -fx-background-color: #048998;
+}
+
+.menu:pressed {
+    -fx-background-color: #048998;
+}
+
+.menu:showing {
+    -fx-background-color: #048998;
+}
+
+.menu-item:hover {
+    -fx-background-color: #048998;
+}

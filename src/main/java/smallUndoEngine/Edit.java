@@ -13,9 +13,10 @@ public class Edit implements IEdit {
 
     /**
      * updates the current text to the previous one stored in the stack if the stack is not empty
+     * @return true if the stack is not empty, false otherwise
      */
     @Override
-    public void undo() {
+    public boolean undo() {
         if (!undoStack.empty()) {
             if (text.trim().length() > 0) {
                 redoStack.add(text.trim());
@@ -24,20 +25,25 @@ public class Edit implements IEdit {
             if (!undoStack.empty()) {
                 text = undoStack.pop();
             }
+            return true;
         } else {
             System.out.println("undo stack is empty");
+            return false;
         }
     }
 
     /**
      * updates the current text to the original one stored in the stack if the stack is not empty
+     * @return true if the stack is not empty, false otherwise
      */
     @Override
-    public void redo() {
+    public boolean redo() {
         if (!redoStack.empty()) {
             text = redoStack.pop();
+            return true;
         } else {
             System.out.println("redo stack is empty");
+            return false;
         }
     }
 
