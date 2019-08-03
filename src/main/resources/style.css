@@ -24,10 +24,6 @@
     -fx-background-color: #3bb4c1;
 }
 
-.tab-pane .tab {
-    -fx-background-color: #3bb4c1;
-}
-
 .choice-box {
     -fx-border-color: #3bb4c1;
     -fx-border-radius: 0;
@@ -72,4 +68,16 @@
 
 .menu-item:hover {
     -fx-background-color: #048998;
+}
+
+.tab-pane:top {
+    -fx-background-color: #e9e4e6;
+}
+
+.tab-pane:top .tab-header-area .tab-header-background {
+    -fx-background-color: #3bb4c1;
+}
+
+.tab-pane .tab {
+    -fx-background-color: #3ccedb;
 }

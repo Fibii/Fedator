@@ -8,6 +8,8 @@ import smallUndoEngine.Connector;
 
 import java.nio.file.Path;
 
+//todo: refactor mediator to store and use tabSpace arraylist
+
 public class Mediator implements IMediator {
     Path filePath;
     private MainController mainController;
@@ -77,6 +79,7 @@ public class Mediator implements IMediator {
                 textSpace.setCurrentPath(filePath);
                 EditorUtils.setCurrentEditorTitle(mainMenuBar, mainController.getCurrentTab(), mainController.getCurrentTextSpace());
                 textSpace.setText(mainMenuBar.getText());
+                mainController.updateIsSaved(fileIsSaved);
                 break;
 
             case REDO_TEXT:
