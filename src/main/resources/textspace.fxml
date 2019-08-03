@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+<?import org.fxmisc.flowless.VirtualizedScrollPane?>
+<?import org.fxmisc.richtext.CodeArea?>
+<fx:root type="javafx.scene.layout.HBox" prefHeight="10000" prefWidth="10000" xmlns="http://javafx.com/javafx/8"
+         xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <VirtualizedScrollPane>
+            <content>
+                <CodeArea fx:id="textArea" prefHeight="10000" prefWidth="10000" />
+                fx:id="codeArea" />
+            </content>
+        </VirtualizedScrollPane>
+    </children>
+</fx:root>

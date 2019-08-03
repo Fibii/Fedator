@@ -18,7 +18,7 @@ public class Mediator implements IMediator {
     private boolean textIsChanged;
 
     public static Mediator getInstance() {
-        return MediatorInstace.INSTANCE;
+        return MediatorInstance.INSTANCE;
     }
 
     @Override
@@ -77,7 +77,6 @@ public class Mediator implements IMediator {
                 textSpace.setCurrentPath(filePath);
                 EditorUtils.setCurrentEditorTitle(mainMenuBar, mainController.getCurrentTab(), mainController.getCurrentTextSpace());
                 textSpace.setText(mainMenuBar.getText());
-                textSpace.updateLineCount(false, false, true);
                 break;
 
             case REDO_TEXT:
@@ -111,7 +110,7 @@ public class Mediator implements IMediator {
         }
     }
 
-    private static final class MediatorInstace {
+    private static final class MediatorInstance {
         private static Mediator INSTANCE = new Mediator();
     }
 

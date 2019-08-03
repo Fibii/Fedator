@@ -19,8 +19,10 @@ public class MainController {
     private TextSpace textSpace;
     @FXML
     private MainMenuBar mainMenuBar;
+
     private Connector connector = new Connector();
 
+    //todo: wrap this in its own class
     private TextSpace textspaces[] = new TextSpace[20];
     private Connector connectors[] = new Connector[20];
     int textSpacesCount = 0;
@@ -77,6 +79,8 @@ public class MainController {
         textSpacesCount++;
         tabPane.getTabs().add(tab);
     }
+
+    //todo: add a way to close tabs
 
     /**
      * @return the currect selected tab

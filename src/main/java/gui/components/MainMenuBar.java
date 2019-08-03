@@ -48,7 +48,7 @@ public class MainMenuBar extends MenuBar {
 
     public MainMenuBar() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-                "/res/fxml/menubar.fxml"));
+                "/menubar.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 
