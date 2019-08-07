@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.HBox;
 
 import org.fxmisc.richtext.*;
+import smallUndoEngine.Connector;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -43,7 +44,6 @@ public class TextSpace extends HBox {
     @FXML
     public void initialize() {
         textAreaChangeListener();
-        mediator.setTextSpace(this);
         textArea.setParagraphGraphicFactory(LineNumberFactory.get(textArea));
     }
 
@@ -57,7 +57,6 @@ public class TextSpace extends HBox {
     private void textAreaChangeListener() {
         textArea.textProperty().addListener((observable, oldValue, newValue) -> {
             mediator.sendEvent(Events.TEXT_CHANGED);
-            mediator.getCurrentConnector().update(textArea.getText());
         });
     }
 
@@ -75,10 +74,10 @@ public class TextSpace extends HBox {
      * @see Mediator
      * @see smallUndoEngine.Connector
      */
-    public void undo() {
-        boolean undoIsNotEmpty = mediator.getCurrentConnector().undo();
+    public void undo(Connector connector) {
+        boolean undoIsNotEmpty = connector.undo();
         if(undoIsNotEmpty) {
-            textArea.replaceText(mediator.getCurrentConnector().getText());
+            textArea.replaceText(connector.getText());
         }
         mediator.sendEvent(Events.TEXT_CHANGED);
     }
@@ -90,10 +89,10 @@ public class TextSpace extends HBox {
      * @see Mediator
      * @see smallUndoEngine.Connector
      */
-    public void redo() {
-        boolean redoIsNotEmpty = mediator.getCurrentConnector().redo();
+    public void redo(Connector connector) {
+        boolean redoIsNotEmpty = connector.redo();
         if(redoIsNotEmpty){
-            textArea.replaceText(mediator.getCurrentConnector().getText());
+            textArea.replaceText(connector.getText());
         }
         mediator.sendEvent(Events.TEXT_CHANGED);
     }
@@ -127,14 +126,6 @@ public class TextSpace extends HBox {
      */
     public void setCurrentPath(Path path) {
         currentPath = path;
-    }
-
-    /**
-     * @return the current number of lines
-     * used to get the number of lines when the user pastes a text from the clipboard
-     */
-    public long numberOfLines() {
-        return textArea.getText().chars().parallel().filter(c -> c == '\n').count();
     }
 
 }

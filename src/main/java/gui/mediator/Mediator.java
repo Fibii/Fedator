@@ -1,23 +1,27 @@
 package gui.mediator;
 
 import gui.MainController;
+import gui.TabSpace;
 import gui.components.MainMenuBar;
-import gui.components.TextSpace;
 import lib.EditorUtils;
-import smallUndoEngine.Connector;
 
 import java.nio.file.Path;
+import java.util.List;
+
+import static gui.mediator.Events.*;
+
 
 //todo: refactor mediator to store and use tabSpace arraylist
 
 public class Mediator implements IMediator {
-    Path filePath;
+    private Path filePath;
     private MainController mainController;
-    private MainMenuBar mainMenuBar;
-    private TextSpace textSpace;
-    private Connector connector;
     private boolean fileIsSaved;
     private boolean textIsChanged;
+    private String text;
+    private MainMenuBar mainMenuBar;
+    private List<TabSpace> tabSpaces;
+
 
     public static Mediator getInstance() {
         return MediatorInstance.INSTANCE;
@@ -29,24 +33,12 @@ public class Mediator implements IMediator {
     }
 
     @Override
-    public void setTextSpace(TextSpace textSpace) {
-        this.textSpace = textSpace;
+    public void setTabSpaces(List<TabSpace> tabSpaces) {
+        this.tabSpaces = tabSpaces;
     }
 
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
-    }
-
-    public void setConnector(Connector connector) {
-        this.connector = connector;
-    }
-
-    public Connector getCurrentConnector() {
-        return connector;
-    }
-
-    public String getCurrentText() {
-        return textSpace.getText();
     }
 
     public boolean getFileIsSaved() {
@@ -57,11 +49,17 @@ public class Mediator implements IMediator {
         return textIsChanged;
     }
 
-    public int getNumberOfLines() {
-        return mainMenuBar.getNumberOfLines();
+    public String getText() {
+        return text;
+    }
+
+    public Path getFilePath() {
+        return filePath;
     }
 
     public void sendEvent(Events event) {
+        int tabIndex = mainController.getCurrentTabIndex();
+        text = tabSpaces.get(tabIndex).getText();
         switch (event) {
             case TEXT_CHANGED:
                 textIsChanged = true;
@@ -70,32 +68,41 @@ public class Mediator implements IMediator {
                 mainController.createNewTab();
                 break;
             case UNDO_TEXT:
-                textSpace.undo();
+                tabSpaces.get(tabIndex).sendEvent(UNDO_TEXT);
                 break;
             case OPEN_MENU:
+                //todo: maybe change the desgin to:
+                /*
+                 * let the MainMenuBar class handles these variables, like when open is clicked
+                 * mediator.setFileIsSaved(true);
+                 * mediator.textIsChanged(false);
+                 * and so on
+                 *
+                 * actually do this !!!
+                 * */
                 fileIsSaved = true;
                 textIsChanged = false;
                 filePath = mainMenuBar.getSavedFilePath();
-                textSpace.setCurrentPath(filePath);
-                EditorUtils.setCurrentEditorTitle(mainMenuBar, mainController.getCurrentTab(), mainController.getCurrentTextSpace());
-                textSpace.setText(mainMenuBar.getText());
+                text = mainMenuBar.getText();
+
+                tabSpaces.get(tabIndex).sendEvent(OPEN_MENU);
+                EditorUtils.setCurrentEditorTitle(mainMenuBar, mainController.getCurrentTab(),tabSpaces.get(tabIndex).getCurrentPath());
                 mainController.updateIsSaved(fileIsSaved);
                 break;
 
             case REDO_TEXT:
-                textSpace.redo();
+                tabSpaces.get(tabIndex).sendEvent(REDO_TEXT);
                 break;
 
             case SAVE_MENU:
                 fileIsSaved = true;
-                textSpace.setCurrentPath(filePath);
                 break;
 
             case ABOUT_MENU:
-
+                //todo: implement this
                 break;
             case AUTO_SAVE:
-                EditorUtils.writeToFile(getCurrentText(), filePath);
+                EditorUtils.writeToFile(text, filePath);
                 break;
 
             case CLOSE_MENU:
@@ -103,10 +110,10 @@ public class Mediator implements IMediator {
             case SAVE_FILE:
                 mainMenuBar.showSaveWindow();
                 fileIsSaved = true;
-                EditorUtils.setCurrentEditorTitle(mainMenuBar, mainController.getCurrentTab(), mainController.getCurrentTextSpace());
+                EditorUtils.setCurrentEditorTitle(mainMenuBar, mainController.getCurrentTab(), tabSpaces.get(tabIndex).getCurrentPath());
                 break;
             case EXIT_EVENT:
-                EditorUtils.writeToFile(getCurrentText(), filePath);
+                EditorUtils.writeToFile(text, filePath);
                 textIsChanged = false;
                 System.exit(0);
                 break;
@@ -118,4 +125,3 @@ public class Mediator implements IMediator {
     }
 
 }
-

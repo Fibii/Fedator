@@ -1,6 +1,5 @@
 package lib;
 
-import gui.components.TextSpace;
 import gui.mediator.Events;
 import gui.mediator.Mediator;
 import javafx.scene.Node;
@@ -36,6 +35,7 @@ public class EditorUtils {
     }
 
     public static void onCloseExitConfirmation() {
+        //todo: debug why this is true when a file is opened but not edited
         if (Mediator.getInstance().getTextIsChanged()) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Are you sure you want to exit?");
@@ -60,10 +60,10 @@ public class EditorUtils {
         }
     }
 
-    public static void setCurrentEditorTitle(Node node, Tab tab, TextSpace textSpace) {
+    public static void setCurrentEditorTitle(Node node, Tab tab, Path pathToFile) {
         Stage stage = (Stage) node.getParent().getScene().getWindow();
-        stage.setTitle(textSpace.getCurrentPath().toString());
-        tab.setText(textSpace.getCurrentPath().getFileName().toString());
+        stage.setTitle(pathToFile.toString());
+        tab.setText(pathToFile.getFileName().toString());
     }
 
     public static List<String> readFromFile(File file) {

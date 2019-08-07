@@ -32,30 +32,29 @@ public class MainController {
     @FXML
     public void initialize() {
         mediator.setMainController(this);
-        mediator.setConnector(connector);
+        mediator.setTabSpaces(tabSpaces);
         TabSpace current = new TabSpace(textSpace, connector);
         tabSpaces.add(current);
         tabPaneListener();
+        tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
     }
 
     private void tabPaneListener() {
         tabPane.getSelectionModel().selectedIndexProperty().addListener((ov, oldValue, newValue) -> {
             //set the textSpace to the current one on the selected tab
             int currentTab = tabPane.getSelectionModel().getSelectedIndex();
-            mediator.setTextSpace(tabSpaces.get(currentTab).getTextSpace());
-            mediator.setConnector(tabSpaces.get(currentTab).getConnector());
             System.out.println("current tab is " + currentTab + "ts count is " + textSpacesCount);
             updateCurrentStageTitle(currentTab);
             System.out.println(tabPane.getSelectionModel().getSelectedItem().getText());
         });
     }
 
+    //todo: add * to a file that is opened and edited, but not saved
     private void updateCurrentStageTitle(int currentTab) {
         Stage stage = (Stage) tabPane.getParent().getScene().getWindow();
         if (tabSpaces.get(currentTab).isSaved()) {
             System.out.println("current tab is saved: " + currentTab);
-            System.out.println(tabSpaces.get(currentTab).getTextSpace());
-            stage.setTitle(tabSpaces.get(currentTab).getTextSpace().getCurrentPath().toString());
+            stage.setTitle(tabSpaces.get(currentTab).getCurrentPath().toString());
         } else {
             stage.setTitle("Untitled " + currentTab);
         }
@@ -89,7 +88,7 @@ public class MainController {
         tabSpaces.add(current);
     }
 
-    //todo: add a way to close tabs
+    //todo: add a listener to tab#onClose so it wont close the tab when the text is edited
 
     /**
      * @return the current selected tab
@@ -98,15 +97,15 @@ public class MainController {
         return tabPane.getSelectionModel().getSelectedItem();
     }
 
-    /**
-     * @return the selected TextSpace
-     */
-    public TextSpace getCurrentTextSpace() {
-        return tabSpaces.get(tabPane.getSelectionModel().getSelectedIndex()).getTextSpace();
-    }
 
     public void updateIsSaved(boolean isSaved){
         tabSpaces.get(textSpacesCount).setIsSaved(true);
     }
 
+    /**
+     * @return the index of the selected tab
+     * */
+    public int getCurrentTabIndex(){
+        return tabPane.getSelectionModel().getSelectedIndex();
+    }
 }

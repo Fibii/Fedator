@@ -44,7 +44,6 @@ public class MainMenuBar extends MenuBar {
     private FileChooser fileChooser = new FileChooser();
     private String text;
     private Path filePath;
-    private int numberOfLines;
 
     public MainMenuBar() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
@@ -181,7 +180,7 @@ public class MainMenuBar extends MenuBar {
             return;
         }
         file = new File(file.getPath() + ".txt"); //might be only in linux that the file is not saved as title.txt
-        EditorUtils.writeToFile(mediator.getCurrentText(), file.toPath());
+        EditorUtils.writeToFile(mediator.getText(), file.toPath());
         mediator.sendEvent(Events.SAVE_MENU);
     }
 
@@ -192,18 +191,11 @@ public class MainMenuBar extends MenuBar {
         return filePath;
     }
 
-    /**
-     * @return the number of lines of the current text
-     */
-    public int getNumberOfLines() {
-        return numberOfLines;
-    }
 
     /**
      * @param file the text file to read from
      *             a task to read the text file in another thread
      *             waits for the thread to finish, then sends OPEN_MENU event to the mediator to update the textArea text
-     *             updates numberOfLines
      *             if the file reading fails, it sets the current text to "FAILED"
      * @see Mediator
      * @see EditorUtils
@@ -215,7 +207,6 @@ public class MainMenuBar extends MenuBar {
                 List<String> list = EditorUtils.readFromFile(file);
                 String str = list.stream().collect(Collectors.joining("\n"));
                 setCurrentText(str);
-                numberOfLines = list.size();
                 return str;
             }
         };
