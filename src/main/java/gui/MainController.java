@@ -2,6 +2,7 @@ package gui;
 
 import gui.components.MainMenuBar;
 import gui.components.TextSpace;
+import gui.mediator.Events;
 import gui.mediator.Mediator;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -15,6 +16,7 @@ import smallUndoEngine.Connector;
 import java.util.ArrayList;
 import java.util.Optional;
 
+//todo: add null checks, for every class
 public class MainController {
 
     @FXML
@@ -41,10 +43,11 @@ public class MainController {
 
     private void tabPaneListener() {
         tabPane.getSelectionModel().selectedIndexProperty().addListener((ov, oldValue, newValue) -> {
-            //set the textSpace to the current one on the selected tab
-            int currentTab = getCurrentTabIndex();
-            System.out.println("current tab is " + currentTab + ", ts count is " + textSpacesCount);
-            //updateCurrentStageTitle(currentTab);
+            if(tabPane.getTabs().size() == 0){
+                return;
+            }
+            System.out.println("sending TAB_CHANGED, #of tabs" + tabPane.getTabs().size());
+            mediator.getEventBuilder().withEvent(Events.TAB_CHANGED).build();
         });
     }
 
@@ -74,7 +77,7 @@ public class MainController {
         tab.setOnCloseRequest(event -> {
             Alert alert = EditorUtils.createConfirmationAlert("Are you sure you want to close this tab?", "yes", "");
             boolean close = true;
-            if (tabSpace.istextChanged()) {
+            if (tabSpace.isTextChanged()) {
                 Optional<ButtonType> btnClicked = alert.showAndWait();
                 if (!btnClicked.get().getText().equals("yes")) {
                     close = false;
@@ -87,20 +90,6 @@ public class MainController {
                 textSpacesCount--;
             }
         });
-
-        //todo: find a way to fix this (update the title of the stage)
-//        tab.setOnSelectionChanged(event -> {
-//
-//            Stage stage = (Stage) tabPane.getParent().getScene().getWindow();
-//            if(tab.isSelected()){
-//                if (mediator.isFileSaved()) {
-//                    System.out.println("current tab is saved: " + textSpacesCount);
-//                    stage.setTitle(tabSpaces.get(textSpacesCount).getCurrentPath().toString());
-//                } else {
-//                    stage.setTitle("Untitled " + textSpacesCount);
-//                }
-//            }
-//        });
 
         tabPane.getTabs().add(tab);
         textSpacesCount++;
@@ -127,8 +116,14 @@ public class MainController {
      * @return the current selected tab
      */
     public Tab getCurrentTab() {
-        System.out.println("getCurrentTab(): " + tabPane.getSelectionModel().getSelectedItem());
         return tabPane.getSelectionModel().getSelectedItem();
+    }
+
+    /**
+     * @return tabPane
+     */
+    public TabPane getTabPane(){
+        return tabPane;
     }
 
 

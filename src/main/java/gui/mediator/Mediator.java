@@ -3,6 +3,7 @@ package gui.mediator;
 import gui.MainController;
 import gui.TabSpace;
 import gui.components.MainMenuBar;
+import javafx.scene.control.Tab;
 import lib.EditorUtils;
 
 import java.nio.file.Path;
@@ -56,8 +57,8 @@ public class Mediator implements IMediator {
         int tabIndex = mainController.getCurrentTabIndex();
         System.out.println("mediator#isTextChanged: ----------------");
         System.out.println("tabIndex: " + tabIndex);
-        System.out.println("isTextChanged: " + tabSpaces.get(tabIndex).istextChanged());
-        return tabSpaces.get(tabIndex).istextChanged();
+        System.out.println("isTextChanged: " + tabSpaces.get(tabIndex).isTextChanged());
+        return tabSpaces.get(tabIndex).isTextChanged();
     }
 
     public String getText() {
@@ -68,6 +69,10 @@ public class Mediator implements IMediator {
     /** returns the mediator's text, used by textSpace when OPEN_MENU*/
     public String getMediatorText(){
         return text;
+    }
+
+    public Path getMediatorFilePath(){
+        return filePath;
     }
 
     public Path getFilePath() {
@@ -91,6 +96,7 @@ public class Mediator implements IMediator {
             case OPEN_MENU:
                 tabSpaces.get(tabIndex).sendEvent(OPEN_MENU);
                 mainController.updateIsSaved(fileSaved);
+                updateTitles(mainController.getCurrentTab(), filePath);
                 break;
 
             case REDO_TEXT:
@@ -98,6 +104,7 @@ public class Mediator implements IMediator {
                 break;
 
             case SAVE_MENU:
+                updateTitles(mainController.getCurrentTab(), filePath);
                 break;
 
             case ABOUT_MENU:
@@ -118,8 +125,20 @@ public class Mediator implements IMediator {
                 EditorUtils.writeToFile(text, filePath);
                 System.exit(0);
                 break;
+            case TAB_CHANGED:
+                System.out.println("currentTABINDEX: " + mainController.getCurrentTabIndex());
+                System.out.println("currentTAB: " + mainController.getCurrentTab());
+                System.out.println(tabSpaces.get(tabIndex).getCurrentPath());
+                EditorUtils.setCurrentEditorTitle(mainController.getTabPane(), tabSpaces.get(tabIndex).getCurrentPath(), mainController.getCurrentTabIndex());
+                break;
         }
     }
+
+    private void updateTitles(Tab tab, Path path){
+        EditorUtils.setTabTitle(tab, path);
+        EditorUtils.setStageTitle(tab, path);
+    }
+
 
     public EventBuilder getEventBuilder(){
         return new EventBuilder(textChanged, fileSaved, filePath, text);

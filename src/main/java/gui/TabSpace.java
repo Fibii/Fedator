@@ -46,13 +46,14 @@ public class TabSpace {
                 break;
 
             case OPEN_MENU:
-                textSpace.setCurrentPath(mediator.getFilePath());
+                textSpace.setCurrentPath(mediator.getMediatorFilePath());
                 textSpace.setText(mediator.getMediatorText());
                 fileSaved = true;
+
                 break;
 
             case SAVE_MENU:
-                textSpace.setCurrentPath(mediator.getFilePath());
+                textSpace.setCurrentPath(mediator.getMediatorFilePath());
                 break;
             case TEXT_CHANGED:
                 connector.update(textSpace.getText());
@@ -73,7 +74,7 @@ public class TabSpace {
         return fileSaved;
     }
 
-    public boolean istextChanged() {
+    public boolean isTextChanged() {
         return textChanged;
     }
 }

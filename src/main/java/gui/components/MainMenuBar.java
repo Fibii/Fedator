@@ -68,6 +68,8 @@ public class MainMenuBar extends MenuBar {
         mediator.getEventBuilder().withEvent(Events.NEW_TAB).build();
     }
 
+
+    //todo: fix when open menu is clicked, and no tabs are open
     /**
      * @param event javafx event..
      *              opens a new window and prompt the user to choose a text file
@@ -98,7 +100,6 @@ public class MainMenuBar extends MenuBar {
             //mediator.notify(Events.AUTO_SAVE);
             mediator.getEventBuilder().withEvent(Events.AUTO_SAVE).build();;
         } else {
-            showSaveWindow();
             mediator.getEventBuilder().fileSaved(true).withEvent(Events.SAVE_MENU).build();
             //mediator.notify(Events.SAVE_MENU);
         }
@@ -183,7 +184,7 @@ public class MainMenuBar extends MenuBar {
                 (new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt"));
         File file = fileChooser.showSaveDialog(save.getParentPopup().getScene().getWindow());
         if (file == null) { //check if the user clicked the cancel button
-            return;
+            return ;
         }
         file = new File(file.getPath() + ".txt"); //might be only in linux that the file is not saved as title.txt
         EditorUtils.writeToFile(mediator.getText(), file.toPath());

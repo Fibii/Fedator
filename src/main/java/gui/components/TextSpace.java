@@ -125,7 +125,7 @@ public class TextSpace extends HBox {
 
     /**
      * @param path the path of the current file
-     *             setns currentPath to path
+     *             sets currentPath to path
      */
     public void setCurrentPath(Path path) {
         currentPath = path;
