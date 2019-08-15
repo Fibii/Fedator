@@ -12,7 +12,9 @@ public class TabSpace {
 
     private TextSpace textSpace;
     private Connector connector;
-    private boolean isSaved = false;
+    private boolean fileSaved;
+    private boolean textChanged;
+
     private Mediator mediator = Mediator.getInstance();
 
     public TabSpace(TextSpace textSpace, Connector connector) {
@@ -20,35 +22,41 @@ public class TabSpace {
         this.connector = connector;
     }
 
-    /** updates isSaved
+    /** updates fileSaved
      * @param bool the value isSaved will be set to
      * */
     public void setIsSaved(boolean bool){
-        isSaved = bool;
+        fileSaved = bool;
     }
 
-    public boolean isSaved(){
-        return isSaved;
+    public boolean fileSaved(){
+        return fileSaved;
     }
 
     public void sendEvent(Events event){
         switch (event) {
             case UNDO_TEXT:
                 textSpace.undo(connector);
+                textChanged = true;
                 break;
 
             case REDO_TEXT:
                 textSpace.redo(connector);
+                textChanged = true;
                 break;
 
             case OPEN_MENU:
                 textSpace.setCurrentPath(mediator.getFilePath());
-                textSpace.setText(mediator.getText());
+                textSpace.setText(mediator.getMediatorText());
+                fileSaved = true;
                 break;
 
             case SAVE_MENU:
                 textSpace.setCurrentPath(mediator.getFilePath());
                 break;
+            case TEXT_CHANGED:
+                connector.update(textSpace.getText());
+                textChanged = true;
         }
 
     }
@@ -59,5 +67,13 @@ public class TabSpace {
 
     public Path getCurrentPath(){
         return textSpace.getCurrentPath();
+    }
+
+    public boolean isFileSaved() {
+        return fileSaved;
+    }
+
+    public boolean istextChanged() {
+        return textChanged;
     }
 }

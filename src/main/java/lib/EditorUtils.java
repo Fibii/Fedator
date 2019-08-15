@@ -36,11 +36,11 @@ public class EditorUtils {
 
     public static void onCloseExitConfirmation() {
         //todo: debug why this is true when a file is opened but not edited
-        if (Mediator.getInstance().getTextChanged()) {
+        if (Mediator.getInstance().isTextChanged()) {
             Alert alert = createConfirmationAlert("Do you want to save your changes before quitting?", "Yes", "No");
             Optional<ButtonType> btnClicked = alert.showAndWait();
             if (btnClicked.get().getText().equals("Yes")) {
-                if (Mediator.getInstance().getFileSaved()) { //we already have the path, so auto save the changes with opening the save window
+                if (Mediator.getInstance().isFileSaved()) { //we already have the path, so auto save the changes with opening the save window
                     Mediator.getInstance().getEventBuilder().withEvent(Events.EXIT_EVENT).build();
                 } else {
                     // this should open the save window todo: fix
@@ -89,6 +89,7 @@ public class EditorUtils {
         return alert;
     }
 
+    //todo: find someway to fix this.
     public static void setCurrentEditorTitle(Node node, Tab tab, Path pathToFile) {
         Stage stage = (Stage) node.getParent().getScene().getWindow();
         stage.setTitle(pathToFile.toString());

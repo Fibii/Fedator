@@ -44,20 +44,35 @@ public class Mediator implements IMediator {
         this.mainController = mainController;
     }
 
-    public boolean getFileSaved() {
-        return fileSaved;
+    public boolean isFileSaved() {
+        int tabIndex = mainController.getCurrentTabIndex();
+        return tabSpaces.get(tabIndex).isFileSaved();
     }
 
-    public boolean getTextChanged() {
-        return textChanged;
+    public boolean isTextChanged() {
+        if(tabSpaces.size() == 0){
+            return false;
+        }
+        int tabIndex = mainController.getCurrentTabIndex();
+        System.out.println("mediator#isTextChanged: ----------------");
+        System.out.println("tabIndex: " + tabIndex);
+        System.out.println("isTextChanged: " + tabSpaces.get(tabIndex).istextChanged());
+        return tabSpaces.get(tabIndex).istextChanged();
     }
 
     public String getText() {
+        int tabIndex = mainController.getCurrentTabIndex();
+        return tabSpaces.get(tabIndex).getText();
+    }
+
+    /** returns the mediator's text, used by textSpace when OPEN_MENU*/
+    public String getMediatorText(){
         return text;
     }
 
     public Path getFilePath() {
-        return filePath;
+        int tabIndex = mainController.getCurrentTabIndex();
+        return tabSpaces.get(tabIndex).getCurrentPath();
     }
 
     private void notify(Events event) {
@@ -65,6 +80,7 @@ public class Mediator implements IMediator {
         switch (event) {
             case TEXT_CHANGED:
                 //textChanged = true;
+                tabSpaces.get(tabIndex).sendEvent(TEXT_CHANGED);
                 break;
             case NEW_TAB:
                 mainController.createNewTab();
@@ -73,21 +89,7 @@ public class Mediator implements IMediator {
                 tabSpaces.get(tabIndex).sendEvent(UNDO_TEXT);
                 break;
             case OPEN_MENU:
-                //todo: maybe change the desgin to:
-                /*
-                 * let the MainMenuBar class handles these variables, like when open is clicked
-                 * mediator.setFileIsSaved(true);
-                 * mediator.textChanged(false);
-                 * and so on
-                 *
-                 * actually do this !!!
-                 * */
-//                fileSaved = true;
-//                textChanged = false;
-//                filePath = mainMenuBar.getSavedFilePath();
-//                text = mainMenuBar.getText();
                 tabSpaces.get(tabIndex).sendEvent(OPEN_MENU);
-                EditorUtils.setCurrentEditorTitle(mainMenuBar, mainController.getCurrentTab(),tabSpaces.get(tabIndex).getCurrentPath());
                 mainController.updateIsSaved(fileSaved);
                 break;
 
@@ -96,7 +98,6 @@ public class Mediator implements IMediator {
                 break;
 
             case SAVE_MENU:
-                //fileSaved = true;
                 break;
 
             case ABOUT_MENU:
@@ -111,8 +112,6 @@ public class Mediator implements IMediator {
                 break;
             case SAVE_FILE:
                 mainMenuBar.showSaveWindow();
-                //fileSaved = true;
-                EditorUtils.setCurrentEditorTitle(mainMenuBar, mainController.getCurrentTab(), tabSpaces.get(tabIndex).getCurrentPath());
                 break;
             case EXIT_EVENT:
                 text = tabSpaces.get(tabIndex).getText();
@@ -123,7 +122,6 @@ public class Mediator implements IMediator {
     }
 
     public EventBuilder getEventBuilder(){
-        // so the new object has the same values of the mediator
         return new EventBuilder(textChanged, fileSaved, filePath, text);
     }
 

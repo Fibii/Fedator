@@ -13,11 +13,7 @@
       <MainMenuBar fx:id="mainMenuBar" minHeight="30" minWidth="600" ></MainMenuBar>
       <TabPane fx:id="tabPane" prefHeight="10000" prefWidth="10000" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab fx:id="tab1" text="Untitled Tab 1" >
-            <content>
-              <TextSpace fx:id="textSpace" />
-            </content>
-          </Tab>
+
         </tabs>
       </TabPane>
    </children>

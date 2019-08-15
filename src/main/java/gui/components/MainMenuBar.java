@@ -1,6 +1,5 @@
 package gui.components;
 
-import javafx.concurrent.Task;
 import lib.EditorUtils;
 import gui.mediator.Events;
 import gui.mediator.Mediator;
@@ -95,7 +94,7 @@ public class MainMenuBar extends MenuBar {
      */
     @FXML
     void saveMenuItemClick(ActionEvent event) {
-        if (mediator.getFileSaved()) {
+        if (mediator.isFileSaved()) {
             //mediator.notify(Events.AUTO_SAVE);
             mediator.getEventBuilder().withEvent(Events.AUTO_SAVE).build();;
         } else {

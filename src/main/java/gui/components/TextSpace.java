@@ -56,7 +56,7 @@ public class TextSpace extends HBox {
      */
     private void textAreaChangeListener() {
         textArea.textProperty().addListener((observable, oldValue, newValue) -> {
-            mediator.getEventBuilder().textChanged(true).withEvent(Events.TEXT_CHANGED).build();
+            mediator.getEventBuilder().withEvent(Events.TEXT_CHANGED).build();
         });
     }
 
@@ -80,7 +80,7 @@ public class TextSpace extends HBox {
             textArea.replaceText(connector.getText());
         }
         //mediator.notify(Events.TEXT_CHANGED);
-        mediator.getEventBuilder().withEvent(Events.TEXT_CHANGED).build();;
+        mediator.getEventBuilder().withEvent(Events.TEXT_CHANGED).build();
     }
 
     /**
