@@ -65,7 +65,8 @@ public class MainMenuBar extends MenuBar {
      **/
     @FXML
     void onNewTabClick(ActionEvent event) {
-        mediator.sendEvent(Events.NEW_TAB);
+        //mediator.notify(Events.NEW_TAB);
+        mediator.getEventBuilder().withEvent(Events.NEW_TAB).build();
     }
 
     /**
@@ -94,11 +95,13 @@ public class MainMenuBar extends MenuBar {
      */
     @FXML
     void saveMenuItemClick(ActionEvent event) {
-        if (mediator.getFileIsSaved()) {
-            mediator.sendEvent(Events.AUTO_SAVE);
+        if (mediator.getFileSaved()) {
+            //mediator.notify(Events.AUTO_SAVE);
+            mediator.getEventBuilder().withEvent(Events.AUTO_SAVE).build();;
         } else {
             showSaveWindow();
-            mediator.sendEvent(Events.SAVE_MENU);
+            mediator.getEventBuilder().fileSaved(true).withEvent(Events.SAVE_MENU).build();
+            //mediator.notify(Events.SAVE_MENU);
         }
     }
 
@@ -111,7 +114,8 @@ public class MainMenuBar extends MenuBar {
      */
     @FXML
     void closeMenuItemClick(ActionEvent event) {
-        mediator.sendEvent(Events.CLOSE_MENU);
+        //mediator.notify(Events.CLOSE_MENU);
+        mediator.getEventBuilder().withEvent(Events.CLOSE_MENU).build();;
         EditorUtils.onCloseExitConfirmation();
     }
 
@@ -123,7 +127,8 @@ public class MainMenuBar extends MenuBar {
      */
     @FXML
     void undoMenuItemClick(ActionEvent event) {
-        mediator.sendEvent(Events.UNDO_TEXT);
+        //mediator.notify(Events.UNDO_TEXT);
+        mediator.getEventBuilder().withEvent(Events.UNDO_TEXT).build();;
     }
 
     /**
@@ -134,7 +139,8 @@ public class MainMenuBar extends MenuBar {
      */
     @FXML
     void redoMenuItemClick(ActionEvent event) {
-        mediator.sendEvent(Events.REDO_TEXT);
+        //mediator.notify(Events.REDO_TEXT);
+        mediator.getEventBuilder().withEvent(Events.REDO_TEXT).build();;
     }
 
     /**
@@ -142,7 +148,8 @@ public class MainMenuBar extends MenuBar {
      */
     @FXML
     void aboutMenuItemClick(ActionEvent event) {
-        mediator.sendEvent(Events.ABOUT_MENU);
+        //mediator.notify(Events.ABOUT_MENU);
+        mediator.getEventBuilder().withEvent(Events.ABOUT_MENU).build();;
     }
 
     /**
@@ -181,7 +188,12 @@ public class MainMenuBar extends MenuBar {
         }
         file = new File(file.getPath() + ".txt"); //might be only in linux that the file is not saved as title.txt
         EditorUtils.writeToFile(mediator.getText(), file.toPath());
-        mediator.sendEvent(Events.SAVE_MENU);
+        //mediator.notify(Events.SAVE_MENU);
+        mediator.getEventBuilder()
+                .withEvent(Events.SAVE_MENU)
+                .fileSaved(true)
+                .textChanged(false)
+                .build();
     }
 
     /**
@@ -201,21 +213,16 @@ public class MainMenuBar extends MenuBar {
      * @see EditorUtils
      */
     private void readFile(File file) {
-        Task<String> task = new Task<String>() {
-            @Override
-            protected String call() {
-                List<String> list = EditorUtils.readFromFile(file);
-                String str = list.stream().collect(Collectors.joining("\n"));
-                setCurrentText(str);
-                return str;
-            }
-        };
-
-        task.setOnSucceeded(t -> mediator.sendEvent(Events.OPEN_MENU));
-        task.setOnFailed(e -> setCurrentText("FAILED"));
-        Thread t = new Thread(task);
-        t.setDaemon(true);
-        t.start();
+        List<String> list = EditorUtils.readFromFile(file);
+        String str = list.stream().collect(Collectors.joining("\n"));
+        setCurrentText(str);
+        mediator.getEventBuilder()
+                .withEvent(Events.OPEN_MENU)
+                .withFilePath(file.toPath())
+                .withText(text)
+                .textChanged(false)
+                .fileSaved(true)
+                .build();
     }
 
     /**

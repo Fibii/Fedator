@@ -89,6 +89,7 @@ public class MainController {
     }
 
     //todo: add a listener to tab#onClose so it wont close the tab when the text is edited
+    /* and also remove the closed tab from the tablist... */
 
     /**
      * @return the current selected tab

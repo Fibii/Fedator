@@ -36,7 +36,7 @@ public class EditorUtils {
 
     public static void onCloseExitConfirmation() {
         //todo: debug why this is true when a file is opened but not edited
-        if (Mediator.getInstance().getTextIsChanged()) {
+        if (Mediator.getInstance().getTextChanged()) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Are you sure you want to exit?");
             alert.setHeaderText("Are you sure you want to exit?");
@@ -47,10 +47,11 @@ public class EditorUtils {
             alert.getButtonTypes().setAll(yesBtn, noBtn, cnlBtn);
             Optional<ButtonType> btnClicked = alert.showAndWait();
             if (btnClicked.get() == yesBtn) {
-                if (Mediator.getInstance().getFileIsSaved()) { //we already have the path, so auto save the changes with opening the save window
-                    Mediator.getInstance().sendEvent(Events.EXIT_EVENT);
+                if (Mediator.getInstance().getFileSaved()) { //we already have the path, so auto save the changes with opening the save window
+                    Mediator.getInstance().getEventBuilder().withEvent(Events.EXIT_EVENT).build();
                 } else {
-                    Mediator.getInstance().sendEvent(Events.SAVE_FILE);
+                    //Mediator.getInstance().notify(Events.SAVE_FILE);
+                    Mediator.getInstance().getEventBuilder().withEvent(Events.SAVE_FILE).fileSaved(true);
                 }
             } else if (btnClicked.get() == noBtn) {
                 System.exit(0);
