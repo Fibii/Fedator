@@ -37,28 +37,56 @@ public class EditorUtils {
     public static void onCloseExitConfirmation() {
         //todo: debug why this is true when a file is opened but not edited
         if (Mediator.getInstance().getTextChanged()) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Are you sure you want to exit?");
-            alert.setHeaderText("Are you sure you want to exit?");
-            alert.setContentText("Do you want to save your changes before quitting?");
-            ButtonType yesBtn = new ButtonType("Yes");
-            ButtonType noBtn = new ButtonType("No");
-            ButtonType cnlBtn = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
-            alert.getButtonTypes().setAll(yesBtn, noBtn, cnlBtn);
+            Alert alert = createConfirmationAlert("Do you want to save your changes before quitting?", "Yes", "No");
             Optional<ButtonType> btnClicked = alert.showAndWait();
-            if (btnClicked.get() == yesBtn) {
+            if (btnClicked.get().getText().equals("Yes")) {
                 if (Mediator.getInstance().getFileSaved()) { //we already have the path, so auto save the changes with opening the save window
                     Mediator.getInstance().getEventBuilder().withEvent(Events.EXIT_EVENT).build();
                 } else {
+                    // this should open the save window todo: fix
                     //Mediator.getInstance().notify(Events.SAVE_FILE);
                     Mediator.getInstance().getEventBuilder().withEvent(Events.SAVE_FILE).fileSaved(true);
                 }
-            } else if (btnClicked.get() == noBtn) {
+            } else if (btnClicked.get().getText().equals("No")) {
                 System.exit(0);
             }
         } else {
             System.exit(0);
         }
+    }
+
+    /**
+     * creates an alert confirmation window with 2/3 buttons, 2 custom buttons, 1 cancel button
+     * @param alertText: the content of the alert
+     * @param buttonText1: the text value of the first button
+     * @param buttonText2: the text value of the second button
+     *
+     * usage:
+     *      Alert alert = EditorUtils.createConfirmationAlert("Do you want to save your changes before quitting?", "Yes", "No");
+     *      Optional<ButtonType> btnClicked = alert.showAndWait();
+     *      if(btnClicked.get().getText().equals("type"){
+     *          // do something
+     *      } ...
+     *
+     * you can create one custom button only, just pass "" as an argument for buttonText2
+     *
+     *  // todo: consider making this return alert.showAndWait() instead;
+     * */
+    public static Alert createConfirmationAlert(String alertText, String buttonText1, String buttonText2){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Are you sure you want to exit?");
+        alert.setHeaderText("Are you sure you want to exit?");
+        alert.setContentText(alertText);
+        ButtonType btn1 = new ButtonType(buttonText1);
+        ButtonType btn2 = new ButtonType(buttonText2);
+        ButtonType cnlBtn = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+        if(buttonText2.isEmpty()){
+            alert.getButtonTypes().setAll(btn1, cnlBtn);
+            return alert;
+        }
+        alert.getButtonTypes().setAll(btn1, btn2, cnlBtn);
+
+        return alert;
     }
 
     public static void setCurrentEditorTitle(Node node, Tab tab, Path pathToFile) {
