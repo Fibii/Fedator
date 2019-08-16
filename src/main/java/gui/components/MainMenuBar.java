@@ -100,7 +100,7 @@ public class MainMenuBar extends MenuBar {
             //mediator.notify(Events.AUTO_SAVE);
             mediator.getEventBuilder().withEvent(Events.AUTO_SAVE).build();;
         } else {
-            mediator.getEventBuilder().fileSaved(true).withEvent(Events.SAVE_MENU).build();
+            mediator.getEventBuilder().fileSaved(true).withFilePath(filePath).withEvent(Events.SAVE_MENU).build();
             //mediator.notify(Events.SAVE_MENU);
         }
     }
@@ -188,11 +188,12 @@ public class MainMenuBar extends MenuBar {
         }
         file = new File(file.getPath() + ".txt"); //might be only in linux that the file is not saved as title.txt
         EditorUtils.writeToFile(mediator.getText(), file.toPath());
-        //mediator.notify(Events.SAVE_MENU);
+        filePath = file.toPath();
         mediator.getEventBuilder()
                 .withEvent(Events.SAVE_MENU)
                 .fileSaved(true)
                 .textChanged(false)
+                .withFilePath(filePath)
                 .build();
     }
 

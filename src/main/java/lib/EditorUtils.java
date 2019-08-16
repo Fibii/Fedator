@@ -31,17 +31,14 @@ public class EditorUtils {
     }
 
     public static void onCloseExitConfirmation() {
-        //todo: debug why this is true when a file is opened but not edited
-        if (Mediator.getInstance().isTextChanged()) {
+        if (Mediator.getInstance().shouldExit()) {
             Alert alert = createConfirmationAlert("Do you want to save your changes before quitting?", "Yes", "No");
             Optional<ButtonType> btnClicked = alert.showAndWait();
             if (btnClicked.get().getText().equals("Yes")) {
                 if (Mediator.getInstance().isFileSaved()) { //we already have the path, so auto save the changes with opening the save window
                     Mediator.getInstance().getEventBuilder().withEvent(Events.EXIT_EVENT).build();
                 } else {
-                    // this should open the save window todo: fix
-                    //Mediator.getInstance().notify(Events.SAVE_FILE);
-                    Mediator.getInstance().getEventBuilder().withEvent(Events.SAVE_FILE).fileSaved(true);
+                    Mediator.getInstance().getEventBuilder().withEvent(Events.SAVE_REQUEST).build();
                 }
             } else if (btnClicked.get().getText().equals("No")) {
                 System.exit(0);
@@ -90,44 +87,45 @@ public class EditorUtils {
      * updates the stage title whenever the selected tab changes
      *
      * @param tabPane:    the TabPane of the main controller
-     * @param pathToFile: the path of the opened file in the selected tab
+     * @param filePath: the path of the opened file in the selected tab
      * @param tabNumber:  the index of the selected tab
      *                    <p>
      *                    Getting the tab using the index of the selected tab is used because tabPane...getSelectedTab somehow returns the previous selected tab,
      */
-    public static void setCurrentEditorTitle(TabPane tabPane, Path pathToFile, int tabNumber) {
+    public static void setCurrentEditorTitle(TabPane tabPane, Path filePath, int tabNumber) {
         Stage stage = (Stage) tabPane.getParent().getScene().getWindow();
 
-        if (pathToFile == null) {
+        if (filePath == null) {
             stage.setTitle("Untitled tab " + tabNumber);
             return;
         }
 
-        stage.setTitle(pathToFile.toString());
-        tabPane.getTabs().get(tabNumber).setText(pathToFile.getFileName().toString());
+        stage.setTitle(filePath.toString());
+        tabPane.getTabs().get(tabNumber).setText(filePath.getFileName().toString());
     }
 
     /**
      * updates the stage title
      * used whenever the user opens a new file, or save a new file
      *
-     * @param path: the path of the saved file
-     * @param tab:  the current tab, used to get the stage
+     * @param filePath: the path of the saved file
+     * @param tabPane:  the current tabPane, used to get the stage
      */
-    public static void setStageTitle(Tab tab, Path path) {
-        Stage stage = (Stage) tab.getTabPane().getParent().getScene().getWindow();
-        stage.setTitle(path.toString());
+    public static void setStageTitle(TabPane tabPane, Path filePath) {
+        Stage stage = (Stage) tabPane.getParent().getScene().getWindow();
+        stage.setTitle(filePath.toString());
     }
 
     /**
      * updates the stage title
      * used whenever the user opens a new file, or save a new file
      *
-     * @param path: the path of the saved file
-     * @param: tab: the current tab
+     * @param filePath: the path of the saved file
+     * @param tabPane:  the current tabPane, used to get the stage, and the selected tab
+     * @param tabNumber: the index of the selected tab
      */
-    public static void setTabTitle(Tab tab, Path path) {
-        tab.setText(String.valueOf(path.getFileName()));
+    public static void setTabTitle(TabPane tabPane, Path filePath, int tabNumber) {
+        tabPane.getTabs().get(tabNumber).setText(filePath.getFileName().toString());
     }
 
     public static List<String> readFromFile(File file) {

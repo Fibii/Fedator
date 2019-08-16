@@ -4,6 +4,7 @@ import gui.MainController;
 import gui.TabSpace;
 import gui.components.MainMenuBar;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import lib.EditorUtils;
 
 import java.nio.file.Path;
@@ -48,6 +49,17 @@ public class Mediator implements IMediator {
     public boolean isFileSaved() {
         int tabIndex = mainController.getCurrentTabIndex();
         return tabSpaces.get(tabIndex).isFileSaved();
+    }
+
+    /**
+     * checks whether to show the confirmation window when the user exits the app or not
+     * by checking if all tabspaces have no changed text
+     * @return AND of tabspaces.isTextChanged() ie true if any value is true in tabspaces, false otherwise
+     */
+
+    public boolean shouldExit(){
+        return tabSpaces.stream()
+                .anyMatch(tabSpace -> tabSpace.isTextChanged());
     }
 
     public boolean isTextChanged() {
@@ -96,7 +108,7 @@ public class Mediator implements IMediator {
             case OPEN_MENU:
                 tabSpaces.get(tabIndex).sendEvent(OPEN_MENU);
                 mainController.updateIsSaved(fileSaved);
-                updateTitles(mainController.getCurrentTab(), filePath);
+                updateTitles();
                 break;
 
             case REDO_TEXT:
@@ -104,7 +116,8 @@ public class Mediator implements IMediator {
                 break;
 
             case SAVE_MENU:
-                updateTitles(mainController.getCurrentTab(), filePath);
+                tabSpaces.get(tabIndex).sendEvent(SAVE_MENU);
+                updateTitles();
                 break;
 
             case ABOUT_MENU:
@@ -117,26 +130,28 @@ public class Mediator implements IMediator {
 
             case CLOSE_MENU:
                 break;
-            case SAVE_FILE:
-                mainMenuBar.showSaveWindow();
-                break;
+
             case EXIT_EVENT:
                 text = tabSpaces.get(tabIndex).getText();
                 EditorUtils.writeToFile(text, filePath);
                 System.exit(0);
                 break;
+
             case TAB_CHANGED:
                 System.out.println("currentTABINDEX: " + mainController.getCurrentTabIndex());
                 System.out.println("currentTAB: " + mainController.getCurrentTab());
                 System.out.println(tabSpaces.get(tabIndex).getCurrentPath());
                 EditorUtils.setCurrentEditorTitle(mainController.getTabPane(), tabSpaces.get(tabIndex).getCurrentPath(), mainController.getCurrentTabIndex());
                 break;
+
+            case SAVE_REQUEST:
+                mainMenuBar.showSaveWindow();
         }
     }
 
-    private void updateTitles(Tab tab, Path path){
-        EditorUtils.setTabTitle(tab, path);
-        EditorUtils.setStageTitle(tab, path);
+    private void updateTitles(){
+        EditorUtils.setTabTitle(mainController.getTabPane(), getFilePath(), mainController.getCurrentTabIndex());
+        EditorUtils.setStageTitle(mainController.getTabPane(), getFilePath());
     }
 
 
