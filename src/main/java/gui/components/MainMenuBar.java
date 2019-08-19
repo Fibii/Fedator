@@ -1,6 +1,9 @@
 package gui.components;
 
 import gui.mediator.IMediator;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import lib.EditorUtils;
 import gui.mediator.Events;
 import gui.mediator.Mediator;
@@ -154,7 +157,20 @@ public class MainMenuBar extends MenuBar {
      */
     @FXML
     void aboutMenuItemClick(ActionEvent event) {
-        //mediator.notify(Events.ABOUT_MENU);
+        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/about.fxml"));
+        Parent root = null;
+        try {
+            root = fxmlLoader.load();
+            Scene scene = about.getParentPopup().getScene();
+            Stage stage = new Stage();
+            stage.setTitle("My New Stage Title");
+            stage.setScene(new Scene(root, 400, 200));
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         mediator.getEventBuilder().withEvent(Events.ABOUT_MENU).build();
     }
 

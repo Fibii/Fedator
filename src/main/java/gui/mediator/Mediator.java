@@ -137,7 +137,6 @@ public class Mediator implements IMediator {
                 break;
 
             case ABOUT_MENU:
-                //todo: implement this
                 break;
             case AUTO_SAVE:
                 text = tabSpaces.get(tabIndex).getText();
