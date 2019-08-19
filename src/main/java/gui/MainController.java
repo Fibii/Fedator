@@ -3,6 +3,7 @@ package gui;
 import gui.components.MainMenuBar;
 import gui.components.TextSpace;
 import gui.mediator.Events;
+import gui.mediator.IMediator;
 import gui.mediator.Mediator;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -31,7 +32,7 @@ public class MainController {
 
     private ArrayList<TabSpace> tabSpaces = new ArrayList<>();
     private int textSpacesCount = 0;
-    private Mediator mediator = Mediator.getInstance();
+    private IMediator mediator = Mediator.getInstance();
 
     @FXML
     public void initialize() {

@@ -1,5 +1,6 @@
 package gui.components;
 import gui.mediator.Events;
+import gui.mediator.IMediator;
 import gui.mediator.Mediator;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +14,7 @@ import java.nio.file.Path;
 
 public class TextSpace extends HBox {
     private int textSpaceNumber = 0;
-    private Mediator mediator = Mediator.getInstance();
+    private IMediator mediator = Mediator.getInstance();
     private Path currentPath;
     @FXML
     private CodeArea textArea;

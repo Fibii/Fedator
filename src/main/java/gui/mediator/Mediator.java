@@ -11,11 +11,6 @@ import java.util.List;
 import static gui.mediator.Events.*;
 
 
-//todo: define a Component interface, and make mediator use components
-/*
-* like Component mainMenuBar instead of MainMenuBar mainMenuBar..
-* */
-
 public class Mediator implements IMediator {
     private Path filePath;
     private MainController mainController;
@@ -40,10 +35,14 @@ public class Mediator implements IMediator {
         this.tabSpaces = tabSpaces;
     }
 
+    @Override
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
     }
 
+    /**
+     * @return true if the current tab has a file that is saved, false otherwise.
+     * */
     public boolean isFileSaved() {
         int tabIndex = mainController.getCurrentTabIndex();
         return tabSpaces.get(tabIndex).isFileSaved();
@@ -60,7 +59,10 @@ public class Mediator implements IMediator {
                 .anyMatch(tabSpace -> tabSpace.isTextChanged());
     }
 
-    public boolean isTextChanged() {
+    /**
+     * @return true is the text is changed in the selected tab, false otherwise
+     * */
+    private boolean isTextChanged() {
         if(tabSpaces.size() == 0){
             return false;
         }
@@ -71,20 +73,32 @@ public class Mediator implements IMediator {
         return tabSpaces.get(tabIndex).isTextChanged();
     }
 
+    /**
+     * @return the text in the selected tab*/
     public String getText() {
         int tabIndex = mainController.getCurrentTabIndex();
         return tabSpaces.get(tabIndex).getText();
     }
 
-    /** returns the mediator's text, used by textSpace when OPEN_MENU*/
+    /**
+     * @return the mediator's text, used by textSpace when OPEN_MENU
+     * ie gets the text from the file, to the mediator, then from the mediator, to textspace
+     * */
     public String getMediatorText(){
         return text;
     }
 
+    /**
+     * @return the mediator's filepath, used by mediator to update the title when OPEN_MENU
+     * */
     public Path getMediatorFilePath(){
         return filePath;
     }
 
+    /**
+     * @return the Path of the file that is opened in the selected tab
+     * */
+    @Override
     public Path getFilePath() {
         int tabIndex = mainController.getCurrentTabIndex();
         return tabSpaces.get(tabIndex).getCurrentPath();
@@ -147,6 +161,10 @@ public class Mediator implements IMediator {
         }
     }
 
+    /**
+     * updates the title of the tab, and stage whenever the selected tab changes
+     * does nothing if no file was opened
+     * */
     private void updateTitles(){
         if(getFilePath() == null){
             return;
@@ -155,7 +173,10 @@ public class Mediator implements IMediator {
         EditorUtils.setStageTitle(mainController.getTabPane(), getFilePath());
     }
 
-
+    /**
+     * returns a builder of events, used to build events
+     * */
+    @Override
     public EventBuilder getEventBuilder(){
         return new EventBuilder(textChanged, fileSaved, filePath, text);
     }

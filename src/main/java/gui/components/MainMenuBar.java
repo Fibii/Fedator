@@ -1,5 +1,6 @@
 package gui.components;
 
+import gui.mediator.IMediator;
 import lib.EditorUtils;
 import gui.mediator.Events;
 import gui.mediator.Mediator;
@@ -39,7 +40,7 @@ public class MainMenuBar extends MenuBar {
     @FXML
     private MenuItem open;
 
-    private Mediator mediator = Mediator.getInstance();
+    private IMediator mediator = Mediator.getInstance();
     private FileChooser fileChooser = new FileChooser();
     private String text;
     private Path filePath;
