@@ -69,7 +69,6 @@ public class MainMenuBar extends MenuBar {
     }
 
 
-    //todo: fix when open menu is clicked, and no tabs are open
     /**
      * @param event javafx event..
      *              opens a new window and prompt the user to choose a text file

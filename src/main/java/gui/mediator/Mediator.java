@@ -118,6 +118,10 @@ public class Mediator implements IMediator {
                 tabSpaces.get(tabIndex).sendEvent(UNDO_TEXT);
                 break;
             case OPEN_MENU:
+                if(mainController.getTabPane().getTabs().size() == 0){
+                    mainController.createNewTab();
+                    tabIndex = mainController.getCurrentTabIndex();
+                }
                 tabSpaces.get(tabIndex).sendEvent(OPEN_MENU);
                 mainController.updateIsSaved(fileSaved);
                 updateTitles();
