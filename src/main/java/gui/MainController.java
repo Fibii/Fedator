@@ -17,7 +17,6 @@ import smallUndoEngine.Connector;
 import java.util.ArrayList;
 import java.util.Optional;
 
-//todo: add null checks, for every class
 public class MainController {
 
     @FXML
@@ -52,7 +51,6 @@ public class MainController {
         });
     }
 
-    //todo: add * to a file that is opened and edited, but not saved
     private void updateCurrentStageTitle(int currentTab) {
         Stage stage = (Stage) tabPane.getParent().getScene().getWindow();
         if (mediator.isFileSaved()) {

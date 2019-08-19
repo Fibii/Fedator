@@ -108,8 +108,8 @@ public class Mediator implements IMediator {
         int tabIndex = mainController.getCurrentTabIndex();
         switch (event) {
             case TEXT_CHANGED:
-                //textChanged = true;
                 tabSpaces.get(tabIndex).sendEvent(TEXT_CHANGED);
+                updateTabTitle(tabIndex);
                 break;
             case NEW_TAB:
                 mainController.createNewTab();
@@ -142,6 +142,7 @@ public class Mediator implements IMediator {
             case AUTO_SAVE:
                 text = tabSpaces.get(tabIndex).getText();
                 EditorUtils.writeToFile(text, filePath);
+                updateTitles();
                 break;
 
             case CLOSE_MENU:
@@ -175,6 +176,14 @@ public class Mediator implements IMediator {
         }
         EditorUtils.setTabTitle(mainController.getTabPane(), getFilePath(), mainController.getCurrentTabIndex());
         EditorUtils.setStageTitle(mainController.getTabPane(), getFilePath());
+    }
+
+    private void updateTabTitle(int index){
+            String title = mainController.getTabPane().getTabs().get(index).getText();
+            if(title.charAt(title.length() - 1) == '*'){
+                return;
+            }
+            mainController.getTabPane().getTabs().get(index).setText(title + " *");
     }
 
     /**

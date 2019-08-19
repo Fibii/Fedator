@@ -29,9 +29,6 @@ public class TabSpace {
         fileSaved = bool;
     }
 
-    public boolean fileSaved(){
-        return fileSaved;
-    }
 
     public void sendEvent(Events event){
         switch (event) {
@@ -54,6 +51,8 @@ public class TabSpace {
 
             case SAVE_MENU:
                 textSpace.setCurrentPath(mediator.getMediatorFilePath());
+                fileSaved = true;
+                textChanged = false;
                 break;
             case TEXT_CHANGED:
                 connector.update(textSpace.getText());
