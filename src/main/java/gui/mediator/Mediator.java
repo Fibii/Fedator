@@ -3,8 +3,6 @@ package gui.mediator;
 import gui.MainController;
 import gui.TabSpace;
 import gui.components.MainMenuBar;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import lib.EditorUtils;
 
 import java.nio.file.Path;
@@ -145,11 +143,14 @@ public class Mediator implements IMediator {
                 break;
 
             case SAVE_REQUEST:
-                mainMenuBar.showSaveWindow();
+                EditorUtils.showSaveWindow(mainController.getTabPane().getScene().getWindow());
         }
     }
 
     private void updateTitles(){
+        if(getFilePath() == null){
+            return;
+        }
         EditorUtils.setTabTitle(mainController.getTabPane(), getFilePath(), mainController.getCurrentTabIndex());
         EditorUtils.setStageTitle(mainController.getTabPane(), getFilePath());
     }

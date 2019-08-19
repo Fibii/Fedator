@@ -3,7 +3,9 @@ package lib;
 import gui.mediator.Events;
 import gui.mediator.Mediator;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.io.File;
 import java.io.IOException;
@@ -136,5 +138,31 @@ public class EditorUtils {
             e.printStackTrace();
         }
         return lines;
+    }
+
+    /**
+     * opens a fileChooser save windows so the user can save a new file as .txt
+     * does nothing if the file in null
+     * creates a new text file with the current text in the specified path
+     * sends SAVE_MENU event to the mediator
+     *
+     * @see Mediator
+     * @see EditorUtils#writeToFile(String, Path)
+     */
+    public static Path showSaveWindow(Window window) {
+        Mediator mediator = Mediator.getInstance();
+        FileChooser fileChooser = new FileChooser();
+
+        fileChooser.setTitle("Save");
+        fileChooser.getExtensionFilters().add
+                (new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt"));
+        File file = fileChooser.showSaveDialog(window);
+        if (file == null) { //check if the user clicked the cancel button
+            return null;
+        }
+        file = new File(file.getPath() + ".txt"); //might be only in linux that the file is not saved as title.txt
+        EditorUtils.writeToFile(mediator.getText(), file.toPath());
+        Path filePath = file.toPath();
+        return filePath;
     }
 }
