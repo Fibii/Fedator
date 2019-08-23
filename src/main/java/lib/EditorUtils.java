@@ -37,7 +37,7 @@ public class EditorUtils {
             Alert alert = createConfirmationAlert("Do you want to save your changes before quitting?", "Yes", "No");
             Optional<ButtonType> btnClicked = alert.showAndWait();
             if (btnClicked.get().getText().equals("Yes")) {
-                if (Mediator.getInstance().isFileSaved()) { //we already have the path, so auto save the changes with opening the save window
+                if (Mediator.getInstance().isFileSaved()) { // auto save the changes without opening the save window
                     Mediator.getInstance().getEventBuilder().withEvent(Events.EXIT_EVENT).build();
                 } else {
                     Mediator.getInstance().getEventBuilder().withEvent(Events.SAVE_REQUEST).build();

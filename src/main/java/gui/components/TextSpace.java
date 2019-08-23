@@ -80,7 +80,6 @@ public class TextSpace extends HBox {
         if(undoIsNotEmpty) {
             textArea.replaceText(editorTextHistory.getText());
         }
-        //mediator.notify(Events.TEXT_CHANGED);
         mediator.getEventBuilder().withEvent(Events.TEXT_CHANGED).build();
     }
 
@@ -96,7 +95,6 @@ public class TextSpace extends HBox {
         if(redoIsNotEmpty){
             textArea.replaceText(editorTextHistory.getText());
         }
-        //mediator.notify(Events.TEXT_CHANGED);
         mediator.getEventBuilder().withEvent(Events.TEXT_CHANGED).build();
 
     }
