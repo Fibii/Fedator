@@ -13,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
+import smallUndoEngine.EditorTextHistory;
 
 import java.io.File;
 import java.io.IOException;
@@ -134,7 +135,7 @@ public class MainMenuBar extends MenuBar {
      * @param event javafx event..
      *              sends a UNDO_TEXT event to the mediator to undo the current text
      * @see Mediator
-     * @see smallUndoEngine.Connector
+     * @see EditorTextHistory
      */
     @FXML
     void undoMenuItemClick(ActionEvent event) {
@@ -145,7 +146,7 @@ public class MainMenuBar extends MenuBar {
      * @param event javafx event..
      *              sends a REDO_TEXT event to the mediator to undo the current text
      * @see Mediator
-     * @see smallUndoEngine.Connector
+     * @see EditorTextHistory
      */
     @FXML
     void redoMenuItemClick(ActionEvent event) {

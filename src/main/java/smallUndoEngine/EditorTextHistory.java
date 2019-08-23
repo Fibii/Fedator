@@ -1,14 +1,14 @@
 package smallUndoEngine;
 
 /** acts as a connector between the MainController class and the Edit class*/
-public class Connector implements IEdit {
+public class EditorTextHistory implements IEdit {
     private Edit edit = new Edit();
 
-    public Connector(String text){
+    public EditorTextHistory(String text){
         edit.setText(text);
     }
 
-    public Connector(){
+    public EditorTextHistory(){
 
     }
 

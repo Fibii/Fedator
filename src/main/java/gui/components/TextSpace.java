@@ -7,7 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.HBox;
 
 import org.fxmisc.richtext.*;
-import smallUndoEngine.Connector;
+import smallUndoEngine.EditorTextHistory;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -53,7 +53,7 @@ public class TextSpace extends HBox {
      * updates the redo/undo stack
      *
      * @see Mediator
-     * @see smallUndoEngine.Connector
+     * @see EditorTextHistory
      */
     private void textAreaChangeListener() {
         textArea.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -73,12 +73,12 @@ public class TextSpace extends HBox {
      * sends TEXT_CHANGED event to the mediator
      *
      * @see Mediator
-     * @see smallUndoEngine.Connector
+     * @see EditorTextHistory
      */
-    public void undo(Connector connector) {
-        boolean undoIsNotEmpty = connector.undo();
+    public void undo(EditorTextHistory editorTextHistory) {
+        boolean undoIsNotEmpty = editorTextHistory.undo();
         if(undoIsNotEmpty) {
-            textArea.replaceText(connector.getText());
+            textArea.replaceText(editorTextHistory.getText());
         }
         //mediator.notify(Events.TEXT_CHANGED);
         mediator.getEventBuilder().withEvent(Events.TEXT_CHANGED).build();
@@ -89,12 +89,12 @@ public class TextSpace extends HBox {
      * sends TEXT_CHANGED event to the mediator
      *
      * @see Mediator
-     * @see smallUndoEngine.Connector
+     * @see EditorTextHistory
      */
-    public void redo(Connector connector) {
-        boolean redoIsNotEmpty = connector.redo();
+    public void redo(EditorTextHistory editorTextHistory) {
+        boolean redoIsNotEmpty = editorTextHistory.redo();
         if(redoIsNotEmpty){
-            textArea.replaceText(connector.getText());
+            textArea.replaceText(editorTextHistory.getText());
         }
         //mediator.notify(Events.TEXT_CHANGED);
         mediator.getEventBuilder().withEvent(Events.TEXT_CHANGED).build();

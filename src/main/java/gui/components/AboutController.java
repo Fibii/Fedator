@@ -7,6 +7,9 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
+
 
 public class AboutController {
 
@@ -27,7 +30,12 @@ public class AboutController {
 
     @FXML
     void githubLinkOnAction(ActionEvent event){
-        //todo: open default browser to my github page
+        // works only on linux, requires python..
+        try {
+            Runtime.getRuntime().exec("python -mwebbrowser https://github.com/Fibii");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

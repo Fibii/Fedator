@@ -12,7 +12,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.stage.Stage;
 import lib.EditorUtils;
-import smallUndoEngine.Connector;
+import smallUndoEngine.EditorTextHistory;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -27,7 +27,7 @@ public class MainController {
     @FXML
     private MainMenuBar mainMenuBar;
 
-    private Connector connector = new Connector();
+    private EditorTextHistory editorTextHistory = new EditorTextHistory();
 
     private ArrayList<TabSpace> tabSpaces = new ArrayList<>();
     private int textSpacesCount = 0;
@@ -63,16 +63,16 @@ public class MainController {
     }
 
     /**
-     * creates new tab and a new connector if the array of tabs is not full
+     * creates new tab and a new editorTextHistory if the array of tabs is not full
      */
     public void createNewTab() {
         Tab tab = new Tab("untitled tab " + textSpacesCount);
         TextSpace textSpace = new TextSpace();
-        Connector connector = new Connector();
+        EditorTextHistory editorTextHistory = new EditorTextHistory();
         textSpace.setNumber(textSpacesCount);
         System.out.println("textspace " + textSpacesCount + " is created");
         tab.setContent(textSpace);
-        TabSpace tabSpace = addTabSpace(textSpace, connector, false);
+        TabSpace tabSpace = addTabSpace(textSpace, editorTextHistory, false);
         tab.setOnCloseRequest(event -> {
             Alert alert = EditorUtils.createConfirmationAlert("Are you sure you want to close this tab?", "yes", "");
             boolean close = true;
@@ -100,12 +100,12 @@ public class MainController {
      * adds a new tabspace the the list of tabspaces
      *
      * @param textSpace the current TextSpace of TabSpace
-     * @param connector the current Connector of TabSpace
+     * @param editorTextHistory the current EditorTextHistory of TabSpace
      * @param isSaved   specifies if the file is saved in the system
      * @return: the created tabSpace
      */
-    private TabSpace addTabSpace(TextSpace textSpace, Connector connector, boolean isSaved) {
-        TabSpace current = new TabSpace(textSpace, connector);
+    private TabSpace addTabSpace(TextSpace textSpace, EditorTextHistory editorTextHistory, boolean isSaved) {
+        TabSpace current = new TabSpace(textSpace, editorTextHistory);
         current.setIsSaved(isSaved);
         tabSpaces.add(current);
         return current;

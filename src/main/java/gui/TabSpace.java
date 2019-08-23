@@ -3,23 +3,23 @@ package gui;
 import gui.components.TextSpace;
 import gui.mediator.Events;
 import gui.mediator.Mediator;
-import smallUndoEngine.Connector;
+import smallUndoEngine.EditorTextHistory;
 
 import java.nio.file.Path;
 
-/** a class that wraps TextSpace and Connector objects together */
+/** a class that wraps TextSpace and EditorTextHistory objects together */
 public class TabSpace {
 
     private TextSpace textSpace;
-    private Connector connector;
+    private EditorTextHistory editorTextHistory;
     private boolean fileSaved;
     private boolean textChanged;
 
     private Mediator mediator = Mediator.getInstance();
 
-    public TabSpace(TextSpace textSpace, Connector connector) {
+    public TabSpace(TextSpace textSpace, EditorTextHistory editorTextHistory) {
         this.textSpace = textSpace;
-        this.connector = connector;
+        this.editorTextHistory = editorTextHistory;
     }
 
     /** updates fileSaved
@@ -33,12 +33,12 @@ public class TabSpace {
     public void sendEvent(Events event){
         switch (event) {
             case UNDO_TEXT:
-                textSpace.undo(connector);
+                textSpace.undo(editorTextHistory);
                 textChanged = true;
                 break;
 
             case REDO_TEXT:
-                textSpace.redo(connector);
+                textSpace.redo(editorTextHistory);
                 textChanged = true;
                 break;
 
@@ -55,7 +55,7 @@ public class TabSpace {
                 textChanged = false;
                 break;
             case TEXT_CHANGED:
-                connector.update(textSpace.getText());
+                editorTextHistory.update(textSpace.getText());
                 textChanged = true;
         }
 
