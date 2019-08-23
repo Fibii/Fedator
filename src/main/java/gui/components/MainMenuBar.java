@@ -1,6 +1,9 @@
 package gui.components;
 
-import javafx.concurrent.Task;
+import gui.mediator.IMediator;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import lib.EditorUtils;
 import gui.mediator.Events;
 import gui.mediator.Mediator;
@@ -10,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
+import smallUndoEngine.EditorTextHistory;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,11 +44,10 @@ public class MainMenuBar extends MenuBar {
     @FXML
     private MenuItem open;
 
-    private Mediator mediator = Mediator.getInstance();
+    private IMediator mediator = Mediator.getInstance();
     private FileChooser fileChooser = new FileChooser();
     private String text;
     private Path filePath;
-    private int numberOfLines;
 
     public MainMenuBar() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
@@ -66,8 +69,9 @@ public class MainMenuBar extends MenuBar {
      **/
     @FXML
     void onNewTabClick(ActionEvent event) {
-        mediator.sendEvent(Events.NEW_TAB);
+        mediator.getEventBuilder().withEvent(Events.NEW_TAB).build();
     }
+
 
     /**
      * @param event javafx event..
@@ -95,11 +99,22 @@ public class MainMenuBar extends MenuBar {
      */
     @FXML
     void saveMenuItemClick(ActionEvent event) {
-        if (mediator.getFileIsSaved()) {
-            mediator.sendEvent(Events.AUTO_SAVE);
+        if (mediator.isFileSaved()) {
+            mediator.getEventBuilder().withEvent(Events.AUTO_SAVE).build();
         } else {
-            showSaveWindow();
-            mediator.sendEvent(Events.SAVE_MENU);
+
+            filePath = EditorUtils.showSaveWindow(save.getParentPopup().getScene().getWindow());
+
+            if(filePath == null){
+                return;
+            }
+
+            mediator.getEventBuilder()
+                    .withEvent(Events.SAVE_MENU)
+                    .fileSaved(true)
+                    .textChanged(false)
+                    .withFilePath(filePath)
+                    .build();
         }
     }
 
@@ -112,7 +127,7 @@ public class MainMenuBar extends MenuBar {
      */
     @FXML
     void closeMenuItemClick(ActionEvent event) {
-        mediator.sendEvent(Events.CLOSE_MENU);
+        mediator.getEventBuilder().withEvent(Events.CLOSE_MENU).build();;
         EditorUtils.onCloseExitConfirmation();
     }
 
@@ -120,22 +135,22 @@ public class MainMenuBar extends MenuBar {
      * @param event javafx event..
      *              sends a UNDO_TEXT event to the mediator to undo the current text
      * @see Mediator
-     * @see smallUndoEngine.Connector
+     * @see EditorTextHistory
      */
     @FXML
     void undoMenuItemClick(ActionEvent event) {
-        mediator.sendEvent(Events.UNDO_TEXT);
+        mediator.getEventBuilder().withEvent(Events.UNDO_TEXT).build();
     }
 
     /**
      * @param event javafx event..
      *              sends a REDO_TEXT event to the mediator to undo the current text
      * @see Mediator
-     * @see smallUndoEngine.Connector
+     * @see EditorTextHistory
      */
     @FXML
     void redoMenuItemClick(ActionEvent event) {
-        mediator.sendEvent(Events.REDO_TEXT);
+        mediator.getEventBuilder().withEvent(Events.REDO_TEXT).build();
     }
 
     /**
@@ -143,7 +158,21 @@ public class MainMenuBar extends MenuBar {
      */
     @FXML
     void aboutMenuItemClick(ActionEvent event) {
-        mediator.sendEvent(Events.ABOUT_MENU);
+        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/about.fxml"));
+        Parent root = null;
+        try {
+            root = fxmlLoader.load();
+            Scene scene = about.getParentPopup().getScene();
+            Stage stage = new Stage();
+            stage.setTitle("My New Stage Title");
+            stage.setScene(new Scene(root, 400, 200));
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        mediator.getEventBuilder().withEvent(Events.ABOUT_MENU).build();
     }
 
     /**
@@ -163,27 +192,6 @@ public class MainMenuBar extends MenuBar {
         return text;
     }
 
-    /**
-     * opens a fileChooser save windows so the user can save a new file as .txt
-     * does nothing if the file in null
-     * creates a new text file with the current text in the specified path
-     * sends SAVE_MENU event to the mediator
-     *
-     * @see Mediator
-     * @see EditorUtils
-     */
-    public void showSaveWindow() {
-        fileChooser.setTitle("Save");
-        fileChooser.getExtensionFilters().add
-                (new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt"));
-        File file = fileChooser.showSaveDialog(save.getParentPopup().getScene().getWindow());
-        if (file == null) { //check if the user clicked the cancel button
-            return;
-        }
-        file = new File(file.getPath() + ".txt"); //might be only in linux that the file is not saved as title.txt
-        EditorUtils.writeToFile(mediator.getCurrentText(), file.toPath());
-        mediator.sendEvent(Events.SAVE_MENU);
-    }
 
     /**
      * @return the path of the file
@@ -192,39 +200,26 @@ public class MainMenuBar extends MenuBar {
         return filePath;
     }
 
-    /**
-     * @return the number of lines of the current text
-     */
-    public int getNumberOfLines() {
-        return numberOfLines;
-    }
 
     /**
      * @param file the text file to read from
      *             a task to read the text file in another thread
      *             waits for the thread to finish, then sends OPEN_MENU event to the mediator to update the textArea text
-     *             updates numberOfLines
      *             if the file reading fails, it sets the current text to "FAILED"
      * @see Mediator
      * @see EditorUtils
      */
     private void readFile(File file) {
-        Task<String> task = new Task<String>() {
-            @Override
-            protected String call() {
-                List<String> list = EditorUtils.readFromFile(file);
-                String str = list.stream().collect(Collectors.joining("\n"));
-                setCurrentText(str);
-                numberOfLines = list.size();
-                return str;
-            }
-        };
-
-        task.setOnSucceeded(t -> mediator.sendEvent(Events.OPEN_MENU));
-        task.setOnFailed(e -> setCurrentText("FAILED"));
-        Thread t = new Thread(task);
-        t.setDaemon(true);
-        t.start();
+        List<String> list = EditorUtils.readFromFile(file);
+        String str = list.stream().collect(Collectors.joining("\n"));
+        setCurrentText(str);
+        mediator.getEventBuilder()
+                .withEvent(Events.OPEN_MENU)
+                .withFilePath(file.toPath())
+                .withText(text)
+                .textChanged(false)
+                .fileSaved(true)
+                .build();
     }
 
     /**

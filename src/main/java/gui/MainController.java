@@ -2,98 +2,140 @@ package gui;
 
 import gui.components.MainMenuBar;
 import gui.components.TextSpace;
+import gui.mediator.Events;
+import gui.mediator.IMediator;
 import gui.mediator.Mediator;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.stage.Stage;
-import smallUndoEngine.Connector;
+import lib.EditorUtils;
+import smallUndoEngine.EditorTextHistory;
+
+import java.util.ArrayList;
+import java.util.Optional;
 
 public class MainController {
 
     @FXML
     private TabPane tabPane;
-    @FXML
-    private Tab tab1;
+
     @FXML
     private TextSpace textSpace;
     @FXML
     private MainMenuBar mainMenuBar;
 
-    private Connector connector = new Connector();
+    private EditorTextHistory editorTextHistory = new EditorTextHistory();
 
-    //todo: wrap this in its own class
-    private TextSpace textspaces[] = new TextSpace[20];
-    private Connector connectors[] = new Connector[20];
-    int textSpacesCount = 0;
-
-    private Mediator mediator = Mediator.getInstance();
+    private ArrayList<TabSpace> tabSpaces = new ArrayList<>();
+    private int textSpacesCount = 0;
+    private IMediator mediator = Mediator.getInstance();
 
     @FXML
     public void initialize() {
+        createNewTab();
         mediator.setMainController(this);
-        mediator.setConnector(connector);
-        textspaces[0] = textSpace;
-        connectors[0] = connector;
-        textSpacesCount++;
-        tabPaneListener();
+        mediator.setTabSpaces(tabSpaces);
+        tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
     }
 
     private void tabPaneListener() {
         tabPane.getSelectionModel().selectedIndexProperty().addListener((ov, oldValue, newValue) -> {
-            //set the textSpace to the current one on the selected tab
-            int currentTab = tabPane.getSelectionModel().getSelectedIndex();
-            mediator.setTextSpace(textspaces[currentTab]);
-            mediator.setConnector(connectors[currentTab]);
-            updateCurrentStageTitle();
-            System.out.println(tabPane.getSelectionModel().getSelectedItem().getText());
+            if(tabPane.getTabs().size() == 0){
+                return;
+            }
+            System.out.println("sending TAB_CHANGED, #of tabs" + tabPane.getTabs().size());
+            mediator.getEventBuilder().withEvent(Events.TAB_CHANGED).build();
         });
     }
 
-    private void updateCurrentStageTitle() {
+    private void updateCurrentStageTitle(int currentTab) {
         Stage stage = (Stage) tabPane.getParent().getScene().getWindow();
-        if (getCurrentTextSpace().getText().isEmpty()) {
-            stage.setTitle("Untitled");
+        if (mediator.isFileSaved()) {
+            System.out.println("current tab is saved: " + currentTab);
+            stage.setTitle(tabSpaces.get(currentTab).getCurrentPath().toString());
         } else {
-            stage.setTitle(getCurrentTextSpace().getCurrentPath().toString());
+            stage.setTitle("Untitled " + currentTab);
         }
 
     }
 
     /**
-     * creates new tab and a new connector if the array of tabs is not full
+     * creates new tab and a new editorTextHistory if the array of tabs is not full
      */
     public void createNewTab() {
-        if (textSpacesCount >= textspaces.length) {
-            System.out.println("the array of tabs is full");
-            return;
-        }
-        Tab tab = new Tab("untitled tab");
+        Tab tab = new Tab("untitled tab " + textSpacesCount);
         TextSpace textSpace = new TextSpace();
-        Connector connector = new Connector();
+        EditorTextHistory editorTextHistory = new EditorTextHistory();
         textSpace.setNumber(textSpacesCount);
         System.out.println("textspace " + textSpacesCount + " is created");
         tab.setContent(textSpace);
-        textspaces[textSpacesCount] = textSpace;
-        connectors[textSpacesCount] = connector;
-        textSpacesCount++;
+        TabSpace tabSpace = addTabSpace(textSpace, editorTextHistory, false);
+        tab.setOnCloseRequest(event -> {
+            Alert alert = EditorUtils.createConfirmationAlert("Are you sure you want to close this tab?", "yes", "");
+            boolean close = true;
+            if (tabSpace.isTextChanged()) {
+                Optional<ButtonType> btnClicked = alert.showAndWait();
+                if (!btnClicked.get().getText().equals("yes")) {
+                    close = false;
+                    event.consume();
+                }
+            }
+            if (close) {
+                System.out.println(getCurrentTabIndex());
+                tabSpaces.remove(getCurrentTabIndex());
+                textSpacesCount--;
+            }
+        });
+
         tabPane.getTabs().add(tab);
+        textSpacesCount++;
+
+        tabPaneListener();
     }
 
-    //todo: add a way to close tabs
+    /**
+     * adds a new tabspace the the list of tabspaces
+     *
+     * @param textSpace the current TextSpace of TabSpace
+     * @param editorTextHistory the current EditorTextHistory of TabSpace
+     * @param isSaved   specifies if the file is saved in the system
+     * @return: the created tabSpace
+     */
+    private TabSpace addTabSpace(TextSpace textSpace, EditorTextHistory editorTextHistory, boolean isSaved) {
+        TabSpace current = new TabSpace(textSpace, editorTextHistory);
+        current.setIsSaved(isSaved);
+        tabSpaces.add(current);
+        return current;
+    }
 
     /**
-     * @return the currect selected tab
+     * @return the current selected tab
      */
     public Tab getCurrentTab() {
         return tabPane.getSelectionModel().getSelectedItem();
     }
 
     /**
-     * @return the current textspace
+     * @return tabPane
      */
-    public TextSpace getCurrentTextSpace() {
-        return textspaces[tabPane.getSelectionModel().getSelectedIndex()];
+    public TabPane getTabPane(){
+        return tabPane;
     }
+
+
+    public void updateIsSaved(boolean isSaved) {
+        tabSpaces.get(getCurrentTabIndex()).setIsSaved(true);
+    }
+
+    /**
+     * @return the index of the selected tab
+     */
+    public int getCurrentTabIndex() {
+        return tabPane.getSelectionModel().getSelectedIndex();
+    }
+
 
 }

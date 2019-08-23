@@ -1,18 +1,20 @@
 package gui.components;
 import gui.mediator.Events;
+import gui.mediator.IMediator;
 import gui.mediator.Mediator;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.HBox;
 
 import org.fxmisc.richtext.*;
+import smallUndoEngine.EditorTextHistory;
 
 import java.io.IOException;
 import java.nio.file.Path;
 
 public class TextSpace extends HBox {
     private int textSpaceNumber = 0;
-    private Mediator mediator = Mediator.getInstance();
+    private IMediator mediator = Mediator.getInstance();
     private Path currentPath;
     @FXML
     private CodeArea textArea;
@@ -43,7 +45,6 @@ public class TextSpace extends HBox {
     @FXML
     public void initialize() {
         textAreaChangeListener();
-        mediator.setTextSpace(this);
         textArea.setParagraphGraphicFactory(LineNumberFactory.get(textArea));
     }
 
@@ -52,12 +53,11 @@ public class TextSpace extends HBox {
      * updates the redo/undo stack
      *
      * @see Mediator
-     * @see smallUndoEngine.Connector
+     * @see EditorTextHistory
      */
     private void textAreaChangeListener() {
         textArea.textProperty().addListener((observable, oldValue, newValue) -> {
-            mediator.sendEvent(Events.TEXT_CHANGED);
-            mediator.getCurrentConnector().update(textArea.getText());
+            mediator.getEventBuilder().withEvent(Events.TEXT_CHANGED).build();
         });
     }
 
@@ -73,14 +73,14 @@ public class TextSpace extends HBox {
      * sends TEXT_CHANGED event to the mediator
      *
      * @see Mediator
-     * @see smallUndoEngine.Connector
+     * @see EditorTextHistory
      */
-    public void undo() {
-        boolean undoIsNotEmpty = mediator.getCurrentConnector().undo();
+    public void undo(EditorTextHistory editorTextHistory) {
+        boolean undoIsNotEmpty = editorTextHistory.undo();
         if(undoIsNotEmpty) {
-            textArea.replaceText(mediator.getCurrentConnector().getText());
+            textArea.replaceText(editorTextHistory.getText());
         }
-        mediator.sendEvent(Events.TEXT_CHANGED);
+        mediator.getEventBuilder().withEvent(Events.TEXT_CHANGED).build();
     }
 
     /**
@@ -88,14 +88,15 @@ public class TextSpace extends HBox {
      * sends TEXT_CHANGED event to the mediator
      *
      * @see Mediator
-     * @see smallUndoEngine.Connector
+     * @see EditorTextHistory
      */
-    public void redo() {
-        boolean redoIsNotEmpty = mediator.getCurrentConnector().redo();
+    public void redo(EditorTextHistory editorTextHistory) {
+        boolean redoIsNotEmpty = editorTextHistory.redo();
         if(redoIsNotEmpty){
-            textArea.replaceText(mediator.getCurrentConnector().getText());
+            textArea.replaceText(editorTextHistory.getText());
         }
-        mediator.sendEvent(Events.TEXT_CHANGED);
+        mediator.getEventBuilder().withEvent(Events.TEXT_CHANGED).build();
+
     }
 
     /**
@@ -123,18 +124,10 @@ public class TextSpace extends HBox {
 
     /**
      * @param path the path of the current file
-     *             setns currentPath to path
+     *             sets currentPath to path
      */
     public void setCurrentPath(Path path) {
         currentPath = path;
-    }
-
-    /**
-     * @return the current number of lines
-     * used to get the number of lines when the user pastes a text from the clipboard
-     */
-    public long numberOfLines() {
-        return textArea.getText().chars().parallel().filter(c -> c == '\n').count();
     }
 
 }
