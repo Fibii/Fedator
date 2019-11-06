@@ -1,3 +1,4 @@
+import javafx.scene.text.Font;
 import lib.EditorUtils;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +15,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
+        Font.loadFont(this.getClass().getResourceAsStream("Roboto-Regular.ttf"), 16);
         FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("main.fxml"));
         Parent root = fxmlLoader.load();
 

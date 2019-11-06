@@ -1,3 +1,175 @@
+.root {
+    -font-color: #e9e4e6 ;
+    -default-background-color: #414141;
+    -default-background-color-focused: #373737;
+    -default-background-color-hover: #4b4b4b;
+    -fx-font-family: Roboto-Regular;
+    -fx-font-size: 16px;
+}
+
+.styled-text-area {
+    -fx-background-color: #e9e4e6;
+    -fx-display-caret: true;
+    -fx-font-size: 22;
+}
+
+.styled-text-area .text{
+    -fx-fill: #232323;
+}
+
+.styled-text-area .selection {
+
+}
+
+.lineno {
+    -fx-font-size: 22;
+    -fx-background-color: #d7d2d4;
+    -fx-fill: #232323;
+}
+
+.styled-text-area {
+    -fx-padding: 6px;
+    -fx-border-insets: 6px;
+    -fx-background-insets: 6px;
+}
+
+.virtualized-scroll-pane {
+    -fx-background-color: #e9e4e6;
+}
+
+.virtualized-scroll-pane .scroll-bar:vertical {
+    -fx-background-color:transparent;
+    -fx-border-color:transparent;
+    -fx-background-radius: 0em;
+    -fx-border-radius:2em;
+    -fx-pref-width: 14;
+
+}
+
+.virtualized-scroll-pane .scroll-bar .increment-arrow {
+    -fx-background-color: rgb(225, 54, 107);
+}
+
+.virtualized-scroll-pane .scroll-bar .increment-button {
+    -fx-background-color: transparent;
+}
+
+.virtualized-scroll-pane .scroll-bar .decrement-arrow {
+    -fx-background-color: rgb(225, 54, 107);
+}
+
+.virtualized-scroll-pane .scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+}
+
+.virtualized-scroll-pane .scroll-bar .thumb {
+    -fx-background-color: rgb(225, 54, 107);
+}
+
+.virtualized-scroll-pane .scroll-bar .thumb:hover {
+    -fx-background-color: rgb(255, 58, 117);
+}
+
+.menu-bar {
+    -fx-background-color: -default-background-color;
+    -fx-min-height: 30px;
+}
+
+
+#menuBarRegion {
+    -fx-background-color: -default-background-color;
+}
+
+.context-menu {
+    -fx-background-color: -default-background-color;
+}
+
+.menu-item {
+    -fx-background-color: -default-background-color;
+    -fx-padding: 10 20 10;
+}
+
+.menu-item:focused {
+    -fx-background-color: -default-background-color-focused;
+    -fx-padding: 10 20 10;
+}
+
+.menu .label {
+    -fx-font-size: 14px;
+    -fx-text-fill: -font-color;
+}
+.menu:hover {
+    -fx-background-color: -default-background-color-hover;
+}
+
+/* the menu item when it's selected */
+.menu-bar > .container > .menu-button:showing {
+    -fx-background-color: -default-background-color-focused;
+}
+
+
+.menu-item:hover {
+    -fx-background-color: #4b4b4b;;
+}
+
+/* the area around menu-item */
+
+.context-menu {
+    -fx-skin: "com.sun.javafx.scene.control.skin.ContextMenuSkin";
+    -fx-background-color: -default-background-color;
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 0 6 6 6, 0 5 5 5, 0 4 4 4;
+    -fx-padding: 0.333333em 0.083333em 0.666667em 0.083333em; /* 4 1 8 1 */
+}
+
+.tab {
+    -fx-pref-height: 40;
+}
+
+.tab-label {
+    -fx-text-fill: -default-background-color;
+    -fx-font-size: 16px;
+    -fx-font-family: Roboto-Regular;
+
+}
+
+.tab:selected .tab-label {
+    -fx-text-fill: -font-color ;
+}
+
+.tab-pane:top {
+    -fx-background-color: transparent;
+}
+
+.tab-header-area .tab-header-background {
+    -fx-background-color: -default-background-color;
+}
+
+.tab-pane .tab {
+    -fx-background-color: #edf2f4;
+}
+
+.tab-pane .tab:hover {
+    -fx-background-color: rgb(223, 168, 255);
+}
+
+.tab-pane .tab:selected {
+    -fx-background-color: rgb(225, 54, 107);
+    -fx-focus-color: rgb(225, 54, 107);
+    -fx-faint-focus-color: rgb(225, 54, 107);
+}
+
+.tab-pane:top *.tab-header-area {
+    -fx-padding: 0.0em 0.166667em 0.0em 0.0em;
+}.root {
+     -font-color: #e9e4e6 ;
+     -default-background-color: #414141;
+     -default-background-color-focused: #373737;
+     -default-background-color-hover: #4b4b4b;
+     -fx-font-family: Roboto-Regular;
+     -fx-font-size: 16px;
+ }
+
 .styled-text-area {
     -fx-background-color: #e9e4e6;
     -fx-display-caret: true;
@@ -10,7 +182,7 @@
 
 .lineno {
     -fx-font-size: 22;
-    -fx-background-color: #dbd6d8;
+    -fx-background-color: #d7d2d4;
     -fx-fill: #232323;
 }
 
@@ -20,64 +192,132 @@
     -fx-background-insets: 6px;
 }
 
-.menu-bar {
-    -fx-background-color: #3bb4c1;
-}
-
-.choice-box {
-    -fx-border-color: #3bb4c1;
-    -fx-border-radius: 0;
-    -fx-background-color: #3bb4c1;
-}
-
-.choice-box:hover {
-    -fx-background-color: #048998;
-}
-
-.choice-box:pressed {
-    -fx-background-color: #048998;
-}
-
-.choice-box:showing {
-    -fx-background-color: #048998;
-}
-
-#menuBarRegion {
-    -fx-background-color: #3bb4c1;
-}
-
-.context-menu {
-    -fx-background-color: #3bb4c1;
-}
-
-.menu-item {
-    -fx-background-color: #3bb4c1;
-}
-
-.menu:hover {
-    -fx-background-color: #048998;
-}
-
-.menu:pressed {
-    -fx-background-color: #048998;
-}
-
-.menu:showing {
-    -fx-background-color: #048998;
-}
-
-.menu-item:hover {
-    -fx-background-color: #048998;
-}
-
-.tab-pane:top {
+.virtualized-scroll-pane {
     -fx-background-color: #e9e4e6;
 }
 
-.tab-pane:top .tab-header-area .tab-header-background {
-    -fx-background-color: #3bb4c1;
+.virtualized-scroll-pane .scroll-bar:vertical {
+    -fx-background-color:transparent;
+    -fx-border-color:transparent;
+    -fx-background-radius: 0em;
+    -fx-border-radius:2em;
+    -fx-pref-width: 14;
+
+}
+
+.virtualized-scroll-pane .scroll-bar .increment-arrow {
+    -fx-background-color: rgb(225, 54, 107);
+}
+
+.virtualized-scroll-pane .scroll-bar .increment-button {
+    -fx-background-color: transparent;
+}
+
+.virtualized-scroll-pane .scroll-bar .decrement-arrow {
+    -fx-background-color: rgb(225, 54, 107);
+}
+
+.virtualized-scroll-pane .scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+}
+
+.virtualized-scroll-pane .scroll-bar .thumb {
+    -fx-background-color: rgb(225, 54, 107);
+}
+
+.virtualized-scroll-pane .scroll-bar .thumb:hover {
+    -fx-background-color: rgb(255, 58, 117);
+}
+
+.menu-bar {
+    -fx-background-color: -default-background-color;
+    -fx-min-height: 30px;
+}
+
+
+#menuBarRegion {
+    -fx-background-color: -default-background-color;
+}
+
+.context-menu {
+    -fx-background-color: -default-background-color;
+}
+
+.menu-item {
+    -fx-background-color: -default-background-color;
+    -fx-padding: 10 20 10;
+}
+
+.menu-item:focused {
+    -fx-background-color: -default-background-color-focused;
+    -fx-padding: 10 20 10;
+}
+
+.menu .label {
+    -fx-font-size: 14px;
+    -fx-text-fill: -font-color;
+}
+.menu:hover {
+    -fx-background-color: -default-background-color-hover;
+}
+
+/* the menu item when it's selected */
+.menu-bar > .container > .menu-button:showing {
+    -fx-background-color: -default-background-color-focused;
+}
+
+
+.menu-item:hover {
+    -fx-background-color: #4b4b4b;;
+}
+
+/* the area around menu-item */
+
+.context-menu {
+    -fx-skin: "com.sun.javafx.scene.control.skin.ContextMenuSkin";
+    -fx-background-color: -default-background-color;
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 0 6 6 6, 0 5 5 5, 0 4 4 4;
+    -fx-padding: 0.333333em 0.083333em 0.666667em 0.083333em; /* 4 1 8 1 */
+}
+
+.tab {
+    -fx-pref-height: 40;
+}
+
+.tab-label {
+    -fx-text-fill: -default-background-color;
+    -fx-font-size: 16px;
+    -fx-font-family: Roboto-Regular;
+
+}
+
+.tab:selected .tab-label {
+    -fx-text-fill: -font-color ;
+}
+
+.tab-pane:top {
+    -fx-background-color: transparent;
+}
+
+.tab-header-area .tab-header-background {
+    -fx-background-color: -default-background-color;
 }
 
 .tab-pane .tab {
-    -fx-background-color: #3ccedb;
+    -fx-background-color: #edf2f4;
+}
+
+.tab-pane .tab:hover {
+    -fx-background-color: rgb(223, 168, 255);
+}
+
+.tab-pane .tab:selected {
+    -fx-background-color: rgb(225, 54, 107);
+    -fx-focus-color: rgb(225, 54, 107);
+    -fx-faint-focus-color: rgb(225, 54, 107);
+}
+
+.tab-pane:top *.tab-header-area {
+    -fx-padding: 0.0em 0.166667em 0.0em 0.0em;
 }
