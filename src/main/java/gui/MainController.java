@@ -86,7 +86,6 @@ public class MainController {
             if (close) {
                 System.out.println(getCurrentTabIndex());
                 tabSpaces.remove(getCurrentTabIndex());
-                textSpacesCount--;
             }
         });
 
