@@ -14,6 +14,9 @@
       </Menu>
       <Menu mnemonicParsing="false" text="Edit">
          <items>
+            <MenuItem fx:id="copy" mnemonicParsing="false" onAction="#copyMenuItemClick" text="Copy" />
+            <MenuItem fx:id="cut" mnemonicParsing="false" onAction="#cutMenuItemClick" text="Cut" />
+            <MenuItem fx:id="paste" mnemonicParsing="false" onAction="#pasteMenuItemClick" text="Paste" />
             <MenuItem fx:id="undo" mnemonicParsing="false" onAction="#undoMenuItemClick" text="Undo" />
             <MenuItem fx:id="redo" mnemonicParsing="false" onAction="#redoMenuItemClick" text="Redo" />
          </items>

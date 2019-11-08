@@ -3,6 +3,8 @@ package gui.components;
 import gui.mediator.IMediator;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.DataFormat;
 import javafx.stage.Stage;
 import lib.EditorUtils;
 import gui.mediator.Events;
@@ -18,7 +20,9 @@ import smallUndoEngine.EditorTextHistory;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class MainMenuBar extends MenuBar {
@@ -43,6 +47,16 @@ public class MainMenuBar extends MenuBar {
 
     @FXML
     private MenuItem open;
+
+    @FXML
+    private MenuItem copy;
+
+    @FXML
+    private MenuItem cut;
+
+    @FXML
+    private MenuItem paste;
+
 
     private IMediator mediator = Mediator.getInstance();
     private FileChooser fileChooser = new FileChooser();
@@ -152,6 +166,47 @@ public class MainMenuBar extends MenuBar {
     void redoMenuItemClick(ActionEvent event) {
         mediator.getEventBuilder().withEvent(Events.REDO_TEXT).build();
     }
+
+    /**
+     * @param event javafx event..
+     *              sends a COPY_MENU event to mediator to copy the selected text to clipboards
+     * @see Mediator
+     */
+    @FXML
+    void copyMenuItemClick(ActionEvent event) {
+        mediator.getEventBuilder().withEvent(Events.COPY_MENU).build();
+        Map<DataFormat, Object> hashMap = new HashMap<>();
+        hashMap.put(DataFormat.PLAIN_TEXT, mediator.getMediatorText());
+        Clipboard.getSystemClipboard().setContent(hashMap);
+    }
+
+    /**
+     * @param event javafx event..
+     *              sends a CUT_MENU event to mediator and copies the selected text to clipboards then
+     *              deletes it from textArea
+     * @see Mediator
+     */
+    @FXML
+    void cutMenuItemClick(ActionEvent event) {
+        mediator.getEventBuilder().withEvent(Events.CUT_MENU).build();
+        Map<DataFormat, Object> hashMap = new HashMap<>();
+        hashMap.put(DataFormat.PLAIN_TEXT, mediator.getMediatorText());
+        Clipboard.getSystemClipboard().setContent(hashMap);
+        mediator.getEventBuilder().withEvent(Events.TEXT_CHANGED).build();
+    }
+
+    /**
+     * @param event javafx event..
+     *              sends a PASTE_MENU event to mediator and adds the text in clipboards to textArea
+     *              starting from the position of the carret
+     * @see Mediator
+     */
+    @FXML
+    void pasteMenuItemClick(ActionEvent event) {
+        mediator.getEventBuilder().withEvent(Events.PASTE_MENU).build();
+        mediator.getEventBuilder().withEvent(Events.TEXT_CHANGED).build();
+    }
+
 
     /**
      * @deprecated shows the version information of the app

@@ -130,4 +130,16 @@ public class TextSpace extends HBox {
         currentPath = path;
     }
 
+    /**
+     * @return the selected text in codeArea
+     * */
+    public String getSelectedText() {
+        return textArea.getSelectedText();
+    }
+
+    /** replaces the selected text with empty string */
+    public void removeSelectedText(){
+        textArea.replaceSelection("");
+    }
+
 }

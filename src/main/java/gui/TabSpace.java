@@ -3,6 +3,7 @@ package gui;
 import gui.components.TextSpace;
 import gui.mediator.Events;
 import gui.mediator.Mediator;
+import javafx.scene.input.Clipboard;
 import smallUndoEngine.EditorTextHistory;
 
 import java.nio.file.Path;
@@ -27,6 +28,23 @@ public class TabSpace {
      * */
     public void setIsSaved(boolean bool){
         fileSaved = bool;
+    }
+
+    /**
+     * replaces textArea's text with itself appended with string content in the clipboards to textArea by
+     * */
+    private void pasteToTextArea(){
+        StringBuilder sb = new StringBuilder();
+        String clipboardString = Clipboard.getSystemClipboard().getString();
+        String finalText = sb.append(getText()).append(" ").append(clipboardString).toString();
+        textSpace.setText(finalText);
+    }
+
+    /**
+     * removes the selected text in textArea
+     * */
+    private void cutFromTextAreA(){
+        textSpace.removeSelectedText();
     }
 
 
@@ -57,6 +75,19 @@ public class TabSpace {
             case TEXT_CHANGED:
                 editorTextHistory.update(textSpace.getText());
                 textChanged = true;
+                break;
+
+                //todo: undo-redo engine needs to be updated to work with cut/paste events
+            case COPY_MENU:
+                mediator.setText(textSpace.getSelectedText());
+                break;
+            case CUT_MENU:
+                mediator.setText(textSpace.getSelectedText());
+                cutFromTextAreA();
+                break;
+            case PASTE_MENU:
+                pasteToTextArea();
+                break;
         }
 
     }
