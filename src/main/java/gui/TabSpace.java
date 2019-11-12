@@ -77,7 +77,6 @@ public class TabSpace {
                 textChanged = true;
                 break;
 
-                //todo: undo-redo engine needs to be updated to work with cut/paste events
             case COPY_MENU:
                 mediator.setText(textSpace.getSelectedText());
                 break;

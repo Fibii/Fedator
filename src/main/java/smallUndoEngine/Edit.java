@@ -1,14 +1,15 @@
 package smallUndoEngine;
 
-import java.util.Stack;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Edit implements IEdit {
-    private Stack<String> undoStack = new Stack<>();
-    private Stack<String> redoStack = new Stack<>();
+    private List<String> undoStack = new ArrayList<>();
+    private List<String> redoStack = new ArrayList<>();
     private String text;
 
     Edit() {
-
+        text = "";
     }
 
     /**
@@ -17,19 +18,20 @@ public class Edit implements IEdit {
      */
     @Override
     public boolean undo() {
-        if (!undoStack.empty()) {
-            if (text.trim().length() > 0) {
-                redoStack.add(text.trim());
+        if(!undoStack.isEmpty()){
+
+            if(undoStack.size() == 1){
+                text = "";
+                redoStack.add(undoStack.get(undoStack.size() - 1));
+                return false;
             }
-            processText();
-            if (!undoStack.empty()) {
-                text = undoStack.pop();
-            }
+
+            text = undoStack.remove(undoStack.size() -2);
+            redoStack.add(undoStack.remove(undoStack.size() -1));
             return true;
-        } else {
-            System.out.println("undo stack is empty");
-            return false;
         }
+
+        return true;
     }
 
     /**
@@ -38,27 +40,12 @@ public class Edit implements IEdit {
      */
     @Override
     public boolean redo() {
-        if (!redoStack.empty()) {
-            text = redoStack.pop();
+        if (!redoStack.isEmpty()) {
+            text = redoStack.remove(redoStack.size() - 1);
             return true;
         } else {
             System.out.println("redo stack is empty");
             return false;
-        }
-    }
-
-    /**
-     * processes the new added text, ex: "hi there boy" -> "hi there"
-     */
-    private void processText() {
-        //remove the last word then add the text to the stack
-        if (text.contains(" ")) {
-            String txt = text.substring(0, text.lastIndexOf(" ")).trim();
-            if (!undoStack.contains(txt)) {
-                undoStack.add(txt);
-            }
-        } else {
-            undoStack.add("");
         }
     }
 
@@ -68,9 +55,65 @@ public class Edit implements IEdit {
      * @param text the value of the new text
      **/
     void setText(String text) {
-        this.text = text;
-        processText();
+
+        if (undoStack.contains(text)) {
+            return;
+        }
+
+        if (undoStack.isEmpty()){
+            undoStack.add(text);
+            return;
+        }
+
+        if(text.endsWith(" ")){
+            undoStack.add(text);
+            return;
+        }
+
+        String[] textStringArray;
+        if(text.contains(" ")){
+            textStringArray = text.split(" ");
+        } else {
+            textStringArray = new String[]{text};
+        }
+
+
+        boolean shouldReplace = true;
+
+        String[] stringStackArray = undoStack.get(undoStack.size() -1).split(" ");
+        String lastWordInStack = stringStackArray[stringStackArray.length - 1];
+        String lastWordInText = textStringArray[textStringArray.length - 1];
+
+        // case we have new word with space before it, add it directly
+        if(stringStackArray.length < textStringArray.length){
+            undoStack.add(text);
+            return;
+        }
+
+
+        // if the phrases don't have different of length 1, don't even compare
+        if(undoStack.get(undoStack.size() - 1).length() != text.length() - 1) {
+            shouldReplace = false;
+        }
+        if(shouldReplace && lastWordInStack.length() == lastWordInText.length() - 1){
+            for (int j = lastWordInStack.length() -1; j >= 0; j--){
+                if(lastWordInStack.charAt(j) != lastWordInText.charAt(j)){
+                    shouldReplace = false;
+                    break;
+                }
+            }
+        }
+
+
+        if (!shouldReplace){
+            undoStack.add(text);
+        } else {
+            undoStack.remove(undoStack.size() -1);
+            undoStack.add(text);
+        }
+
     }
+
 
     /**
      * @return text the text to be returned
