@@ -192,7 +192,6 @@ public class MainMenuBar extends MenuBar {
         Map<DataFormat, Object> hashMap = new HashMap<>();
         hashMap.put(DataFormat.PLAIN_TEXT, mediator.getMediatorText());
         Clipboard.getSystemClipboard().setContent(hashMap);
-        mediator.getEventBuilder().withEvent(Events.TEXT_CHANGED).build();
     }
 
     /**
@@ -204,7 +203,6 @@ public class MainMenuBar extends MenuBar {
     @FXML
     void pasteMenuItemClick(ActionEvent event) {
         mediator.getEventBuilder().withEvent(Events.PASTE_MENU).build();
-        mediator.getEventBuilder().withEvent(Events.TEXT_CHANGED).build();
     }
 
 
