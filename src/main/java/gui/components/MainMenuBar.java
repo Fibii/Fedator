@@ -215,24 +215,13 @@ public class MainMenuBar extends MenuBar {
 
 
     /**
-     * @deprecated shows the version information of the app
+     * shows the version information of the app
+     *
+     * @see EditorUtils#showAboutWindow(MainMenuBar)
      */
     @FXML
     void aboutMenuItemClick(ActionEvent event) {
-        FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/about.fxml"));
-        Parent root = null;
-        try {
-            root = fxmlLoader.load();
-            Scene scene = about.getParentPopup().getScene();
-            Stage stage = new Stage();
-            stage.setTitle("About");
-            stage.setScene(new Scene(root, 400, 200));
-            stage.showAndWait();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
+        EditorUtils.showAboutWindow(this);
         mediator.getEventBuilder().withEvent(Events.ABOUT_MENU).build();
     }
 

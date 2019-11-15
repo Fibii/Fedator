@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.components.AboutController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="130.0" prefWidth="290.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.components.AboutController">
    <children>
-      <Button fx:id="okButton" layoutX="25.0" layoutY="137.0" mnemonicParsing="false" onAction="#okButtonClicked" prefHeight="40.0" prefWidth="83.0" text="Ok" />
-      <Text fx:id="aboutText" layoutX="25.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A simple text editor made by Fibi.">
+      <Button fx:id="okButton" layoutX="14.0" layoutY="93.0" mnemonicParsing="false" onAction="#okButtonClicked" prefHeight="23.0" prefWidth="67.0" text="exit">
+         <font>
+            <Font size="17.0" />
+         </font></Button>
+      <Text fx:id="aboutText" layoutX="14.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fedator: a simple javafx text editor" wrappingWidth="258.986328125">
          <font>
             <Font size="21.0" />
          </font>
       </Text>
-      <Hyperlink fx:id="githubLink" layoutX="25.0" layoutY="61.0" onAction="#githubLinkOnAction" text="Check my github" />
-      <Text fill="#ee0d0d" layoutX="229.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sample Logo Here" textAlignment="CENTER" wrappingWidth="134.7294921875">
+      <Hyperlink fx:id="githubLink" layoutX="14.0" layoutY="62.0" onAction="#githubLinkOnAction" text="Check my github" />
+      <Text fill="#ee0d0d" layoutX="158.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sample Logo Here" textAlignment="CENTER" wrappingWidth="115.0">
          <font>
-            <Font size="34.0" />
+            <Font size="23.0" />
          </font>
       </Text>
    </children>

@@ -1,7 +1,12 @@
 package lib;
 
+import gui.components.MainMenuBar;
 import gui.mediator.Events;
 import gui.mediator.Mediator;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -164,5 +169,27 @@ public class EditorUtils {
         EditorUtils.writeToFile(mediator.getText(), file.toPath());
         Path filePath = file.toPath();
         return filePath;
+    }
+
+    /**
+     * shows the version information of the app
+     * */
+    public static void showAboutWindow(MainMenuBar mainMenuBar){
+        FXMLLoader fxmlLoader = new FXMLLoader(mainMenuBar.getClass().getResource("/about.fxml"));
+        Parent root = null;
+        try {
+            root = fxmlLoader.load();
+            Scene scene = mainMenuBar.getScene();
+            scene.getStylesheets().add(mainMenuBar.getClass().getResource("/style.css").toExternalForm());
+            Stage stage = new Stage();
+            stage.setResizable(false);
+            stage.setTitle("About");
+            stage.setScene(new Scene(root, 290, 130));
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 }
