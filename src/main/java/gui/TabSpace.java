@@ -1,5 +1,6 @@
 package gui;
 
+import gui.components.FindReplaceToolBar;
 import gui.components.TextSpace;
 import gui.mediator.Events;
 import gui.mediator.Mediator;
@@ -11,16 +12,19 @@ import java.nio.file.Path;
 /** a class that wraps TextSpace and EditorTextHistory objects together */
 public class TabSpace {
 
+    private Mediator mediator = Mediator.getInstance();
+
     private TextSpace textSpace;
     private EditorTextHistory editorTextHistory;
     private boolean fileSaved;
     private boolean textChanged;
+    private FindReplaceToolBar findReplaceToolBar;
+    private boolean findReplaceVisibility;
 
-    private Mediator mediator = Mediator.getInstance();
-
-    public TabSpace(TextSpace textSpace, EditorTextHistory editorTextHistory) {
+    public TabSpace(TextSpace textSpace, EditorTextHistory editorTextHistory, FindReplaceToolBar findReplaceToolBar) {
         this.textSpace = textSpace;
         this.editorTextHistory = editorTextHistory;
+        this.findReplaceToolBar = findReplaceToolBar;
     }
 
     /** updates fileSaved
@@ -45,6 +49,15 @@ public class TabSpace {
      * */
     private void cutFromTextAreA(){
         textSpace.removeSelectedText();
+    }
+
+    /**
+     * Shows or hides #findReplaceToolBar depending on #findReplaceVisibility
+     * */
+    public void toggleFindReplaceToolBar(){
+        findReplaceVisibility = !findReplaceVisibility;
+        findReplaceToolBar.setVisible(findReplaceVisibility);
+        findReplaceToolBar.setManaged(findReplaceVisibility);
     }
 
 
@@ -87,6 +100,8 @@ public class TabSpace {
             case PASTE_MENU:
                 pasteToTextArea();
                 break;
+            case FIND_REPLACE:
+                toggleFindReplaceToolBar();
         }
 
     }

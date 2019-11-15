@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.*?>
+
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.HBox?>
+<fx:root type="javafx.scene.control.ToolBar" id="FindReplaceToolBar" prefHeight="52.0" prefWidth="537.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <items>
+        <HBox id="hbox" alignment="CENTER_LEFT" spacing="20">
+            <TextField fx:id="findReplaceTextField" />
+            <CheckBox fx:id="findReplaceCheckBox" mnemonicParsing="false" text="replace all">
+                <font>
+                    <Font size="14.0" />
+                </font></CheckBox>
+            <Button fx:id="findReplaceButton" mnemonicParsing="false" onAction="#replaceButtonPressed" text="Replace">
+                <font>
+                    <Font size="14.0" />
+                </font></Button>
+            <Text fx:id="findReplaceWordCount" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="55.0009765625">
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </Text>
+
+            <Button fx:id="hideFindReplaceToolBarButton" minHeight="20" minWidth="20" text="X"  onAction="#hideFindReplaceToolBarButtonPressed"></Button>
+        </HBox>
+    </items>
+</fx:root>
+

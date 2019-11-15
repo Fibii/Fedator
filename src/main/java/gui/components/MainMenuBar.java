@@ -57,6 +57,8 @@ public class MainMenuBar extends MenuBar {
     @FXML
     private MenuItem paste;
 
+    @FXML
+    private MenuItem findAndReplace;
 
     private IMediator mediator = Mediator.getInstance();
     private FileChooser fileChooser = new FileChooser();
@@ -206,6 +208,12 @@ public class MainMenuBar extends MenuBar {
     }
 
 
+    @FXML
+    void findAndReplaceMenuItemClick(ActionEvent event){
+        mediator.getEventBuilder().withEvent(Events.FIND_REPLACE).build();
+    }
+
+
     /**
      * @deprecated shows the version information of the app
      */
@@ -217,7 +225,7 @@ public class MainMenuBar extends MenuBar {
             root = fxmlLoader.load();
             Scene scene = about.getParentPopup().getScene();
             Stage stage = new Stage();
-            stage.setTitle("My New Stage Title");
+            stage.setTitle("About");
             stage.setScene(new Scene(root, 400, 200));
             stage.showAndWait();
         } catch (IOException e) {

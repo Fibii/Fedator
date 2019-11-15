@@ -1,5 +1,6 @@
 package gui;
 
+import gui.components.FindReplaceToolBar;
 import gui.components.MainMenuBar;
 import gui.components.TextSpace;
 import gui.mediator.Events;
@@ -10,6 +11,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import lib.EditorUtils;
 import smallUndoEngine.EditorTextHistory;
@@ -26,6 +28,9 @@ public class MainController {
     private TextSpace textSpace;
     @FXML
     private MainMenuBar mainMenuBar;
+
+    @FXML
+    private FindReplaceToolBar findReplaceToolBar;
 
     private EditorTextHistory editorTextHistory = new EditorTextHistory();
 
@@ -68,11 +73,20 @@ public class MainController {
     public void createNewTab() {
         Tab tab = new Tab("untitled tab " + textSpacesCount);
         TextSpace textSpace = new TextSpace();
+
+        FindReplaceToolBar findReplaceToolBar = new FindReplaceToolBar();
+        findReplaceToolBar.setManaged(false);
+
         EditorTextHistory editorTextHistory = new EditorTextHistory();
         textSpace.setNumber(textSpacesCount);
         System.out.println("textspace " + textSpacesCount + " is created");
-        tab.setContent(textSpace);
-        TabSpace tabSpace = addTabSpace(textSpace, editorTextHistory, false);
+
+        //VBox used for tab content that hold textspace and toolbar because we can't add many nodes to Tab
+        VBox vBox = new VBox();
+        vBox.getChildren().addAll(textSpace, findReplaceToolBar);
+        tab.setContent(vBox);
+
+        TabSpace tabSpace = addTabSpace(textSpace, editorTextHistory, findReplaceToolBar, false);
         tab.setOnCloseRequest(event -> {
             Alert alert = EditorUtils.createConfirmationAlert("Are you sure you want to close this tab?", "yes", "");
             boolean close = true;
@@ -103,8 +117,8 @@ public class MainController {
      * @param isSaved   specifies if the file is saved in the system
      * @return: the created tabSpace
      */
-    private TabSpace addTabSpace(TextSpace textSpace, EditorTextHistory editorTextHistory, boolean isSaved) {
-        TabSpace current = new TabSpace(textSpace, editorTextHistory);
+    private TabSpace addTabSpace(TextSpace textSpace, EditorTextHistory editorTextHistory, FindReplaceToolBar findReplaceToolBar,  boolean isSaved) {
+        TabSpace current = new TabSpace(textSpace, editorTextHistory, findReplaceToolBar);
         current.setIsSaved(isSaved);
         tabSpaces.add(current);
         return current;
