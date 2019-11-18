@@ -77,10 +77,8 @@ public class TextSpace extends HBox {
      * @see EditorTextHistory
      */
     public void undo(EditorTextHistory editorTextHistory) {
-        boolean undoIsNotEmpty = editorTextHistory.undo();
-        if(undoIsNotEmpty) {
-            textArea.replaceText(editorTextHistory.getText());
-        }
+        editorTextHistory.undo();
+        textArea.replaceText(editorTextHistory.getText());
         mediator.getEventBuilder().withEvent(Events.TEXT_CHANGED).build();
     }
 
@@ -92,12 +90,9 @@ public class TextSpace extends HBox {
      * @see EditorTextHistory
      */
     public void redo(EditorTextHistory editorTextHistory) {
-        boolean redoIsNotEmpty = editorTextHistory.redo();
-        if(redoIsNotEmpty){
-            textArea.replaceText(editorTextHistory.getText());
-        }
+        editorTextHistory.redo();
+        textArea.replaceText(editorTextHistory.getText());
         mediator.getEventBuilder().withEvent(Events.TEXT_CHANGED).build();
-
     }
 
     /**

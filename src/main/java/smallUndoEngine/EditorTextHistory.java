@@ -20,11 +20,11 @@ public class EditorTextHistory implements IEdit {
         edit.setText(newText);
     }
 
-    public boolean undo(){
-        return edit.undo();
+    public void undo(){
+        edit.undo();
     }
-    public boolean redo(){
-        return edit.redo();
+    public void redo(){
+        edit.redo();
     }
 
 }

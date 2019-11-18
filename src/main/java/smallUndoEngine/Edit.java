@@ -14,38 +14,37 @@ public class Edit implements IEdit {
 
     /**
      * updates the current text to the previous one stored in the stack if the stack is not empty
+     *
      * @return true if the stack is not empty, false otherwise
      */
     @Override
-    public boolean undo() {
-        if(!undoStack.isEmpty()){
+    public void undo() {
 
-            if(undoStack.size() == 1){
-                text = "";
-                redoStack.add(undoStack.get(undoStack.size() - 1));
-                return false;
-            }
-
-            text = undoStack.remove(undoStack.size() -2);
-            redoStack.add(undoStack.remove(undoStack.size() -1));
-            return true;
+        if (undoStack.isEmpty()) {
+            System.out.println("undo stack is empty");
+            return;
+        } else if (undoStack.size() == 1) {
+            text = "";
+            redoStack.add(undoStack.get(undoStack.size() - 1));
+            return;
+        } else {
+            text = undoStack.remove(undoStack.size() - 2);
+            redoStack.add(undoStack.remove(undoStack.size() - 1));
         }
 
-        return true;
     }
 
     /**
      * updates the current text to the original one stored in the stack if the stack is not empty
+     *
      * @return true if the stack is not empty, false otherwise
      */
     @Override
-    public boolean redo() {
-        if (!redoStack.isEmpty()) {
-            text = redoStack.remove(redoStack.size() - 1);
-            return true;
-        } else {
+    public void redo() {
+        if (redoStack.isEmpty()) {
             System.out.println("redo stack is empty");
-            return false;
+        } else {
+            text = redoStack.remove(redoStack.size() - 1);
         }
     }
 
@@ -56,22 +55,23 @@ public class Edit implements IEdit {
      **/
     void setText(String text) {
 
-        if (undoStack.contains(text)) {
+        if (undoStack.contains(text) || text.isEmpty()) {
             return;
         }
 
-        if (undoStack.isEmpty()){
+        if (undoStack.isEmpty()) {
+            System.out.println("Added");
             undoStack.add(text);
             return;
         }
 
-        if(text.endsWith(" ")){
+        if (text.endsWith(" ")) {
             undoStack.add(text);
             return;
         }
 
         String[] textStringArray;
-        if(text.contains(" ")){
+        if (text.contains(" ")) {
             textStringArray = text.split(" ");
         } else {
             textStringArray = new String[]{text};
@@ -80,24 +80,24 @@ public class Edit implements IEdit {
 
         boolean shouldReplace = true;
 
-        String[] stringStackArray = undoStack.get(undoStack.size() -1).split(" ");
+        String[] stringStackArray = undoStack.get(undoStack.size() - 1).split(" ");
         String lastWordInStack = stringStackArray[stringStackArray.length - 1];
         String lastWordInText = textStringArray[textStringArray.length - 1];
 
         // case we have new word with space before it, add it directly
-        if(stringStackArray.length < textStringArray.length){
+        if (stringStackArray.length < textStringArray.length) {
             undoStack.add(text);
             return;
         }
 
 
         // if the phrases don't have different of length 1, don't even compare
-        if(undoStack.get(undoStack.size() - 1).length() != text.length() - 1) {
+        if (undoStack.get(undoStack.size() - 1).length() != text.length() - 1) {
             shouldReplace = false;
         }
-        if(shouldReplace && lastWordInStack.length() == lastWordInText.length() - 1){
-            for (int j = lastWordInStack.length() -1; j >= 0; j--){
-                if(lastWordInStack.charAt(j) != lastWordInText.charAt(j)){
+        if (shouldReplace && lastWordInStack.length() == lastWordInText.length() - 1) {
+            for (int j = lastWordInStack.length() - 1; j >= 0; j--) {
+                if (lastWordInStack.charAt(j) != lastWordInText.charAt(j)) {
                     shouldReplace = false;
                     break;
                 }
@@ -105,10 +105,10 @@ public class Edit implements IEdit {
         }
 
 
-        if (!shouldReplace){
+        if (!shouldReplace) {
             undoStack.add(text);
         } else {
-            undoStack.remove(undoStack.size() -1);
+            undoStack.remove(undoStack.size() - 1);
             undoStack.add(text);
         }
 

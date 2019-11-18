@@ -1,6 +1,6 @@
 package smallUndoEngine;
 
 public interface IEdit {
-    boolean undo();
-    boolean redo();
+    void undo();
+    void redo();
 }
