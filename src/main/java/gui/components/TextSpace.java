@@ -172,10 +172,11 @@ public class TextSpace extends HBox {
         System.out.println("called with; " + str + " tracker: " + startIndicesTracker);
         String text = getText();
 
-        if (str.isEmpty() || text.indexOf(str) < 0) {
+        if (str == null || str.isEmpty() || text.indexOf(str) < 0) {
             extraSelection.selectRange(0, 0);
             return;
         }
+
 
         startIndices = EditorUtils.getIndexStartsOfSubstring(text, str);
         extraSelection.selectRange(startIndices.get(startIndicesTracker), startIndices.get(startIndicesTracker) + str.length());
@@ -184,6 +185,11 @@ public class TextSpace extends HBox {
     }
 
     public void increaseIndicesTracker(){
+
+        if(startIndices == null){
+            return;
+        }
+
         if (startIndicesTracker < startIndices.size() - 1){
             startIndicesTracker++;
         }
@@ -200,8 +206,13 @@ public class TextSpace extends HBox {
     }
 
     public void replaceCurrent(String oldString, String newStr){
+
+        // called with textfield empty
+        if(oldString == null || newStr == null){
+            return;
+        }
+
         try {
-            System.out.println("YEEET");
             setText(EditorUtils.replaceSpecificString(getText(), oldString, newStr, startIndicesTracker));
             clearHighlighting();
         } catch (Exception e) {
