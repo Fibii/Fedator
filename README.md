@@ -6,11 +6,9 @@ Fedator is a simple text editor with basic utilities based on javafx
   * File reading/saving (text files only)
   * Intelligent file saving (automatically save data to the current file without prompting the user for a path..)
   * Multiple tabs
+  * Find
   * Find and Replace
   * Copy/Paste/Cut
-
-#### Known issues
-  * ~~TextArea lag with huge text~~~~ 
 
 ##### Architecture ?
 Hi i'm fibi and welcome to fibi's text editor design patterns edition.
