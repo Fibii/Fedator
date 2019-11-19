@@ -7,16 +7,27 @@ import javafx.fxml.FXMLLoader;
 
 import javafx.scene.layout.HBox;
 
+import javafx.scene.paint.Color;
+import lib.EditorUtils;
 import org.fxmisc.richtext.*;
+import smallUndoEngine.Edit;
 import smallUndoEngine.EditorTextHistory;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class TextSpace extends HBox {
     private int textSpaceNumber = 0;
     private IMediator mediator = Mediator.getInstance();
     private Path currentPath;
+    private Selection<Collection<String>, String, Collection<String>> extraSelection;
+    private List<Integer> startIndices;
+    private int startIndicesTracker = 0;
+
+
     @FXML
     private CodeArea textArea;
 
@@ -47,6 +58,18 @@ public class TextSpace extends HBox {
     public void initialize() {
         textAreaChangeListener();
         textArea.setParagraphGraphicFactory(LineNumberFactory.get(textArea));
+
+        // add highlighter
+        extraSelection = new SelectionImpl<>("another selection", textArea,
+                path -> {
+                    // make rendered selection path look like a yellow highlighter
+                    path.setStrokeWidth(0);
+                    path.setFill(Color.YELLOW);
+                }
+        );
+        if (!textArea.addSelection(extraSelection)) {
+            throw new IllegalStateException("selection was not added to area");
+        }
     }
 
     /**
@@ -136,6 +159,40 @@ public class TextSpace extends HBox {
     /** replaces the selected text with empty string */
     public void removeSelectedText(){
         textArea.replaceSelection("");
+    }
+
+
+    /** highlights str */
+    public void selectText(String str) {
+
+        System.out.println("called with; " + str + " tracker: " + startIndicesTracker);
+        String text = getText();
+
+        if (str.isEmpty() || text.indexOf(str) < 0) {
+            extraSelection.selectRange(0, 0);
+            return;
+        }
+
+        startIndices = EditorUtils.getIndexStartsOfSubstring(text, str);
+        extraSelection.selectRange(startIndices.get(startIndicesTracker), startIndices.get(startIndicesTracker) + str.length());
+
+
+    }
+
+    public void increaseIndicesTracker(){
+        if (startIndicesTracker < startIndices.size() - 1){
+            startIndicesTracker++;
+        }
+    }
+
+    public void decreaseIndicesTracker(){
+        if (startIndicesTracker > 0){
+            startIndicesTracker--;
+        }
+    }
+
+    public void resetIndicesTracker(){
+        startIndicesTracker = 0;
     }
 
 }

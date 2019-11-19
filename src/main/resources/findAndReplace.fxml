@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import javafx.scene.control.*?>
 
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <fx:root type="javafx.scene.control.ToolBar" id="FindReplaceToolBar" prefHeight="52.0" prefWidth="537.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <items>
-        <HBox id="hbox" alignment="CENTER_LEFT" spacing="20">
-            <TextField fx:id="findReplaceTextField" />
-            <CheckBox fx:id="findReplaceCheckBox" mnemonicParsing="false" text="replace all">
+        <HBox id="hbox" alignment="CENTER_LEFT" spacing="10">
+            <Region></Region>
+            <TextField fx:id="findReplaceTextField" prefWidth="60" />
+            <Button fx:id="previousFindButton" mnemonicParsing="false" onAction="#previousFindButtonPressed" text="p">
+                <font>
+                    <Font size="14.0" />
+                </font></Button>
+            <Button fx:id="nextFindButton" mnemonicParsing="false" onAction="#nextFindButtonPressed" text="n">
+                <font>
+                    <Font size="14.0" />
+                </font></Button>
+            <CheckBox fx:id="caseSensetiveCheckBox" mnemonicParsing="false" text="case sensetive">
                 <font>
                     <Font size="14.0" />
                 </font></CheckBox>
@@ -18,7 +27,11 @@
                 <font>
                     <Font size="14.0" />
                 </font></Button>
-            <Text fx:id="findReplaceWordCount" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="55.0009765625">
+            <CheckBox fx:id="replaceAllCheckbox" mnemonicParsing="false" text="replace all">
+                <font>
+                    <Font size="14.0" />
+                </font></CheckBox>
+            <Text fx:id="findReplaceWordCount" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="100">
                 <font>
                     <Font size="14.0" />
                 </font>

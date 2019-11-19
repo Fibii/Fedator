@@ -12,6 +12,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
+import javax.xml.stream.events.StartDocument;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -22,9 +23,12 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class EditorUtils {
 
+    //todo: extract this class to two classes, EditorIO and EditorWindow
     public static boolean writeToFile(String text, Path path) {
         if (path == null || text == null) {
             return false;
@@ -191,5 +195,46 @@ public class EditorUtils {
         }
 
 
+    }
+
+
+    /**
+     * @param str: matcher string
+     * @param text: matched string
+     * @return the number of matcher substrings in the matched string
+     * */
+    public static int getSubstringMatchedCount(String str, String text){
+
+        if(str.isEmpty()){
+            return 0;
+        }
+
+        Pattern pattern = Pattern.compile(Pattern.quote(str));
+        Matcher matcher = pattern.matcher(text);
+        int count = 0;
+
+        while(matcher.find()){
+            count++;
+        }
+
+        return count;
+    }
+
+    /**
+     * @return List of Integers of each index where the substring start in text
+     * */
+    public static List<Integer> getIndexStartsOfSubstring(String text, String substring){
+        List<Integer> startIndices = new ArrayList<>();
+
+        int indexStart = 0;
+        int count = EditorUtils.getSubstringMatchedCount(substring, text);
+
+        for (int i = 0; i < count; i++) {
+            indexStart = text.indexOf(substring, indexStart);
+            startIndices.add(indexStart);
+            indexStart += substring.length();
+        }
+
+        return startIndices;
     }
 }

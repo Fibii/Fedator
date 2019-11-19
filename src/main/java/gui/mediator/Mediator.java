@@ -198,6 +198,16 @@ public class Mediator implements IMediator {
                 break;
             case FIND_REPLACE:
                 tabSpaces.get(tabIndex).sendEvent(FIND_REPLACE);
+                break;
+            case FIND_SELECT:
+                tabSpaces.get(tabIndex).sendEvent(FIND_SELECT);
+                break;
+            case FIND_NEXT:
+                tabSpaces.get(tabIndex).sendEvent(FIND_NEXT);
+                break;
+            case FIND_PREVIOUS:
+                tabSpaces.get(tabIndex).sendEvent(FIND_PREVIOUS);
+                break;
         }
     }
 

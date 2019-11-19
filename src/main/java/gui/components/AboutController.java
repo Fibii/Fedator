@@ -31,6 +31,7 @@ public class AboutController {
     @FXML
     void githubLinkOnAction(ActionEvent event){
         // works only on linux, requires python..
+        //todo: fix this
         try {
             Runtime.getRuntime().exec("python -mwebbrowser https://github.com/Fibii");
         } catch (IOException e) {

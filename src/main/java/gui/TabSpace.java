@@ -9,6 +9,8 @@ import smallUndoEngine.EditorTextHistory;
 
 import java.nio.file.Path;
 
+import static gui.mediator.Events.FIND_SELECT;
+
 /** a class that wraps TextSpace and EditorTextHistory objects together */
 public class TabSpace {
 
@@ -20,6 +22,8 @@ public class TabSpace {
     private boolean textChanged;
     private FindReplaceToolBar findReplaceToolBar;
     private boolean findReplaceVisibility;
+
+    private String toolBarString;
 
     public TabSpace(TextSpace textSpace, EditorTextHistory editorTextHistory, FindReplaceToolBar findReplaceToolBar) {
         this.textSpace = textSpace;
@@ -54,10 +58,15 @@ public class TabSpace {
     /**
      * Shows or hides #findReplaceToolBar depending on #findReplaceVisibility
      * */
+    //todo: extract FIND_REPLACE to showFINDREPLACE event and hideFINDREPLACE
     public void toggleFindReplaceToolBar(){
         findReplaceVisibility = !findReplaceVisibility;
         findReplaceToolBar.setVisible(findReplaceVisibility);
         findReplaceToolBar.setManaged(findReplaceVisibility);
+        if (!findReplaceVisibility){
+            textSpace.resetIndicesTracker();
+            textSpace.selectText("");
+        }
     }
 
 
@@ -102,6 +111,20 @@ public class TabSpace {
                 break;
             case FIND_REPLACE:
                 toggleFindReplaceToolBar();
+                break;
+            case FIND_SELECT:
+                toolBarString = mediator.getMediatorText();
+                textSpace.resetIndicesTracker();
+                textSpace.selectText(toolBarString);
+                break;
+            case FIND_NEXT:
+                textSpace.increaseIndicesTracker();
+                textSpace.selectText(toolBarString);
+                break;
+            case FIND_PREVIOUS:
+                textSpace.decreaseIndicesTracker();
+                textSpace.selectText(toolBarString);
+                break;
         }
 
     }
