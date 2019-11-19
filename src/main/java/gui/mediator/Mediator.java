@@ -211,6 +211,9 @@ public class Mediator implements IMediator {
             case REPLACE_CURRENT:
                 tabSpaces.get(tabIndex).sendEvent(REPLACE_CURRENT);
                 break;
+            case REPLACE_ALL:
+                tabSpaces.get(tabIndex).sendEvent(REPLACE_ALL);
+                break;
         }
     }
 

@@ -220,4 +220,18 @@ public class TextSpace extends HBox {
         }
     }
 
+    public void replaceAll(String oldString, String newStr){
+
+        // called with textfield empty
+        if(oldString == null || newStr == null){
+            return;
+        }
+
+        String newText = getText().replaceAll(oldString, newStr);
+        setText(newText);
+        clearHighlighting();
+
+    }
+
+
 }

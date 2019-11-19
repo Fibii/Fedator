@@ -9,8 +9,7 @@ import smallUndoEngine.EditorTextHistory;
 
 import java.nio.file.Path;
 
-import static gui.mediator.Events.FIND_SELECT;
-import static gui.mediator.Events.REPLACE_CURRENT;
+import static gui.mediator.Events.*;
 
 /** a class that wraps TextSpace and EditorTextHistory objects together */
 public class TabSpace {
@@ -128,6 +127,9 @@ public class TabSpace {
                 break;
             case REPLACE_CURRENT:
                 textSpace.replaceCurrent(toolBarString, mediator.getMediatorText());
+                break;
+            case REPLACE_ALL:
+                textSpace.replaceAll(toolBarString, mediator.getMediatorText());
                 break;
         }
 

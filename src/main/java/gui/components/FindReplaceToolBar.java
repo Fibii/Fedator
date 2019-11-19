@@ -10,11 +10,13 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import lib.EditorUtils;
 
 // todo: fix toolbar components width to be synced with the stage's width
-public class FindReplaceToolBar extends ToolBar {
+public class FindReplaceToolBar extends VBox {
 
     @FXML
     private TextField findTextField;
@@ -41,10 +43,20 @@ public class FindReplaceToolBar extends ToolBar {
     private CheckBox caseSensetiveCheckBox;
 
     @FXML
-    private HBox hbox;
+    private HBox findHbox;
+
+    @FXML
+    private HBox replaceHbox;
 
     @FXML
     private Button hideFindReplaceToolBarButton;
+
+    @FXML
+    private ToolBar findToolBar;
+
+    @FXML
+    private ToolBar replaceToolBar;
+
 
     private Mediator mediator = Mediator.getInstance();
 
@@ -69,8 +81,12 @@ public class FindReplaceToolBar extends ToolBar {
 
     @FXML
     public void replaceButtonPressed(ActionEvent event){
-//        mediator.setText(replaceTextField.getText());
-        mediator.getEventBuilder().withText(replaceTextField.getText()).withEvent(Events.REPLACE_CURRENT).build();
+        if(replaceAllCheckbox.isSelected()){
+            mediator.getEventBuilder().withText(replaceTextField.getText()).withEvent(Events.REPLACE_ALL).build();
+        } else {
+            mediator.getEventBuilder().withText(replaceTextField.getText()).withEvent(Events.REPLACE_CURRENT).build();
+        }
+
     }
 
     @FXML
