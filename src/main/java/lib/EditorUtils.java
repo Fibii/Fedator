@@ -237,4 +237,28 @@ public class EditorUtils {
 
         return startIndices;
     }
+
+    /**
+     * @param text: text
+     * @param current: the replaced string
+     * @param str: the new string
+     * @param index: the ith occurence of current in text
+     * @return text with current string replaced with str
+     *
+     */
+    public static String replaceSpecificString(String text, String current, String str, int index) throws Exception {
+
+        List<Integer> startIndices = getIndexStartsOfSubstring(text, current);
+
+        if(index >= startIndices.size()){
+            throw new Exception("text doesn't contain " + index + "th " + str);
+        }
+
+        int startIndex = startIndices.get(index);
+        String newText = new StringBuilder(text).replace(startIndex, startIndex + current.length(), str).toString();
+
+        return newText;
+
+
+    }
 }

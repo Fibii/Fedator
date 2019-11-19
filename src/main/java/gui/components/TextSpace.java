@@ -162,6 +162,10 @@ public class TextSpace extends HBox {
     }
 
 
+    private void clearHighlighting(){
+        extraSelection.selectRange(0, 0);
+    }
+
     /** highlights str */
     public void selectText(String str) {
 
@@ -193,6 +197,16 @@ public class TextSpace extends HBox {
 
     public void resetIndicesTracker(){
         startIndicesTracker = 0;
+    }
+
+    public void replaceCurrent(String oldString, String newStr){
+        try {
+            System.out.println("YEEET");
+            setText(EditorUtils.replaceSpecificString(getText(), oldString, newStr, startIndicesTracker));
+            clearHighlighting();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

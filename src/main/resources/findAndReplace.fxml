@@ -10,7 +10,8 @@
     <items>
         <HBox id="hbox" alignment="CENTER_LEFT" spacing="10">
             <Region></Region>
-            <TextField fx:id="findReplaceTextField" prefWidth="60" />
+            <TextField fx:id="findTextField" prefWidth="60" />
+            <TextField fx:id="replaceTextField" prefWidth="60" />
             <Button fx:id="previousFindButton" mnemonicParsing="false" onAction="#previousFindButtonPressed" text="p">
                 <font>
                     <Font size="14.0" />

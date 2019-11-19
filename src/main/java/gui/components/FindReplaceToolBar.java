@@ -13,13 +13,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import lib.EditorUtils;
 
-import java.util.List;
-
 // todo: fix toolbar components width to be synced with the stage's width
 public class FindReplaceToolBar extends ToolBar {
 
     @FXML
-    private TextField findReplaceTextField;
+    private TextField findTextField;
+
+    @FXML
+    private TextField replaceTextField;
 
     @FXML
     private Button findReplaceButton;
@@ -60,7 +61,7 @@ public class FindReplaceToolBar extends ToolBar {
     }
     @FXML
     public void initialize() {
-        findReplaceTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+        findTextField.textProperty().addListener((observable, oldValue, newValue) -> {
                     findReplaceTextFieldChangeListener();
                 }
         );
@@ -68,7 +69,8 @@ public class FindReplaceToolBar extends ToolBar {
 
     @FXML
     public void replaceButtonPressed(ActionEvent event){
-
+//        mediator.setText(replaceTextField.getText());
+        mediator.getEventBuilder().withText(replaceTextField.getText()).withEvent(Events.REPLACE_CURRENT).build();
     }
 
     @FXML
@@ -88,7 +90,7 @@ public class FindReplaceToolBar extends ToolBar {
 
     public void findReplaceTextFieldChangeListener(){
         String text = caseSensetiveCheckBox.isSelected() ? mediator.getText().toLowerCase() : mediator.getText();
-        String substring = caseSensetiveCheckBox.isSelected() ? findReplaceTextField.getText().toLowerCase() : findReplaceTextField.getText().toLowerCase();
+        String substring = caseSensetiveCheckBox.isSelected() ? findTextField.getText().toLowerCase() : findTextField.getText().toLowerCase();
         int count = EditorUtils.getSubstringMatchedCount(substring, text);
         findReplaceWordCount.setText(count + "\nmatches");
 
