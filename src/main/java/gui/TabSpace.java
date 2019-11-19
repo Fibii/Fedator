@@ -9,8 +9,6 @@ import smallUndoEngine.EditorTextHistory;
 
 import java.nio.file.Path;
 
-import static gui.mediator.Events.TOGGLE_FIND;
-
 /** a class that wraps TextSpace and EditorTextHistory objects together */
 public class TabSpace {
 
@@ -23,6 +21,7 @@ public class TabSpace {
     private FindReplaceToolBar findReplaceToolBar;
     private boolean findReplaceVisibility;
     private boolean findVisibility;
+    private boolean replaceVisibility;
 
     private String toolBarString;
 
@@ -57,36 +56,29 @@ public class TabSpace {
     }
 
     /**
-     * Shows or hides Find Replace Toolbar by setting ReplaceToolbar to be visible
-     * @see FindReplaceToolBar#toggleReplaceToolbar()
+     * Shows Replace Toolbar
+     * @see FindReplaceToolBar#setReplaceToolbarVisibility(boolean)
      * */
-    public void toggleFindReplaceToolBar(){
-        findVisibility = false; // so when find and replace are both shown, and find menu is pressed, only find toolbar will be shown
-        findReplaceToolBar.toggleReplaceToolbar();
-        findReplaceVisibility = !findReplaceVisibility;
-        findReplaceToolBar.setVisible(findReplaceVisibility);
-        findReplaceToolBar.setManaged(findReplaceVisibility);
-        if (!findReplaceVisibility){
-            textSpace.resetIndicesTracker();
-            textSpace.selectText("");
-        }
+    private void showFindReplace(){
+        findReplaceToolBar.setReplaceToolbarVisibility(true);
+        findReplaceToolBar.setVisible(true);
+        findReplaceToolBar.setManaged(true);
     }
 
-    /**
-     * Shows or hides Find Toolbar depending on #findReplaceVisibility
-     * */
-    public void toggleFindToolbar(){
-        if(findReplaceVisibility){
-            findReplaceToolBar.toggleReplaceToolbar();
-            findReplaceVisibility = false;
-        }
-        findVisibility = !findVisibility;
-        findReplaceToolBar.setVisible(findVisibility);
-        findReplaceToolBar.setManaged(findVisibility);
-        if (!findVisibility){
-            textSpace.resetIndicesTracker();
-            textSpace.selectText("");
-        }
+    private void hideFindReplace(){
+
+        findReplaceToolBar.setVisible(false);
+        findReplaceToolBar.setManaged(false);
+
+        // remove highlighting
+        textSpace.resetIndicesTracker();
+        textSpace.selectText("");
+    }
+
+    private void showFindToolbar(){
+        findReplaceToolBar.setReplaceToolbarVisibility(false);
+        findReplaceToolBar.setVisible(true);
+        findReplaceToolBar.setManaged(true);;
     }
 
 
@@ -129,11 +121,14 @@ public class TabSpace {
             case PASTE_MENU:
                 pasteToTextArea();
                 break;
-            case TOGGLE_FIND_REPLACE:
-                toggleFindReplaceToolBar();
+            case SHOW_FIND_REPLACE:
+                showFindReplace();
                 break;
-            case TOGGLE_FIND:
-                toggleFindToolbar();
+            case SHOW_FIND:
+                showFindToolbar();
+                break;
+            case HIDE_REPLACE:
+                hideFindReplace();
                 break;
             case FIND_SELECT:
                 toolBarString = mediator.getMediatorText();

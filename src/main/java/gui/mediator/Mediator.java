@@ -196,11 +196,14 @@ public class Mediator implements IMediator {
             case PASTE_MENU:
                 tabSpaces.get(tabIndex).sendEvent(PASTE_MENU);
                 break;
-            case TOGGLE_FIND_REPLACE:
-                tabSpaces.get(tabIndex).sendEvent(TOGGLE_FIND_REPLACE);
+            case SHOW_FIND_REPLACE:
+                tabSpaces.get(tabIndex).sendEvent(SHOW_FIND_REPLACE);
                 break;
-            case TOGGLE_FIND:
-                tabSpaces.get(tabIndex).sendEvent(TOGGLE_FIND);
+            case SHOW_FIND:
+                tabSpaces.get(tabIndex).sendEvent(SHOW_FIND);
+                break;
+            case HIDE_REPLACE:
+                tabSpaces.get(tabIndex).sendEvent(HIDE_REPLACE);
                 break;
             case FIND_SELECT:
                 tabSpaces.get(tabIndex).sendEvent(FIND_SELECT);
@@ -217,6 +220,8 @@ public class Mediator implements IMediator {
             case REPLACE_ALL:
                 tabSpaces.get(tabIndex).sendEvent(REPLACE_ALL);
                 break;
+
+
         }
     }
 

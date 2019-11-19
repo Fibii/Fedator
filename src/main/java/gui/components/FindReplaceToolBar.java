@@ -89,7 +89,7 @@ public class FindReplaceToolBar extends VBox {
 
     @FXML
     public void hideFindReplaceToolBarButtonPressed(ActionEvent event){
-        mediator.getEventBuilder().withEvent(Events.TOGGLE_FIND_REPLACE).build();
+        mediator.getEventBuilder().withEvent(Events.HIDE_REPLACE).build();
     }
 
     @FXML
@@ -112,8 +112,8 @@ public class FindReplaceToolBar extends VBox {
         mediator.getEventBuilder().withEvent(Events.FIND_SELECT).withText(substring).build();
     }
 
-    public void toggleReplaceToolbar(){
-           replaceToolBar.setVisible(!replaceToolBar.isVisible());
-           replaceToolBar.setManaged(!replaceToolBar.isManaged());
+    public void setReplaceToolbarVisibility(boolean visibility){
+           replaceToolBar.setVisible(visibility);
+           replaceToolBar.setManaged(visibility);
     }
 }

@@ -210,12 +210,12 @@ public class MainMenuBar extends MenuBar {
 
     @FXML
     void findAndReplaceMenuItemClick(ActionEvent event){
-        mediator.getEventBuilder().withEvent(Events.TOGGLE_FIND_REPLACE).build();
+        mediator.getEventBuilder().withEvent(Events.SHOW_FIND_REPLACE).build();
     }
 
     @FXML
     void findMenuItemClick(ActionEvent event){
-        mediator.getEventBuilder().withEvent(Events.TOGGLE_FIND).build();
+        mediator.getEventBuilder().withEvent(Events.SHOW_FIND).build();
     }
 
 
