@@ -9,7 +9,7 @@ import smallUndoEngine.EditorTextHistory;
 
 import java.nio.file.Path;
 
-import static gui.mediator.Events.*;
+import static gui.mediator.Events.TOGGLE_FIND;
 
 /** a class that wraps TextSpace and EditorTextHistory objects together */
 public class TabSpace {
@@ -22,6 +22,7 @@ public class TabSpace {
     private boolean textChanged;
     private FindReplaceToolBar findReplaceToolBar;
     private boolean findReplaceVisibility;
+    private boolean findVisibility;
 
     private String toolBarString;
 
@@ -56,14 +57,28 @@ public class TabSpace {
     }
 
     /**
-     * Shows or hides #findReplaceToolBar depending on #findReplaceVisibility
+     * Shows or hides Find Replace Toolbar by setting ReplaceToolbar to be visible
+     * @see FindReplaceToolBar#toggleReplaceToolbar()
      * */
-    //todo: extract FIND_REPLACE to showFINDREPLACE event and hideFINDREPLACE
     public void toggleFindReplaceToolBar(){
+        findReplaceToolBar.toggleReplaceToolbar();
         findReplaceVisibility = !findReplaceVisibility;
         findReplaceToolBar.setVisible(findReplaceVisibility);
         findReplaceToolBar.setManaged(findReplaceVisibility);
         if (!findReplaceVisibility){
+            textSpace.resetIndicesTracker();
+            textSpace.selectText("");
+        }
+    }
+
+    /**
+     * Shows or hides Find Toolbar depending on #findReplaceVisibility
+     * */
+    public void toggleFindToolbar(){
+        findVisibility = !findVisibility;
+        findReplaceToolBar.setVisible(findVisibility);
+        findReplaceToolBar.setManaged(findVisibility);
+        if (!findVisibility){
             textSpace.resetIndicesTracker();
             textSpace.selectText("");
         }
@@ -109,8 +124,11 @@ public class TabSpace {
             case PASTE_MENU:
                 pasteToTextArea();
                 break;
-            case FIND_REPLACE:
+            case TOGGLE_FIND_REPLACE:
                 toggleFindReplaceToolBar();
+                break;
+            case TOGGLE_FIND:
+                toggleFindToolbar();
                 break;
             case FIND_SELECT:
                 toolBarString = mediator.getMediatorText();

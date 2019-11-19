@@ -23,6 +23,7 @@
       </Menu>
       <Menu mnemonicParsing="false" text="Tools">
          <items>
+            <MenuItem fx:id="find" mnemonicParsing="false" onAction="#findMenuItemClick" text="Find" />
             <MenuItem fx:id="findAndReplace" mnemonicParsing="false" onAction="#findAndReplaceMenuItemClick" text="Find and Replace" />
          </items>
       </Menu>

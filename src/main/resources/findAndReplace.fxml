@@ -9,9 +9,9 @@
 
 <fx:root type="javafx.scene.layout.VBox" id="FindReplaceToolBar" prefWidth="-Infinity" prefHeight="52"  visible="false" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <ToolBar id="findToolBar">
+        <ToolBar fx:id="findToolBar">
             <items>
-                <HBox id="findHbox" alignment="CENTER_LEFT" spacing="20" minWidth="-Infinity" minHeight="-Infinity" maxHeight="-Infinity" maxWidth="-Infinity">
+                <HBox fx:id="findHbox" alignment="CENTER_LEFT" spacing="20" minWidth="-Infinity" minHeight="-Infinity" maxHeight="-Infinity" maxWidth="-Infinity">
                     <TextField fx:id="findTextField" HBox.hgrow="ALWAYS" prefWidth="200"/>
                     <Button fx:id="previousFindButton" mnemonicParsing="false" onAction="#previousFindButtonPressed" text="p">
                         <font>
@@ -36,8 +36,8 @@
             </items>
         </ToolBar>
 
-        <ToolBar id="replaceToolBar">
-            <HBox id="replaceHbox" alignment="CENTER_LEFT" spacing="20" minWidth="-Infinity" minHeight="-Infinity" maxHeight="-Infinity" maxWidth="-Infinity">
+        <ToolBar fx:id="replaceToolBar" visible="false" managed="false">
+            <HBox fx:id="replaceHbox" alignment="CENTER_LEFT" spacing="20" minWidth="-Infinity" minHeight="-Infinity" maxHeight="-Infinity" maxWidth="-Infinity">
                 <TextField fx:id="replaceTextField" HBox.hgrow="ALWAYS" prefWidth="200"/>
                 <CheckBox fx:id="replaceAllCheckbox" mnemonicParsing="false" text="replace all">
                     <font>

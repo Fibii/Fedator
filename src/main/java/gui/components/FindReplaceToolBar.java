@@ -10,12 +10,10 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import lib.EditorUtils;
 
-// todo: fix toolbar components width to be synced with the stage's width
 public class FindReplaceToolBar extends VBox {
 
     @FXML
@@ -91,7 +89,7 @@ public class FindReplaceToolBar extends VBox {
 
     @FXML
     public void hideFindReplaceToolBarButtonPressed(ActionEvent event){
-        mediator.getEventBuilder().withEvent(Events.FIND_REPLACE).build();
+        mediator.getEventBuilder().withEvent(Events.TOGGLE_FIND_REPLACE).build();
     }
 
     @FXML
@@ -112,5 +110,10 @@ public class FindReplaceToolBar extends VBox {
 
 
         mediator.getEventBuilder().withEvent(Events.FIND_SELECT).withText(substring).build();
+    }
+
+    public void toggleReplaceToolbar(){
+           replaceToolBar.setVisible(!replaceToolBar.isVisible());
+           replaceToolBar.setManaged(!replaceToolBar.isManaged());
     }
 }

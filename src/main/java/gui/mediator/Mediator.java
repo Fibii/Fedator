@@ -196,8 +196,11 @@ public class Mediator implements IMediator {
             case PASTE_MENU:
                 tabSpaces.get(tabIndex).sendEvent(PASTE_MENU);
                 break;
-            case FIND_REPLACE:
-                tabSpaces.get(tabIndex).sendEvent(FIND_REPLACE);
+            case TOGGLE_FIND_REPLACE:
+                tabSpaces.get(tabIndex).sendEvent(TOGGLE_FIND_REPLACE);
+                break;
+            case TOGGLE_FIND:
+                tabSpaces.get(tabIndex).sendEvent(TOGGLE_FIND);
                 break;
             case FIND_SELECT:
                 tabSpaces.get(tabIndex).sendEvent(FIND_SELECT);

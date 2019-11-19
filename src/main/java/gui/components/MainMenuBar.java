@@ -1,11 +1,8 @@
 package gui.components;
 
 import gui.mediator.IMediator;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.DataFormat;
-import javafx.stage.Stage;
 import lib.EditorUtils;
 import gui.mediator.Events;
 import gui.mediator.Mediator;
@@ -59,6 +56,9 @@ public class MainMenuBar extends MenuBar {
 
     @FXML
     private MenuItem findAndReplace;
+
+    @FXML
+    private MenuItem find;
 
     private IMediator mediator = Mediator.getInstance();
     private FileChooser fileChooser = new FileChooser();
@@ -210,7 +210,12 @@ public class MainMenuBar extends MenuBar {
 
     @FXML
     void findAndReplaceMenuItemClick(ActionEvent event){
-        mediator.getEventBuilder().withEvent(Events.FIND_REPLACE).build();
+        mediator.getEventBuilder().withEvent(Events.TOGGLE_FIND_REPLACE).build();
+    }
+
+    @FXML
+    void findMenuItemClick(ActionEvent event){
+        mediator.getEventBuilder().withEvent(Events.TOGGLE_FIND).build();
     }
 
 
