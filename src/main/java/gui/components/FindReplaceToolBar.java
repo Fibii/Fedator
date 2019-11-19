@@ -75,6 +75,11 @@ public class FindReplaceToolBar extends VBox {
                     findReplaceTextFieldChangeListener();
                 }
         );
+
+        caseSensetiveCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            findReplaceTextFieldChangeListener();
+                }
+        );
     }
 
     @FXML
@@ -103,8 +108,12 @@ public class FindReplaceToolBar extends VBox {
     }
 
     public void findReplaceTextFieldChangeListener(){
-        String text = caseSensetiveCheckBox.isSelected() ? mediator.getText().toLowerCase() : mediator.getText();
-        String substring = caseSensetiveCheckBox.isSelected() ? findTextField.getText().toLowerCase() : findTextField.getText().toLowerCase();
+        String text = !caseSensetiveCheckBox.isSelected() ? mediator.getText().toLowerCase() : mediator.getText();
+        String substring = !caseSensetiveCheckBox.isSelected() ? findTextField.getText().toLowerCase() : findTextField.getText();
+
+        System.out.println("selected: " +  caseSensetiveCheckBox.isSelected());
+        System.out.println("text: " + text);
+        System.out.println("subs: " + substring);
         int count = EditorUtils.getSubstringMatchedCount(substring, text);
         findReplaceWordCount.setText(count + "\nmatches");
 
