@@ -61,6 +61,7 @@ public class TabSpace {
      * @see FindReplaceToolBar#toggleReplaceToolbar()
      * */
     public void toggleFindReplaceToolBar(){
+        findVisibility = false; // so when find and replace are both shown, and find menu is pressed, only find toolbar will be shown
         findReplaceToolBar.toggleReplaceToolbar();
         findReplaceVisibility = !findReplaceVisibility;
         findReplaceToolBar.setVisible(findReplaceVisibility);
@@ -75,6 +76,10 @@ public class TabSpace {
      * Shows or hides Find Toolbar depending on #findReplaceVisibility
      * */
     public void toggleFindToolbar(){
+        if(findReplaceVisibility){
+            findReplaceToolBar.toggleReplaceToolbar();
+            findReplaceVisibility = false;
+        }
         findVisibility = !findVisibility;
         findReplaceToolBar.setVisible(findVisibility);
         findReplaceToolBar.setManaged(findVisibility);
