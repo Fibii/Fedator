@@ -125,4 +125,30 @@ public class FindReplaceToolBar extends VBox {
            replaceToolBar.setVisible(visibility);
            replaceToolBar.setManaged(visibility);
     }
+
+
+    /**
+     * Shows replaceToolBar
+     * */
+    public void showFindReplace(){
+        setReplaceToolbarVisibility(true);
+        this.setVisible(true);
+        this.setManaged(true);
+    }
+
+    /** Hides FindAndReplaceToolbar by hiding Vbox*/
+    public void hideFindReplace(){
+        this.setVisible(false);
+        this.setManaged(false);
+    }
+
+    /**
+     * Shows findToolBar
+     * */
+    public void showFindToolbar(){
+        setReplaceToolbarVisibility(false);
+        this.setVisible(true);
+        this.setManaged(true);;
+    }
+
 }

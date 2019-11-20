@@ -55,33 +55,6 @@ public class TabSpace {
         textSpace.removeSelectedText();
     }
 
-    /**
-     * Shows Replace Toolbar
-     * @see FindReplaceToolBar#setReplaceToolbarVisibility(boolean)
-     * */
-    private void showFindReplace(){
-        findReplaceToolBar.setReplaceToolbarVisibility(true);
-        findReplaceToolBar.setVisible(true);
-        findReplaceToolBar.setManaged(true);
-    }
-
-    private void hideFindReplace(){
-
-        findReplaceToolBar.setVisible(false);
-        findReplaceToolBar.setManaged(false);
-
-        // remove highlighting
-        textSpace.resetIndicesTracker();
-        textSpace.selectText("");
-    }
-
-    private void showFindToolbar(){
-        findReplaceToolBar.setReplaceToolbarVisibility(false);
-        findReplaceToolBar.setVisible(true);
-        findReplaceToolBar.setManaged(true);;
-    }
-
-
     public void sendEvent(Events event){
         switch (event) {
             case UNDO_TEXT:
@@ -122,13 +95,17 @@ public class TabSpace {
                 pasteToTextArea();
                 break;
             case SHOW_FIND_REPLACE:
-                showFindReplace();
+                findReplaceToolBar.showFindReplace();
                 break;
             case SHOW_FIND:
-                showFindToolbar();
+                findReplaceToolBar.showFindToolbar();
                 break;
             case HIDE_REPLACE:
-                hideFindReplace();
+                findReplaceToolBar.hideFindReplace();
+
+                // remove highlighting
+                textSpace.resetIndicesTracker();
+                textSpace.selectText("");
                 break;
             case FIND_SELECT:
                 toolBarString = mediator.getMediatorText();
