@@ -23,8 +23,8 @@ public class Main extends Application {
         scene.getStylesheets().add(this.getClass().getResource("style.css").toExternalForm());
 
         primaryStage.setScene(scene);
-        primaryStage.setMinHeight(600);
-        primaryStage.setMinWidth(600);
+        primaryStage.setMinHeight(640);
+        primaryStage.setMinWidth(640);
         primaryStage.setTitle("untitled");
         primaryStage.setOnCloseRequest(event -> {
             EditorUtils.onCloseExitConfirmation();

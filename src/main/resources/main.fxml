@@ -6,7 +6,7 @@
 
 <?import gui.components.MainMenuBar?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.components.MainController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.components.MainController">
    <children>
       <MainMenuBar fx:id="mainMenuBar" minHeight="30" minWidth="1000" ></MainMenuBar>
       <TabPane fx:id="tabPane" prefHeight="10000" prefWidth="10000">
