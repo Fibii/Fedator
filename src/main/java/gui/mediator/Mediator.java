@@ -2,6 +2,7 @@ package gui.mediator;
 
 import gui.MainController;
 import gui.TabSpace;
+import gui.components.FindReplaceToolBar;
 import gui.components.MainMenuBar;
 import lib.EditorUtils;
 
@@ -34,6 +35,7 @@ public class Mediator implements IMediator {
     private boolean textChanged;
     private String text;
     private MainMenuBar mainMenuBar;
+    private FindReplaceToolBar findReplaceToolBar;
     private List<TabSpace> tabSpaces;
 
 
@@ -54,6 +56,11 @@ public class Mediator implements IMediator {
     @Override
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
+    }
+
+    @Override
+    public void setFindReplaceToolBar(FindReplaceToolBar findReplaceToolBar){
+        this.findReplaceToolBar = findReplaceToolBar;
     }
 
     /**
@@ -117,6 +124,11 @@ public class Mediator implements IMediator {
      * */
     public Path getMediatorFilePath(){
         return filePath;
+    }
+
+
+    public boolean isMatchCase() {
+        return findReplaceToolBar.isMatchCase();
     }
 
     /**

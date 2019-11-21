@@ -14,6 +14,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import lib.EditorUtils;
 
+import java.util.List;
+
 public class FindReplaceToolBar extends VBox {
 
     @FXML
@@ -79,6 +81,9 @@ public class FindReplaceToolBar extends VBox {
     }
     @FXML
     public void initialize() {
+
+        mediator.setFindReplaceToolBar(this);
+
         findTextField.textProperty().addListener((observable, oldValue, newValue) -> {
                     findReplaceTextFieldChangeListener();
                 }
@@ -140,13 +145,13 @@ public class FindReplaceToolBar extends VBox {
         findReplaceHighlightedCount.setText("");
 
 
-        String text = !caseSensetiveCheckBox.isSelected() ? mediator.getText().toLowerCase() : mediator.getText();
-        String substring = !caseSensetiveCheckBox.isSelected() ? findTextField.getText().toLowerCase() : findTextField.getText();
+        String text = mediator.getText();
+        String substring = findTextField.getText();
 
         System.out.println("selected: " +  caseSensetiveCheckBox.isSelected());
         System.out.println("text: " + text);
         System.out.println("subs: " + substring);
-        matchedCount = EditorUtils.getSubstringMatchedCount(substring, text);
+        matchedCount = EditorUtils.getSubstringMatchedCount(substring, text, caseSensetiveCheckBox.isSelected());
         findReplaceWordCount.setText(matchedCount + "\nmatches");
 
         if(matchedCount > 0){
@@ -185,6 +190,11 @@ public class FindReplaceToolBar extends VBox {
         setReplaceToolbarVisibility(false);
         this.setVisible(true);
         this.setManaged(true);;
+    }
+
+
+    public boolean isMatchCase(){
+        return caseSensetiveCheckBox.isSelected();
     }
 
 }

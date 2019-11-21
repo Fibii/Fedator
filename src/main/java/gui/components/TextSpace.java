@@ -178,7 +178,7 @@ public class TextSpace extends HBox {
         }
 
 
-        startIndices = EditorUtils.getIndexStartsOfSubstring(text, str);
+        startIndices = EditorUtils.getIndexStartsOfSubstring(text, str, mediator.isMatchCase());
         extraSelection.selectRange(startIndices.get(startIndicesTracker), startIndices.get(startIndicesTracker) + str.length());
 
 
@@ -213,7 +213,7 @@ public class TextSpace extends HBox {
         }
 
         try {
-            setText(EditorUtils.replaceSpecificString(getText(), oldString, newStr, startIndicesTracker));
+            setText(EditorUtils.replaceSpecificString(getText(), oldString, newStr, startIndicesTracker, mediator.isMatchCase()));
             clearHighlighting();
         } catch (Exception e) {
             e.printStackTrace();

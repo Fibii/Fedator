@@ -203,7 +203,12 @@ public class EditorUtils {
      * @param text: matched string
      * @return the number of matcher substrings in the matched string
      * */
-    public static int getSubstringMatchedCount(String str, String text){
+    public static int getSubstringMatchedCount(String str, String text, boolean matchCase){
+
+        if (!matchCase){
+            text = text.toLowerCase();
+            str = str.toLowerCase();
+        }
 
         if(str.isEmpty()){
             return 0;
@@ -223,11 +228,17 @@ public class EditorUtils {
     /**
      * @return List of Integers of each index where the substring start in text
      * */
-    public static List<Integer> getIndexStartsOfSubstring(String text, String substring){
+    public static List<Integer> getIndexStartsOfSubstring(String text, String substring, boolean matchCase){
+
         List<Integer> startIndices = new ArrayList<>();
 
+        if (!matchCase){
+            text = text.toLowerCase();
+            substring = substring.toLowerCase();
+        }
+
         int indexStart = 0;
-        int count = EditorUtils.getSubstringMatchedCount(substring, text);
+        int count = EditorUtils.getSubstringMatchedCount(substring, text, matchCase);
 
         for (int i = 0; i < count; i++) {
             indexStart = text.indexOf(substring, indexStart);
@@ -246,9 +257,15 @@ public class EditorUtils {
      * @return text with current string replaced with str
      *
      */
-    public static String replaceSpecificString(String text, String current, String str, int index) throws Exception {
+    public static String replaceSpecificString(String text, String current, String str, int index, boolean matchCase) throws Exception {
 
-        List<Integer> startIndices = getIndexStartsOfSubstring(text, current);
+
+        if (!matchCase){
+            text = text.toLowerCase();
+            current = current.toLowerCase();
+        }
+
+        List<Integer> startIndices = getIndexStartsOfSubstring(text, current, matchCase);
 
         if(index >= startIndices.size()){
             throw new Exception("text doesn't contain " + index + "th " + str);
