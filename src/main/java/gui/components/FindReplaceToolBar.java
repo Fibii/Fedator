@@ -35,6 +35,10 @@ public class FindReplaceToolBar extends VBox {
     private Text findReplaceWordCount;
 
     @FXML
+    private Text findReplaceHighlightedCount;
+
+
+    @FXML
     private CheckBox replaceAllCheckbox;
 
     @FXML
@@ -57,6 +61,10 @@ public class FindReplaceToolBar extends VBox {
 
 
     private Mediator mediator = Mediator.getInstance();
+
+    private int currentSelectedMatch = 0;
+    private int matchedCount;
+
 
     public FindReplaceToolBar(){
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
@@ -99,24 +107,52 @@ public class FindReplaceToolBar extends VBox {
 
     @FXML
     public void nextFindButtonPressed(){
+
+        if(currentSelectedMatch + 1 <= matchedCount){
+            currentSelectedMatch++;
+        }
+
+        if(matchedCount > 0){
+            findReplaceHighlightedCount.setText(currentSelectedMatch + " of ");
+        }
+
         mediator.getEventBuilder().withEvent(Events.FIND_NEXT).build();
+
     }
 
     @FXML
     public void previousFindButtonPressed(){
+
+        if(currentSelectedMatch - 1 > 0){
+            currentSelectedMatch--;
+        }
+
+        if(matchedCount > 0){
+            findReplaceHighlightedCount.setText(currentSelectedMatch + " of ");
+        }
         mediator.getEventBuilder().withEvent(Events.FIND_PREVIOUS).build();
+
     }
 
     public void findReplaceTextFieldChangeListener(){
+
+        currentSelectedMatch = 0;
+        findReplaceHighlightedCount.setText("");
+
+
         String text = !caseSensetiveCheckBox.isSelected() ? mediator.getText().toLowerCase() : mediator.getText();
         String substring = !caseSensetiveCheckBox.isSelected() ? findTextField.getText().toLowerCase() : findTextField.getText();
 
         System.out.println("selected: " +  caseSensetiveCheckBox.isSelected());
         System.out.println("text: " + text);
         System.out.println("subs: " + substring);
-        int count = EditorUtils.getSubstringMatchedCount(substring, text);
-        findReplaceWordCount.setText(count + "\nmatches");
+        matchedCount = EditorUtils.getSubstringMatchedCount(substring, text);
+        findReplaceWordCount.setText(matchedCount + "\nmatches");
 
+        if(matchedCount > 0){
+            currentSelectedMatch++;
+            findReplaceHighlightedCount.setText(currentSelectedMatch + " of ");
+        }
 
         mediator.getEventBuilder().withEvent(Events.FIND_SELECT).withText(substring).build();
     }

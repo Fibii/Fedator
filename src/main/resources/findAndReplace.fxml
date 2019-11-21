@@ -26,6 +26,13 @@
                             <Font size="14.0" />
                         </font></CheckBox>
 
+                    <Text fx:id="findReplaceHighlightedCount" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="20">
+                        <font>
+                            <Font size="12.0" />
+                        </font>
+                    </Text>
+
+
                     <Text fx:id="findReplaceWordCount" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="40">
                         <font>
                             <Font size="12.0" />
