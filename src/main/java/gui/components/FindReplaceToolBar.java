@@ -14,7 +14,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import lib.EditorUtils;
 
-import java.util.List;
 
 public class FindReplaceToolBar extends VBox {
 
@@ -68,7 +67,7 @@ public class FindReplaceToolBar extends VBox {
     private int matchedCount;
 
 
-    public FindReplaceToolBar(){
+    public FindReplaceToolBar() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
                 "/findAndReplace.fxml"));
         fxmlLoader.setRoot(this);
@@ -79,25 +78,22 @@ public class FindReplaceToolBar extends VBox {
             e.printStackTrace();
         }
     }
+
     @FXML
     public void initialize() {
 
         mediator.setFindReplaceToolBar(this);
 
-        findTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-                    findReplaceTextFieldChangeListener();
-                }
+        findTextField.textProperty().addListener((observable, oldValue, newValue) -> findReplaceTextFieldChangeListener()
         );
 
-        caseSensetiveCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            findReplaceTextFieldChangeListener();
-                }
+        caseSensetiveCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> findReplaceTextFieldChangeListener()
         );
     }
 
     @FXML
-    public void replaceButtonPressed(ActionEvent event){
-        if(replaceAllCheckbox.isSelected()){
+    public void replaceButtonPressed(ActionEvent event) {
+        if (replaceAllCheckbox.isSelected()) {
             mediator.getEventBuilder().withText(replaceTextField.getText()).withEvent(Events.REPLACE_ALL).build();
         } else {
             mediator.getEventBuilder().withText(replaceTextField.getText()).withEvent(Events.REPLACE_CURRENT).build();
@@ -106,18 +102,18 @@ public class FindReplaceToolBar extends VBox {
     }
 
     @FXML
-    public void hideFindReplaceToolBarButtonPressed(ActionEvent event){
+    public void hideFindReplaceToolBarButtonPressed(ActionEvent event) {
         mediator.getEventBuilder().withEvent(Events.HIDE_REPLACE).build();
     }
 
     @FXML
-    public void nextFindButtonPressed(){
+    public void nextFindButtonPressed() {
 
-        if(currentSelectedMatch + 1 <= matchedCount){
+        if (currentSelectedMatch + 1 <= matchedCount) {
             currentSelectedMatch++;
         }
 
-        if(matchedCount > 0){
+        if (matchedCount > 0) {
             findReplaceHighlightedCount.setText(currentSelectedMatch + " of ");
         }
 
@@ -126,35 +122,33 @@ public class FindReplaceToolBar extends VBox {
     }
 
     @FXML
-    public void previousFindButtonPressed(){
+    public void previousFindButtonPressed() {
 
-        if(currentSelectedMatch - 1 > 0){
+        if (currentSelectedMatch - 1 > 0) {
             currentSelectedMatch--;
         }
 
-        if(matchedCount > 0){
+        if (matchedCount > 0) {
             findReplaceHighlightedCount.setText(currentSelectedMatch + " of ");
         }
         mediator.getEventBuilder().withEvent(Events.FIND_PREVIOUS).build();
 
     }
 
-    public void findReplaceTextFieldChangeListener(){
+    private void findReplaceTextFieldChangeListener() {
 
         currentSelectedMatch = 0;
         findReplaceHighlightedCount.setText("");
-
-
         String text = mediator.getText();
         String substring = findTextField.getText();
 
-        System.out.println("selected: " +  caseSensetiveCheckBox.isSelected());
+        System.out.println("selected: " + caseSensetiveCheckBox.isSelected());
         System.out.println("text: " + text);
         System.out.println("subs: " + substring);
         matchedCount = EditorUtils.getSubstringMatchedCount(substring, text, caseSensetiveCheckBox.isSelected());
         findReplaceWordCount.setText(matchedCount + "\nmatches");
 
-        if(matchedCount > 0){
+        if (matchedCount > 0) {
             currentSelectedMatch++;
             findReplaceHighlightedCount.setText(currentSelectedMatch + " of ");
         }
@@ -162,38 +156,40 @@ public class FindReplaceToolBar extends VBox {
         mediator.getEventBuilder().withEvent(Events.FIND_SELECT).withText(substring).build();
     }
 
-    public void setReplaceToolbarVisibility(boolean visibility){
-           replaceToolBar.setVisible(visibility);
-           replaceToolBar.setManaged(visibility);
+    private void setReplaceToolbarVisibility(boolean visibility) {
+        replaceToolBar.setVisible(visibility);
+        replaceToolBar.setManaged(visibility);
     }
 
 
     /**
      * Shows replaceToolBar
-     * */
-    public void showFindReplace(){
+     */
+    public void showFindReplace() {
         setReplaceToolbarVisibility(true);
         this.setVisible(true);
         this.setManaged(true);
     }
 
-    /** Hides FindAndReplaceToolbar by hiding Vbox*/
-    public void hideFindReplace(){
+    /**
+     * Hides FindAndReplaceToolbar by hiding Vbox
+     */
+    public void hideFindReplace() {
         this.setVisible(false);
         this.setManaged(false);
     }
 
     /**
      * Shows findToolBar
-     * */
-    public void showFindToolbar(){
+     */
+    public void showFindToolbar() {
         setReplaceToolbarVisibility(false);
         this.setVisible(true);
-        this.setManaged(true);;
+        this.setManaged(true);
     }
 
 
-    public boolean isMatchCase(){
+    public boolean isMatchCase() {
         return caseSensetiveCheckBox.isSelected();
     }
 

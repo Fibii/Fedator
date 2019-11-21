@@ -1,6 +1,6 @@
 package gui.mediator;
 
-import gui.MainController;
+import gui.components.MainController;
 import gui.TabSpace;
 import gui.components.FindReplaceToolBar;
 import gui.components.MainMenuBar;
@@ -148,14 +148,14 @@ public class Mediator implements IMediator {
                 updateTabTitle(tabIndex);
                 break;
             case NEW_TAB:
-                mainController.createNewTab();
+                mainController.createNewTab(false);
                 break;
             case UNDO_TEXT:
                 tabSpaces.get(tabIndex).sendEvent(UNDO_TEXT);
                 break;
             case OPEN_MENU:
                 if(mainController.getTabPane().getTabs().size() == 0){
-                    mainController.createNewTab();
+                    mainController.createNewTab(true);
                     tabIndex = mainController.getCurrentTabIndex();
                 }
                 tabSpaces.get(tabIndex).sendEvent(OPEN_MENU);

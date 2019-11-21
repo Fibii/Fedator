@@ -1,8 +1,6 @@
-package gui;
+package gui.components;
 
-import gui.components.FindReplaceToolBar;
-import gui.components.MainMenuBar;
-import gui.components.TextSpace;
+import gui.TabSpace;
 import gui.mediator.Events;
 import gui.mediator.IMediator;
 import gui.mediator.Mediator;
@@ -12,7 +10,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import lib.EditorUtils;
 import smallUndoEngine.EditorTextHistory;
 
@@ -26,6 +23,7 @@ public class MainController {
 
     @FXML
     private TextSpace textSpace;
+
     @FXML
     private MainMenuBar mainMenuBar;
 
@@ -34,13 +32,14 @@ public class MainController {
 
     private EditorTextHistory editorTextHistory = new EditorTextHistory();
 
+    private IMediator mediator = Mediator.getInstance();
+
     private ArrayList<TabSpace> tabSpaces = new ArrayList<>();
     private int textSpacesCount = 0;
-    private IMediator mediator = Mediator.getInstance();
 
     @FXML
     public void initialize() {
-        createNewTab();
+        createNewTab(false);
         mediator.setMainController(this);
         mediator.setTabSpaces(tabSpaces);
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
@@ -48,7 +47,7 @@ public class MainController {
 
     private void tabPaneListener() {
         tabPane.getSelectionModel().selectedIndexProperty().addListener((ov, oldValue, newValue) -> {
-            if(tabPane.getTabs().size() == 0){
+            if (tabPane.getTabs().size() == 0) {
                 return;
             }
             System.out.println("sending TAB_CHANGED, #of tabs" + tabPane.getTabs().size());
@@ -56,21 +55,13 @@ public class MainController {
         });
     }
 
-    private void updateCurrentStageTitle(int currentTab) {
-        Stage stage = (Stage) tabPane.getParent().getScene().getWindow();
-        if (mediator.isFileSaved()) {
-            System.out.println("current tab is saved: " + currentTab);
-            stage.setTitle(tabSpaces.get(currentTab).getCurrentPath().toString());
-        } else {
-            stage.setTitle("Untitled " + currentTab);
-        }
-
-    }
 
     /**
+     * @param isSaved: true if a new tab is created as a result of OPEN_MENU event, false otherwise
+     * @see Mediator
      * creates new tab and a new editorTextHistory if the array of tabs is not full
      */
-    public void createNewTab() {
+    public void createNewTab(boolean isSaved) {
         Tab tab = new Tab("untitled tab " + textSpacesCount);
         TextSpace textSpace = new TextSpace();
 
@@ -86,7 +77,7 @@ public class MainController {
         vBox.getChildren().addAll(textSpace, findReplaceToolBar);
         tab.setContent(vBox);
 
-        TabSpace tabSpace = addTabSpace(textSpace, editorTextHistory, findReplaceToolBar, false);
+        TabSpace tabSpace = addTabSpace(textSpace, editorTextHistory, findReplaceToolBar, isSaved);
         tab.setOnCloseRequest(event -> {
             Alert alert = EditorUtils.createConfirmationAlert("Are you sure you want to close this tab?", "yes", "");
             boolean close = true;
@@ -112,12 +103,12 @@ public class MainController {
     /**
      * adds a new tabspace the the list of tabspaces
      *
-     * @param textSpace the current TextSpace of TabSpace
+     * @param textSpace         the current TextSpace of TabSpace
      * @param editorTextHistory the current EditorTextHistory of TabSpace
-     * @param isSaved   specifies if the file is saved in the system
-     * @return: the created tabSpace
+     * @param isSaved           specifies if the file is saved in the system
+     * @return the created tabSpace
      */
-    private TabSpace addTabSpace(TextSpace textSpace, EditorTextHistory editorTextHistory, FindReplaceToolBar findReplaceToolBar,  boolean isSaved) {
+    private TabSpace addTabSpace(TextSpace textSpace, EditorTextHistory editorTextHistory, FindReplaceToolBar findReplaceToolBar, boolean isSaved) {
         TabSpace current = new TabSpace(textSpace, editorTextHistory, findReplaceToolBar);
         current.setIsSaved(isSaved);
         tabSpaces.add(current);
@@ -134,13 +125,13 @@ public class MainController {
     /**
      * @return tabPane
      */
-    public TabPane getTabPane(){
+    public TabPane getTabPane() {
         return tabPane;
     }
 
 
     public void updateIsSaved(boolean isSaved) {
-        tabSpaces.get(getCurrentTabIndex()).setIsSaved(true);
+        tabSpaces.get(getCurrentTabIndex()).setIsSaved(isSaved);
     }
 
     /**

@@ -8,8 +8,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 
 public class AboutController {
@@ -30,11 +28,11 @@ public class AboutController {
     }
 
     @FXML
-    void githubLinkOnAction(ActionEvent event){
+    void githubLinkOnAction(ActionEvent event) {
 
         String githubURL = "https://github.com/Fibii";
         try {
-            if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0){
+            if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
                 Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + githubURL);
             }
             Runtime.getRuntime().exec("xdg-open " + githubURL);

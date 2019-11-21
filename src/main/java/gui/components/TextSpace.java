@@ -1,4 +1,5 @@
 package gui.components;
+
 import gui.mediator.Events;
 import gui.mediator.IMediator;
 import gui.mediator.Mediator;
@@ -10,12 +11,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import lib.EditorUtils;
 import org.fxmisc.richtext.*;
-import smallUndoEngine.Edit;
 import smallUndoEngine.EditorTextHistory;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -27,10 +26,8 @@ public class TextSpace extends HBox {
     private List<Integer> startIndices;
     private int startIndicesTracker = 0;
 
-
     @FXML
     private CodeArea textArea;
-
 
 
     /**
@@ -80,9 +77,7 @@ public class TextSpace extends HBox {
      * @see EditorTextHistory
      */
     private void textAreaChangeListener() {
-        textArea.textProperty().addListener((observable, oldValue, newValue) -> {
-            mediator.getEventBuilder().withEvent(Events.TEXT_CHANGED).build();
-        });
+        textArea.textProperty().addListener((observable, oldValue, newValue) -> mediator.getEventBuilder().withEvent(Events.TEXT_CHANGED).build());
     }
 
     /**
@@ -151,64 +146,66 @@ public class TextSpace extends HBox {
 
     /**
      * @return the selected text in codeArea
-     * */
+     */
     public String getSelectedText() {
         return textArea.getSelectedText();
     }
 
-    /** replaces the selected text with empty string */
-    public void removeSelectedText(){
+    /**
+     * replaces the selected text with empty string
+     */
+    public void removeSelectedText() {
         textArea.replaceSelection("");
     }
 
 
-    private void clearHighlighting(){
+    private void clearHighlighting() {
         extraSelection.selectRange(0, 0);
     }
 
-    /** highlights str */
+    /**
+     * highlights str
+     */
     public void selectText(String str) {
 
         System.out.println("called with; " + str + " tracker: " + startIndicesTracker);
         String text = getText();
 
-        if (str == null || str.isEmpty() || text.indexOf(str) < 0) {
+        if (str == null || str.isEmpty() || !text.contains(str)) {
             extraSelection.selectRange(0, 0);
             return;
         }
 
-
         startIndices = EditorUtils.getIndexStartsOfSubstring(text, str, mediator.isMatchCase());
         extraSelection.selectRange(startIndices.get(startIndicesTracker), startIndices.get(startIndicesTracker) + str.length());
 
-
     }
 
-    public void increaseIndicesTracker(){
+    public void increaseIndicesTracker() {
 
-        if(startIndices == null){
+        if (startIndices == null) {
             return;
         }
 
-        if (startIndicesTracker < startIndices.size() - 1){
+        if (startIndicesTracker < startIndices.size() - 1) {
             startIndicesTracker++;
         }
     }
 
-    public void decreaseIndicesTracker(){
-        if (startIndicesTracker > 0){
+    public void decreaseIndicesTracker() {
+        if (startIndicesTracker > 0) {
             startIndicesTracker--;
         }
     }
 
-    public void resetIndicesTracker(){
+    public void resetIndicesTracker() {
         startIndicesTracker = 0;
     }
 
-    public void replaceCurrent(String oldString, String newStr){
+    public void replaceCurrent(String oldString, String newStr) {
 
         // called with textfield empty
-        if(oldString == null || newStr == null){
+        if (oldString == null || newStr == null) {
             return;
         }
 
@@ -220,18 +217,16 @@ public class TextSpace extends HBox {
         }
     }
 
-    public void replaceAll(String oldString, String newStr){
+    public void replaceAll(String oldString, String newStr) {
 
         // called with textfield empty
-        if(oldString == null || newStr == null){
+        if (oldString == null || newStr == null) {
             return;
         }
 
         String newText = getText().replaceAll(oldString, newStr);
         setText(newText);
         clearHighlighting();
-
     }
-
 
 }

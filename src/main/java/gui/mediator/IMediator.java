@@ -1,10 +1,9 @@
 package gui.mediator;
 
-import gui.MainController;
+import gui.components.MainController;
 import gui.TabSpace;
 import gui.components.FindReplaceToolBar;
 import gui.components.MainMenuBar;
-import gui.components.TextSpace;
 
 import java.nio.file.Path;
 import java.util.List;

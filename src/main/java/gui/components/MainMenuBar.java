@@ -143,7 +143,7 @@ public class MainMenuBar extends MenuBar {
      */
     @FXML
     void closeMenuItemClick(ActionEvent event) {
-        mediator.getEventBuilder().withEvent(Events.CLOSE_MENU).build();;
+        mediator.getEventBuilder().withEvent(Events.CLOSE_MENU).build();
         EditorUtils.onCloseExitConfirmation();
     }
 
@@ -245,14 +245,6 @@ public class MainMenuBar extends MenuBar {
      */
     public String getText() {
         return text;
-    }
-
-
-    /**
-     * @return the path of the file
-     */
-    public Path getSavedFilePath() {
-        return filePath;
     }
 
 
