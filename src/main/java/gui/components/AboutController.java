@@ -8,7 +8,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-
+import java.net.URI;
+import java.net.URISyntaxException;
 
 
 public class AboutController {
@@ -30,10 +31,13 @@ public class AboutController {
 
     @FXML
     void githubLinkOnAction(ActionEvent event){
-        // works only on linux, requires python..
-        //todo: fix this
+
+        String githubURL = "https://github.com/Fibii";
         try {
-            Runtime.getRuntime().exec("python -mwebbrowser https://github.com/Fibii");
+            if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0){
+                Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + githubURL);
+            }
+            Runtime.getRuntime().exec("xdg-open " + githubURL);
         } catch (IOException e) {
             e.printStackTrace();
         }
