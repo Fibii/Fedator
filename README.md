@@ -1,15 +1,15 @@
 # Fedator
 Fedator is a simple text editor with basic utilities based on javafx
 #### what's supported 
-  -[x] Line Number
-  -[x] Undo/Redo
-  -[x] File reading/saving (text files only)
-  -[x] Intelligent file saving (automatically save data to the current file without prompting the user for a path..)
-  -[x] Multiple tabs
-  -[x] Find
-  -[x] Find and Replace
-  -[x] Copy/Paste/Cut
-  -[x] Window title changes when tabs are changed or a new file is opened/saved
+  - [x] Line Number
+  - [x] Undo/Redo
+  - [x] File reading/saving (text files only)
+  - [x] Intelligent file saving (automatically save data to the current file without prompting the user for a path..)
+  - [x] Multiple tabs
+  - [x] Find
+  - [x] Find and Replace
+  - [x] Copy/Paste/Cut
+  - [x] Window title changes when tabs are changed or a new file is opened/saved
 
 ##### Architecture ?
 
