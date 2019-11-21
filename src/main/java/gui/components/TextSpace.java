@@ -171,12 +171,13 @@ public class TextSpace extends HBox {
         System.out.println("called with; " + str + " tracker: " + startIndicesTracker);
         String text = getText();
 
-        if (str == null || str.isEmpty() || !text.contains(str)) {
+        startIndices = EditorUtils.getIndexStartsOfSubstring(text, str, mediator.isMatchCase());
+
+        if (str == null || str.isEmpty() || startIndices.size() == 0) {
             extraSelection.selectRange(0, 0);
             return;
         }
 
-        startIndices = EditorUtils.getIndexStartsOfSubstring(text, str, mediator.isMatchCase());
         extraSelection.selectRange(startIndices.get(startIndicesTracker), startIndices.get(startIndicesTracker) + str.length());
 
     }
