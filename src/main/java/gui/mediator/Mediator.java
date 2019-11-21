@@ -11,23 +11,6 @@ import java.util.List;
 
 import static gui.mediator.Events.*;
 
-//todo update mediators structure such that:
-/*
-* the local text variable is updated by the components,
-* instead of doing text = tabspace.get(tabIndex).getSelectedText()
-* send a OPEN_MENU event to tabspace, and tabspace will have getSelectedText set to private,
-* so it gets the selected text from TextSpace and then does: mediator.setText(selectedText)
-*
-* and instead of, in AUTO_SAVE
-*               text = tabSpaces.get(tabIndex).getText();
-                EditorUtils.writeToFile(text, filePath);
-                updateTitles();
-
-* AUTO_SAVE event is sent to tabspace, and then the text is updated by setText()
-
-*
-* */
-
 public class Mediator implements IMediator {
     private Path filePath;
     private MainController mainController;
